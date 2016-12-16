@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Moive {
+struct Movie {
     /* TODO: belongsToCollection, genres, productionCompanies, productionContries, spoken_languages
         a specific struct or enum should be created for each of them
     */

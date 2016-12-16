@@ -13,6 +13,7 @@
 		1F2A9D131E03D516005F3941 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F2A9D121E03D516005F3941 /* Assets.xcassets */; };
 		1F2A9D161E03D516005F3941 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F2A9D141E03D516005F3941 /* LaunchScreen.storyboard */; };
 		1F2A9D211E03DB5A005F3941 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2A9D201E03DB5A005F3941 /* Movie.swift */; };
+		1F2A9D241E03E37B005F3941 /* DataServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2A9D231E03E37B005F3941 /* DataServices.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		1F2A9D151E03D516005F3941 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1F2A9D171E03D516005F3941 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F2A9D201E03DB5A005F3941 /* Movie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		1F2A9D231E03E37B005F3941 /* DataServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataServices.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 		1F2A9D0A1E03D516005F3941 /* MovieNTV */ = {
 			isa = PBXGroup;
 			children = (
+				1F2A9D221E03E368005F3941 /* Services */,
 				1F2A9D1F1E03DAEF005F3941 /* Model */,
 				1F2A9D1E1E03DADA005F3941 /* View */,
 				1F2A9D1D1E03DACC005F3941 /* Controller */,
@@ -89,6 +92,14 @@
 				1F2A9D201E03DB5A005F3941 /* Movie.swift */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		1F2A9D221E03E368005F3941 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				1F2A9D231E03E37B005F3941 /* DataServices.swift */,
+			);
+			name = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -167,6 +178,7 @@
 				1F2A9D0E1E03D516005F3941 /* MovieViewController.swift in Sources */,
 				1F2A9D0C1E03D516005F3941 /* AppDelegate.swift in Sources */,
 				1F2A9D211E03DB5A005F3941 /* Movie.swift in Sources */,
+				1F2A9D241E03E37B005F3941 /* DataServices.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
