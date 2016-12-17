@@ -12,6 +12,14 @@ class MovieViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        DataServices.shared.getLastest { (success: Bool, movie: Movie?) in
+            if success {
+                
+            } else {
+                // error handling
+            }
+        }
     }
     
 }

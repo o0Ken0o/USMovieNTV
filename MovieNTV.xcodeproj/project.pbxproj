@@ -14,6 +14,7 @@
 		1F2A9D161E03D516005F3941 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F2A9D141E03D516005F3941 /* LaunchScreen.storyboard */; };
 		1F2A9D211E03DB5A005F3941 /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2A9D201E03DB5A005F3941 /* Movie.swift */; };
 		1F2A9D241E03E37B005F3941 /* DataServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2A9D231E03E37B005F3941 /* DataServices.swift */; };
+		E0CF35862422961CC674CD89 /* Pods_MovieNTV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39FFDB9ACE144D1091DEDAE1 /* Pods_MovieNTV.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,9 @@
 		1F2A9D171E03D516005F3941 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F2A9D201E03DB5A005F3941 /* Movie.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
 		1F2A9D231E03E37B005F3941 /* DataServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataServices.swift; sourceTree = "<group>"; };
+		204A145B113C074D0D01FAF0 /* Pods-MovieNTV.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieNTV.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovieNTV/Pods-MovieNTV.debug.xcconfig"; sourceTree = "<group>"; };
+		39FFDB9ACE144D1091DEDAE1 /* Pods_MovieNTV.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieNTV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		637BF30B6EA4CA900D33450E /* Pods-MovieNTV.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieNTV.release.xcconfig"; path = "Pods/Target Support Files/Pods-MovieNTV/Pods-MovieNTV.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0CF35862422961CC674CD89 /* Pods_MovieNTV.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +49,8 @@
 			children = (
 				1F2A9D0A1E03D516005F3941 /* MovieNTV */,
 				1F2A9D091E03D516005F3941 /* Products */,
+				D11E9999E1FC7D802497DD1A /* Pods */,
+				E995D115533B7E5732B68D84 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -102,6 +109,23 @@
 			name = Services;
 			sourceTree = "<group>";
 		};
+		D11E9999E1FC7D802497DD1A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				204A145B113C074D0D01FAF0 /* Pods-MovieNTV.debug.xcconfig */,
+				637BF30B6EA4CA900D33450E /* Pods-MovieNTV.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		E995D115533B7E5732B68D84 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				39FFDB9ACE144D1091DEDAE1 /* Pods_MovieNTV.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -109,9 +133,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1F2A9D1A1E03D516005F3941 /* Build configuration list for PBXNativeTarget "MovieNTV" */;
 			buildPhases = (
+				769E0D21E11441A68DD9ED84 /* [CP] Check Pods Manifest.lock */,
 				1F2A9D041E03D516005F3941 /* Sources */,
 				1F2A9D051E03D516005F3941 /* Frameworks */,
 				1F2A9D061E03D516005F3941 /* Resources */,
+				22FF7134243884B4155C9B40 /* [CP] Embed Pods Frameworks */,
+				EEEF051775D3C22E8CF479A9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -169,6 +196,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		22FF7134243884B4155C9B40 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MovieNTV/Pods-MovieNTV-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		769E0D21E11441A68DD9ED84 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		EEEF051775D3C22E8CF479A9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MovieNTV/Pods-MovieNTV-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1F2A9D041E03D516005F3941 /* Sources */ = {
@@ -299,6 +374,7 @@
 		};
 		1F2A9D1B1E03D516005F3941 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 204A145B113C074D0D01FAF0 /* Pods-MovieNTV.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = J7X9SXGFF7;
@@ -313,6 +389,7 @@
 		};
 		1F2A9D1C1E03D516005F3941 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 637BF30B6EA4CA900D33450E /* Pods-MovieNTV.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = J7X9SXGFF7;
