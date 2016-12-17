@@ -7,9 +7,11 @@
 //
 
 import Foundation
+import Alamofire
+import SwiftyJSON
 
 class DataServices {
-    static let sharedInstance = DataServices()
+    static let shared = DataServices()
     
     let apiKey = "ba0a292f6231bfc33b918d9c7cb31095"
     let baseURL = "https://api.themoviedb.org/3"
@@ -26,8 +28,18 @@ class DataServices {
     }
     
     // /movie/latest
-    func getLastest() -> [Movie]? {
-        return nil
+    func getLastest(with completion: @escaping (_ success: Bool, _ movie: Movie?) -> ()) {
+        let url = "\(baseURL)/movie/latest?api_key=\(apiKey)"
+        
+        // TODO: fetch data in a background thread
+        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
+            switch response.result {
+            case .success(let value):
+                completion(true, Movie(movieJSON: JSON(value)))
+            case .failure:
+                completion(false, nil)
+            }
+        })
     }
     
     // /movie/now_playing
