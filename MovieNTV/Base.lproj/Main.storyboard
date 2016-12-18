@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="yPQ-zT-aKQ">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Movie View Controller-->
+        <!--Lastest-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="MovieViewController" customModule="MovieNTV" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="LastestMovieViewController" customModule="MovieNTV" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -20,11 +22,79 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v76-X2-zk9">
+                                <rect key="frame" x="0.0" y="79" width="375" height="21"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="movie" translatesAutoresizingMaskIntoConstraints="NO" id="K57-8A-xci">
+                                <rect key="frame" x="28" y="115" width="319" height="321.5"/>
+                                <color key="backgroundColor" red="0.58023437499999997" green="0.58023437499999997" blue="0.58023437499999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="K57-8A-xci" secondAttribute="height" multiplier="132:133" id="dZo-mz-NRS"/>
+                                </constraints>
+                            </imageView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ntn-ji-pU3">
+                                <rect key="frame" x="28" y="462.5" width="319" height="184.5"/>
+                                <color key="backgroundColor" red="0.23630859375000002" green="0.23630859375000002" blue="0.23630859375000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="15"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="ntn-ji-pU3" firstAttribute="leading" secondItem="K57-8A-xci" secondAttribute="leading" id="6QP-wQ-Zyl"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="K57-8A-xci" secondAttribute="trailing" constant="12" id="AN1-Cy-e1g"/>
+                            <constraint firstItem="v76-X2-zk9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Nh2-75-til"/>
+                            <constraint firstItem="ntn-ji-pU3" firstAttribute="top" secondItem="K57-8A-xci" secondAttribute="bottom" constant="26" id="OZ7-MM-kIg"/>
+                            <constraint firstItem="ntn-ji-pU3" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Tby-1Q-Yv1"/>
+                            <constraint firstItem="K57-8A-xci" firstAttribute="top" secondItem="v76-X2-zk9" secondAttribute="bottom" constant="15" id="aLo-tF-mEF"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="ntn-ji-pU3" secondAttribute="bottom" constant="20" id="aS1-11-x4x"/>
+                            <constraint firstItem="ntn-ji-pU3" firstAttribute="trailing" secondItem="K57-8A-xci" secondAttribute="trailing" id="cou-nS-OFu"/>
+                            <constraint firstItem="K57-8A-xci" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="12" id="dHK-MZ-36C"/>
+                            <constraint firstItem="K57-8A-xci" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="dO3-z5-Nvl"/>
+                            <constraint firstItem="v76-X2-zk9" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="15" id="gO6-7d-yUf"/>
+                            <constraint firstItem="v76-X2-zk9" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" id="u7d-VC-0eV"/>
+                        </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Lastest" id="vhr-Pi-hhj"/>
+                    <connections>
+                        <outlet property="descriptionTextView" destination="ntn-ji-pU3" id="vsS-A0-GtG"/>
+                        <outlet property="posterImage" destination="K57-8A-xci" id="0kl-iY-4bs"/>
+                        <outlet property="titleLabel" destination="v76-X2-zk9" id="u0m-hW-dkC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="1029.375" y="126.25"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="VvN-bz-Hdl">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="yPQ-zT-aKQ" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="AgP-qx-Sqa">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.23306640624999997" green="0.23306640624999997" blue="0.23306640624999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="1aI-0k-9MY"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IHE-TW-eQE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="178" y="126"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="movie" width="1025" height="1025"/>
+    </resources>
 </document>
