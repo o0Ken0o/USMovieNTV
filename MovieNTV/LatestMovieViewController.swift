@@ -19,6 +19,10 @@ class LastestMovieViewController: UIViewController {
         
         descriptionTextView.layer.cornerRadius = 5
         
+        loadData()
+    }
+    
+    func loadData() {
         DataServices.shared.getLastest { (success: Bool, movie: Movie?) in
             if success {
                 if let movie = movie {
