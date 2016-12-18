@@ -27,6 +27,57 @@ class DataServices {
         return nil
     }
     
+    // /movie/latest
+    func getLastest(with completion: @escaping (_ success: Bool, _ movie: Movie?) -> ()) {
+        let url = "\(baseURL)/movie/latest?api_key=\(apiKey)"
+        
+        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
+            switch response.result {
+            case .success(let value):
+                completion(true, Movie(movieJSON: JSON(value)))
+            case .failure:
+                completion(false, nil)
+            }
+        })
+    }
+    
+    // /movie/now_playing
+    func getNowPlaying(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
+        let url = "\(baseURL)/movie/now_playing?api_key=\(apiKey)"
+        var moviesArray = [Movie]()
+        
+        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
+            switch response.result {
+            case .success(let value):
+                if let moviesJSON = JSON(value)["results"].array {
+                    for movieJSON in moviesJSON {
+                        if let movie = Movie(movieJSON: movieJSON) {
+                            moviesArray.append(movie)
+                        }
+                    }
+                }
+                completion(true, moviesArray)
+            case .failure:
+                completion(false, nil)
+            }
+        })
+    }
+    
+    // /movie/popular
+    func getPopular() -> [Movie]? {
+        return nil
+    }
+    
+    // /movie/top_rated
+    func getTopRated() -> [Movie]? {
+        return nil
+    }
+    
+    // /movie/upcoming
+    func getUpcoming() -> [Movie]? {
+        return nil
+    }
+    
     func getImage(posterPath: String, with completion: @escaping (_ success: Bool, _ image: UIImage?) -> ()) {
         if let imageLocalPath = checkImageExistence(imagePath: posterPath) {
             let data = FileManager.default.contents(atPath: imageLocalPath)
@@ -42,7 +93,7 @@ class DataServices {
                     
                     FileManager.default.createFile(atPath: escapedImageFullPath, contents: data, attributes: nil)
                     
-                    DispatchQueue.main.async(execute: { 
+                    DispatchQueue.main.async(execute: {
                         image = UIImage(data: data)
                         completion(true, image)
                     })
@@ -71,40 +122,5 @@ class DataServices {
     
     private func getDocumentDirectory() -> String? {
         return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
-    }
-    
-    // /movie/latest
-    func getLastest(with completion: @escaping (_ success: Bool, _ movie: Movie?) -> ()) {
-        let url = "\(baseURL)/movie/latest?api_key=\(apiKey)"
-        
-        // TODO: fetch data in a background thread
-        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
-            switch response.result {
-            case .success(let value):
-                completion(true, Movie(movieJSON: JSON(value)))
-            case .failure:
-                completion(false, nil)
-            }
-        })
-    }
-    
-    // /movie/now_playing
-    func getNowPlaying() -> [Movie]? {
-        return nil
-    }
-    
-    // /movie/popular
-    func getPopular() -> [Movie]? {
-        return nil
-    }
-    
-    // /movie/top_rated
-    func getTopRated() -> [Movie]? {
-        return nil
-    }
-    
-    // /movie/upcoming
-    func getUpcoming() -> [Movie]? {
-        return nil
     }
 }
