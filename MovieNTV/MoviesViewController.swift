@@ -13,6 +13,10 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     var movies = [Movie]()
     var sideMenu: SideMenu!
     
+    var indicator: UIActivityIndicatorView!
+    var overlayView: UIView!
+    var sideMenuItems = ["Now Playing", "Popular", "Top Rated", "Upcoming"]
+    
     let Cell_Identifier = "Cell"
 
     override func viewDidLoad() {
@@ -23,12 +27,20 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         moviesCollectionView.backgroundColor = UIColor.black
         
-        sideMenu = SideMenu(menuWidth: UIScreen.main.bounds.width / 2.5, parentVC: self.navigationController!, backgroundColor: UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.5), tableData: ["Now Playing", "Popular"])
+        sideMenu = SideMenu(menuWidth: UIScreen.main.bounds.width / 2.5, parentVC: self.navigationController!, backgroundColor: UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.5), tableData: sideMenuItems)
         sideMenu.delegate = self
+        
+        overlayView = UIView(frame: self.view.bounds)
+        overlayView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
+        indicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        indicator.center = self.overlayView.center
+        indicator.startAnimating()
+        overlayView.addSubview(indicator)
+        
         
         setupView()
         
-        loadNowPlayingMovies()
+        loadNowPlayingMovies(menuIndex: 0)
     }
     
     @IBAction func menuTapped(_ sender: Any) {
@@ -48,7 +60,9 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         moviesCollectionView.collectionViewLayout = collectionViewFlowLayout
     }
     
-    func loadNowPlayingMovies() {
+    func loadNowPlayingMovies(menuIndex: Int) {
+        self.navigationController?.view.addSubview(overlayView)
+        self.title = sideMenuItems[menuIndex]
         DataServices.shared.getNowPlaying { (success, movies) in
             if success {
                 if let movies = movies {
@@ -59,10 +73,13 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
                 // error handling
                 print("error")
             }
+            self.overlayView.removeFromSuperview()
         }
     }
     
-    func loadPopularMovies() {
+    func loadPopularMovies(menuIndex: Int) {
+        self.navigationController?.view.addSubview(overlayView)
+        self.title = sideMenuItems[menuIndex]
         DataServices.shared.getPopular { (success, movies) in
             if success {
                 if let movies = movies {
@@ -73,8 +90,45 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
                 // error handling
                 print("error")
             }
+            self.overlayView.removeFromSuperview()
         }
     }
+    
+    func loadTopRatedMovies(menuIndex: Int) {
+        self.navigationController?.view.addSubview(overlayView)
+        self.title = sideMenuItems[menuIndex]
+        DataServices.shared.getTopRated { (success, movies) in
+            if success {
+                if let movies = movies {
+                    self.movies = movies
+                    self.moviesCollectionView.reloadData()
+                }
+            } else {
+                // error handling
+                print("error")
+            }
+            self.overlayView.removeFromSuperview()
+        }
+    }
+    
+    func loadUpcomingMovies(menuIndex: Int) {
+        self.navigationController?.view.addSubview(overlayView)
+        self.title = sideMenuItems[menuIndex]
+        DataServices.shared.getUpcoming { (success, movies) in
+            if success {
+                if let movies = movies {
+                    self.movies = movies
+                    self.moviesCollectionView.reloadData()
+                }
+            } else {
+                // error handling
+                print("error")
+            }
+            self.overlayView.removeFromSuperview()
+        }
+    }
+    
+    
     
     // MARK: UICollectionViewDataSource
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -112,11 +166,15 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     func didSelectAnItem(view: SideMenu, item: String, index: Int) {
         switch index {
         case 0:
-            loadNowPlayingMovies()
+            loadNowPlayingMovies(menuIndex: 0)
         case 1:
-            loadPopularMovies()
+            loadPopularMovies(menuIndex: 1)
+        case 2:
+            loadTopRatedMovies(menuIndex: 2)
+        case 3:
+            loadUpcomingMovies(menuIndex: 3)
         default:
-            loadNowPlayingMovies()
+            loadNowPlayingMovies(menuIndex: 0)
         }
         sideMenu.toggleMenu(open: false)
     }
