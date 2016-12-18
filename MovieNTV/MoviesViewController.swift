@@ -8,9 +8,10 @@
 
 import UIKit
 
-class MoviesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class MoviesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, SideMenuDelegate {
     @IBOutlet weak var moviesCollectionView: UICollectionView!
     var movies = [Movie]()
+    var sideMenu: SideMenu!
     
     let Cell_Identifier = "Cell"
 
@@ -22,9 +23,16 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         moviesCollectionView.backgroundColor = UIColor.black
         
+        sideMenu = SideMenu(menuWidth: UIScreen.main.bounds.width / 2.5, parentVC: self.navigationController!, backgroundColor: UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.5), tableData: ["Now Playing", "Popular"])
+        sideMenu.delegate = self
+        
         setupView()
         
-        loadData()
+        loadNowPlayingMovies()
+    }
+    
+    @IBAction func menuTapped(_ sender: Any) {
+        sideMenu.toggleMenu(open: true)
     }
     
     func setupView() {
@@ -40,8 +48,22 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         moviesCollectionView.collectionViewLayout = collectionViewFlowLayout
     }
     
-    func loadData() {
+    func loadNowPlayingMovies() {
         DataServices.shared.getNowPlaying { (success, movies) in
+            if success {
+                if let movies = movies {
+                    self.movies = movies
+                    self.moviesCollectionView.reloadData()
+                }
+            } else {
+                // error handling
+                print("error")
+            }
+        }
+    }
+    
+    func loadPopularMovies() {
+        DataServices.shared.getPopular { (success, movies) in
             if success {
                 if let movies = movies {
                     self.movies = movies
@@ -85,4 +107,17 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     // MARK: UICollectionViewDelegate
+    
+    // MARK: SideMenuDelegate
+    func didSelectAnItem(view: SideMenu, item: String, index: Int) {
+        switch index {
+        case 0:
+            loadNowPlayingMovies()
+        case 1:
+            loadPopularMovies()
+        default:
+            loadNowPlayingMovies()
+        }
+        sideMenu.toggleMenu(open: false)
+    }
 }
