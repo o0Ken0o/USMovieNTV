@@ -69,7 +69,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3007.1999999999998" y="35.532233883058474"/>
+            <point key="canvasLocation" x="2102" y="36"/>
         </scene>
         <!--Now Playing-->
         <scene sceneID="vN9-Ut-Vqa">
@@ -148,7 +148,13 @@
                             <constraint firstItem="9Mb-WR-Ioc" firstAttribute="top" secondItem="bki-Hc-EoD" secondAttribute="bottom" id="igP-or-k0M"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Now Playing" id="v6J-TT-qp2"/>
+                    <navigationItem key="navigationItem" title="Now Playing" id="v6J-TT-qp2">
+                        <barButtonItem key="leftBarButtonItem" image="menu_icon" id="LjM-ER-xeI">
+                            <connections>
+                                <action selector="menuTapped:" destination="J1B-Ec-VSQ" id="21y-ul-4uD"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="moviesCollectionView" destination="9Mb-WR-Ioc" id="aRP-zD-fBh"/>
                     </connections>
@@ -165,6 +171,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" id="bbc-xp-R4J">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.9047851562" green="0.9047851562" blue="0.9047851562" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="barTintColor" white="0.0" alpha="0.5" colorSpace="calibratedWhite"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -181,6 +188,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="menu_icon" width="30" height="30"/>
         <image name="movie" width="1025" height="1025"/>
     </resources>
 </document>

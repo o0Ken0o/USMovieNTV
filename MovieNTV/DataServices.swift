@@ -64,8 +64,25 @@ class DataServices {
     }
     
     // /movie/popular
-    func getPopular() -> [Movie]? {
-        return nil
+    func getPopular(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
+        let url = "\(baseURL)/movie/popular?api_key=\(apiKey)"
+        var moviesArray = [Movie]()
+        
+        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
+            switch response.result {
+            case .success(let value):
+                if let moviesJSON = JSON(value)["results"].array {
+                    for movieJSON in moviesJSON {
+                        if let movie = Movie(movieJSON: movieJSON) {
+                            moviesArray.append(movie)
+                        }
+                    }
+                }
+                completion(true, moviesArray)
+            case .failure:
+                completion(false, nil)
+            }
+        })
     }
     
     // /movie/top_rated
