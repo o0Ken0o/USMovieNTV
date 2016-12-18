@@ -107,12 +107,23 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
         
         parentVC.view.insertSubview(backgroundView, belowSubview: self)
         
-        tableView = UITableView(frame: self.bounds, style: .plain)
+        var tableViewBounds = self.bounds
+        tableViewBounds.origin.y += 100
+        tableViewBounds.size.height -= 100
+        tableView = UITableView(frame: tableViewBounds, style: .plain)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")
         tableView.backgroundColor = bgColor
         self.addSubview(tableView)
+        
+        let imageView = UIImageView(image: UIImage(named: "movieNTV"))
+        imageView.contentMode = .scaleAspectFill
+        imageView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
+        imageView.center.x = self.bounds.width / 2.0
+        imageView.alpha = 0.5
+        imageView.backgroundColor = bgColor
+        self.addSubview(imageView)
         
     }
     

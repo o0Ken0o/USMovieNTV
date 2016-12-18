@@ -86,13 +86,47 @@ class DataServices {
     }
     
     // /movie/top_rated
-    func getTopRated() -> [Movie]? {
-        return nil
+    func getTopRated(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
+        let url = "\(baseURL)/movie/top_rated?api_key=\(apiKey)"
+        var moviesArray = [Movie]()
+        
+        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
+            switch response.result {
+            case .success(let value):
+                if let moviesJSON = JSON(value)["results"].array {
+                    for movieJSON in moviesJSON {
+                        if let movie = Movie(movieJSON: movieJSON) {
+                            moviesArray.append(movie)
+                        }
+                    }
+                }
+                completion(true, moviesArray)
+            case .failure:
+                completion(false, nil)
+            }
+        })
     }
     
     // /movie/upcoming
-    func getUpcoming() -> [Movie]? {
-        return nil
+    func getUpcoming(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
+        let url = "\(baseURL)/movie/upcoming?api_key=\(apiKey)"
+        var moviesArray = [Movie]()
+        
+        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
+            switch response.result {
+            case .success(let value):
+                if let moviesJSON = JSON(value)["results"].array {
+                    for movieJSON in moviesJSON {
+                        if let movie = Movie(movieJSON: movieJSON) {
+                            moviesArray.append(movie)
+                        }
+                    }
+                }
+                completion(true, moviesArray)
+            case .failure:
+                completion(false, nil)
+            }
+        })
     }
     
     func getImage(posterPath: String, with completion: @escaping (_ success: Bool, _ image: UIImage?) -> ()) {
