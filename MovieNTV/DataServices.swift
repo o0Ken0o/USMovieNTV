@@ -27,6 +27,52 @@ class DataServices {
         return nil
     }
     
+    func getImage(posterPath: String, with completion: @escaping (_ success: Bool, _ image: UIImage?) -> ()) {
+        if let imageLocalPath = checkImageExistence(imagePath: posterPath) {
+            let data = FileManager.default.contents(atPath: imageLocalPath)
+            let image = UIImage(data: data!)
+            completion(true, image)
+        } else {
+            DispatchQueue.global(qos: DispatchQoS.QoSClass.default).async {
+                let url = "\(self.getImageBaseURL)/w500/\(posterPath)"
+                var image: UIImage? = nil
+                do {
+                    let data = try Data(contentsOf: URL(string: url)!)
+                    let escapedImageFullPath = "\(self.getDocumentDirectory()!)/\(posterPath)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+                    
+                    FileManager.default.createFile(atPath: escapedImageFullPath, contents: data, attributes: nil)
+                    
+                    DispatchQueue.main.async(execute: { 
+                        image = UIImage(data: data)
+                        completion(true, image)
+                    })
+                } catch let error as NSError {
+                    print(error.localizedDescription)
+                } catch {
+                    
+                }
+                
+                completion(false, image)
+            }
+        }
+    }
+    
+    private func checkImageExistence(imagePath: String) -> String? {
+        if let docPath = getDocumentDirectory() {
+            let imageFullPath = "\(docPath)/\(imagePath)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+            
+            if FileManager.default.fileExists(atPath: imageFullPath!) {
+                return imageFullPath
+            }
+        }
+        
+        return nil
+    }
+    
+    private func getDocumentDirectory() -> String? {
+        return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
+    }
+    
     // /movie/latest
     func getLastest(with completion: @escaping (_ success: Bool, _ movie: Movie?) -> ()) {
         let url = "\(baseURL)/movie/latest?api_key=\(apiKey)"
