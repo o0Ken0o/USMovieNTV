@@ -23,8 +23,17 @@ class DataServices {
     }
     
     // /movie/{movie_id}
-    func getMovieDetails() -> Movie? {
-        return nil
+    func getMovieDetails(movieID: Int, with completion: @escaping (_ success: Bool, _ movie: Movie?) -> ()) {
+        let url = "\(baseURL)/movie/\(movieID)?api_key=\(apiKey)"
+        
+        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
+            switch response.result {
+            case .success(let value):
+                completion(true, Movie(movieJSON: JSON(value)))
+            case .failure:
+                completion(false, nil)
+            }
+        })
     }
     
     // /movie/latest
