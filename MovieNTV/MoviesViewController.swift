@@ -13,6 +13,8 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     var movies = [Movie]()
     var sideMenu: SideMenu!
     
+    var selectedMovie: Movie?
+    
     var indicator: UIActivityIndicatorView!
     var overlayView: UIView!
     var sideMenuItems = ["Now Playing", "Popular", "Top Rated", "Upcoming"]
@@ -161,6 +163,17 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     // MARK: UICollectionViewDelegate
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedMovie = movies[indexPath.row]
+        performSegue(withIdentifier: "MovieDetailsViewController", sender: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "MovieDetailsViewController" {
+            let movieDetailsVC = segue.destination as! MovieDetailsViewController
+            movieDetailsVC.movie = selectedMovie!
+        }
+    }
     
     // MARK: SideMenuDelegate
     func didSelectAnItem(view: SideMenu, item: String, index: Int) {
