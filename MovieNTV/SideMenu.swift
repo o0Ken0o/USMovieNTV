@@ -47,11 +47,11 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
         
         let swipeOpenGest = UISwipeGestureRecognizer(target: self, action: #selector(SideMenu.handleGestures(recognizer:)))
         swipeOpenGest.direction = .right
-        parentVC.view.addGestureRecognizer(swipeOpenGest)
-        
-        let swipeCloseGest = UISwipeGestureRecognizer(target: self, action: #selector(SideMenu.handleGestures(recognizer:)))
-        swipeCloseGest.direction = .left
-        parentVC.view.addGestureRecognizer(swipeCloseGest)
+        if let navVC = parentVC as? UINavigationController {
+            navVC.viewControllers.first?.view.addGestureRecognizer(swipeOpenGest)
+        } else {
+            parentVC.view.addGestureRecognizer(swipeOpenGest)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -89,7 +89,7 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
         }
         
         UIView.animate(withDuration: 0.5, animations: {
-            self.backgroundView.alpha = open ? 0.5 : 0
+            self.backgroundView.alpha = open ? 0.8 : 0
         }) { (finished: Bool) in
             if !open {
                 self.backgroundView.removeFromSuperview()
@@ -104,6 +104,10 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(SideMenu.handleGestures(recognizer:)))
         backgroundView.addGestureRecognizer(tap)
+        
+        let swipeCloseGest = UISwipeGestureRecognizer(target: self, action: #selector(SideMenu.handleGestures(recognizer:)))
+        swipeCloseGest.direction = .left
+        backgroundView.addGestureRecognizer(swipeCloseGest)
         
         parentVC.view.insertSubview(backgroundView, belowSubview: self)
         
@@ -121,7 +125,7 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
         imageView.contentMode = .scaleAspectFill
         imageView.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
         imageView.center.x = self.bounds.width / 2.0
-        imageView.alpha = 0.5
+        imageView.alpha = 0.8
         imageView.backgroundColor = bgColor
         self.addSubview(imageView)
         

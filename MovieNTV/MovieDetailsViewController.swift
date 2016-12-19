@@ -50,13 +50,13 @@ class MovieDetailsViewController: UIViewController {
     }
     
     func initializeEmptyText() {
-        titleLabel.text = ""
-        genresLabel.text = ""
-        languagesLabel.text = ""
-        companiesLabel.text = ""
-        countriesLabel.text = ""
-        releaseDateLabel.text = ""
-        runtimeLabel.text = ""
+        titleLabel.text = " "
+        genresLabel.text = " "
+        languagesLabel.text = " "
+        companiesLabel.text = " "
+        countriesLabel.text = " "
+        releaseDateLabel.text = " "
+        runtimeLabel.text = " "
         popularityLabel.text = "☆ --"
         countAverageLabel.text = "♡ --"
         countLabel.text = "웃 --"
@@ -71,63 +71,70 @@ class MovieDetailsViewController: UIViewController {
             })
         }
         
-        titleLabel.text = movie.title
+        titleLabel.text? = movie.title
     }
     
     func setupMovieDetailsView() {
-        if let genres = movieDetails?.genres {
+        if let genres = movieDetails?.genres, genres.count > 0 {
+            var text = ""
             for (i, genre) in genres.enumerated() {
                 if let genreStr = genre["name"].string {
                     if i != genres.count - 1 {
-                        genresLabel.text?.append("\(genreStr), ")
+                        text.append("\(genreStr), ")
                     } else {
-                        genresLabel.text?.append(genreStr)
+                        text.append(genreStr)
                     }
                 }
             }
+            genresLabel.text = text
         } else {
             genresLabel.text? = "--"
         }
         
-        if let languages = movieDetails?.spokenLanguages {
+        if let languages = movieDetails?.spokenLanguages, languages.count > 0 {
+            var text = ""
             for (i, language) in languages.enumerated() {
                 if let languageStr = language["name"].string {
                     if i != languages.count - 1 {
-                        _ = languagesLabel.text?.append("\(languageStr), ")
+                        _ = text.append("\(languageStr), ")
                     } else {
-                        _ = languagesLabel.text?.append(languageStr)
+                        _ = text.append(languageStr)
                     }
                 }
             }
+            languagesLabel.text = text
         } else {
             languagesLabel.text? = "--"
         }
         
-        if let companies = movieDetails?.productionCompanies {
-            companiesLabel.numberOfLines = 2
+        if let companies = movieDetails?.productionCompanies, companies.count > 0 {
+            var text = ""
             for (i, company) in companies.enumerated() {
                 if let companyStr = company["name"].string {
                     if i != companies.count - 1 {
-                        _ = companiesLabel.text?.append("\(companyStr), ")
+                        _ = text.append("\(companyStr), ")
                     } else {
-                        _ = companiesLabel.text?.append(companyStr)
+                        _ = text.append(companyStr)
                     }
                 }
             }
+            companiesLabel.text = text
         } else {
             companiesLabel.text? = "--"
         }
         
-        if let countries = movieDetails?.productionCountries {
+        if let countries = movieDetails?.productionCountries, countries.count > 0 {
+            var text = ""
             for (i, country) in countries.enumerated() {
                 if let countryStr = country["name"].string {
                     if i != countries.count - 1 {
-                        _ = countriesLabel.text?.append("\(countryStr), ")
+                        _ = text.append("\(countryStr), ")
                     } else {
-                        _ = countriesLabel.text?.append(countryStr)
+                        _ = text.append(countryStr)
                     }
                 }
             }
+            countriesLabel.text = text
         } else {
             countriesLabel.text = "--"
         }
@@ -135,13 +142,13 @@ class MovieDetailsViewController: UIViewController {
         if let releaseDate = movieDetails?.releaseDate {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-mm-dd"
-            releaseDateLabel.text?.append(dateFormatter.string(from: releaseDate))
+            releaseDateLabel.text? = dateFormatter.string(from: releaseDate)
         } else {
             releaseDateLabel.text = "--"
         }
         
         if let runtime = movieDetails?.runTimeMins {
-            runtimeLabel.text?.append("\(runtime)")
+            runtimeLabel.text = "\(runtime)"
         } else {
             runtimeLabel.text = "--"
         }

@@ -63,6 +63,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func loadNowPlayingMovies(menuIndex: Int) {
+        moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
         self.navigationController?.view.addSubview(overlayView)
         self.title = sideMenuItems[menuIndex]
         DataServices.shared.getNowPlaying { (success, movies) in
@@ -80,6 +81,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func loadPopularMovies(menuIndex: Int) {
+        moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
         self.navigationController?.view.addSubview(overlayView)
         self.title = sideMenuItems[menuIndex]
         DataServices.shared.getPopular { (success, movies) in
@@ -97,6 +99,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func loadTopRatedMovies(menuIndex: Int) {
+        moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
         self.navigationController?.view.addSubview(overlayView)
         self.title = sideMenuItems[menuIndex]
         DataServices.shared.getTopRated { (success, movies) in
@@ -114,6 +117,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func loadUpcomingMovies(menuIndex: Int) {
+        moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
         self.navigationController?.view.addSubview(overlayView)
         self.title = sideMenuItems[menuIndex]
         DataServices.shared.getUpcoming { (success, movies) in
@@ -153,10 +157,14 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         let popularity = String(format: "%.1f", movie.popularity)
         cell.popularityLabel.text = "☆ \(popularity)"
         
-        DataServices.shared.getImage(posterPath: movie.posterPath!) { (success, image) in
-            if success {
-                cell.posterImageView.image = image
+        if let posterPath = movie.posterPath {
+            DataServices.shared.getImage(posterPath: posterPath) { (success, image) in
+                if success {
+                    cell.posterImageView.image = image
+                }
             }
+        } else {
+            cell.posterImageView.image = UIImage(named: "movieNTV")
         }
         
         return cell
