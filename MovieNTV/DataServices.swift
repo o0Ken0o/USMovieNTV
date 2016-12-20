@@ -13,129 +13,44 @@ import SwiftyJSON
 class DataServices {
     static let shared = DataServices()
     
+    private let movieServices = MovieServices()
+    
     let apiKey = "ba0a292f6231bfc33b918d9c7cb31095"
     let baseURL = "https://api.themoviedb.org/3"
     let getImageBaseURL = "https://image.tmdb.org/t/p"
     let movieDomain = "/movie"
     
-    private init() {
-        
-    }
+    // singleton
+    private init() {}
     
     // /movie/{movie_id}
     func getMovieDetails(movieID: Int, with completion: @escaping (_ success: Bool, _ movie: Movie?) -> ()) {
-        let url = "\(baseURL)/movie/\(movieID)?api_key=\(apiKey)"
-        
-        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
-            switch response.result {
-            case .success(let value):
-                completion(true, Movie(movieJSON: JSON(value)))
-            case .failure:
-                completion(false, nil)
-            }
-        })
+        movieServices.getMovieDetails(movieID: movieID, with: completion)
     }
     
     // /movie/latest
     func getLastest(with completion: @escaping (_ success: Bool, _ movie: Movie?) -> ()) {
-        let url = "\(baseURL)/movie/latest?api_key=\(apiKey)"
-        
-        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
-            switch response.result {
-            case .success(let value):
-                completion(true, Movie(movieJSON: JSON(value)))
-            case .failure:
-                completion(false, nil)
-            }
-        })
+        movieServices.getLastest(with: completion)
     }
     
     // /movie/now_playing
     func getNowPlaying(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
-        let url = "\(baseURL)/movie/now_playing?api_key=\(apiKey)"
-        var moviesArray = [Movie]()
-        
-        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
-            switch response.result {
-            case .success(let value):
-                if let moviesJSON = JSON(value)["results"].array {
-                    for movieJSON in moviesJSON {
-                        if let movie = Movie(movieJSON: movieJSON) {
-                            moviesArray.append(movie)
-                        }
-                    }
-                }
-                completion(true, moviesArray)
-            case .failure:
-                completion(false, nil)
-            }
-        })
+        movieServices.getNowPlaying(with: completion)
     }
     
     // /movie/popular
     func getPopular(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
-        let url = "\(baseURL)/movie/popular?api_key=\(apiKey)"
-        var moviesArray = [Movie]()
-        
-        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
-            switch response.result {
-            case .success(let value):
-                if let moviesJSON = JSON(value)["results"].array {
-                    for movieJSON in moviesJSON {
-                        if let movie = Movie(movieJSON: movieJSON) {
-                            moviesArray.append(movie)
-                        }
-                    }
-                }
-                completion(true, moviesArray)
-            case .failure:
-                completion(false, nil)
-            }
-        })
+        movieServices.getPopular(with: completion)
     }
     
     // /movie/top_rated
     func getTopRated(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
-        let url = "\(baseURL)/movie/top_rated?api_key=\(apiKey)"
-        var moviesArray = [Movie]()
-        
-        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
-            switch response.result {
-            case .success(let value):
-                if let moviesJSON = JSON(value)["results"].array {
-                    for movieJSON in moviesJSON {
-                        if let movie = Movie(movieJSON: movieJSON) {
-                            moviesArray.append(movie)
-                        }
-                    }
-                }
-                completion(true, moviesArray)
-            case .failure:
-                completion(false, nil)
-            }
-        })
+        movieServices.getTopRated(with: completion)
     }
     
     // /movie/upcoming
     func getUpcoming(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
-        let url = "\(baseURL)/movie/upcoming?api_key=\(apiKey)"
-        var moviesArray = [Movie]()
-        
-        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
-            switch response.result {
-            case .success(let value):
-                if let moviesJSON = JSON(value)["results"].array {
-                    for movieJSON in moviesJSON {
-                        if let movie = Movie(movieJSON: movieJSON) {
-                            moviesArray.append(movie)
-                        }
-                    }
-                }
-                completion(true, moviesArray)
-            case .failure:
-                completion(false, nil)
-            }
-        })
+        movieServices.getUpcoming(with: completion)
     }
     
     func getImage(posterPath: String, with completion: @escaping (_ success: Bool, _ image: UIImage?) -> ()) {

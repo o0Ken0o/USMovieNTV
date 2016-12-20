@@ -32,17 +32,32 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         sideMenu = SideMenu(menuWidth: UIScreen.main.bounds.width * 0.8, parentVC: self.navigationController!, backgroundColor: UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.5), tableData: sideMenuItems)
         sideMenu.delegate = self
         
+        setupOverlayView()
+        
+        setupView()
+        
+        loadNowPlayingMovies(menuIndex: 0)
+    }
+    
+    func setupOverlayView() {
         overlayView = UIView(frame: self.view.bounds)
         overlayView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
         indicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
         indicator.center = self.overlayView.center
         indicator.startAnimating()
         overlayView.addSubview(indicator)
-        
-        
-        setupView()
-        
-        loadNowPlayingMovies(menuIndex: 0)
+    }
+    
+    func addOverlay() {
+        if let navVC = self.navigationController {
+            navVC.view.addSubview(overlayView)
+        } else {
+            self.view.addSubview(overlayView)
+        }
+    }
+    
+    func removeOverlay() {
+        overlayView.removeFromSuperview()
     }
     
     @IBAction func menuTapped(_ sender: Any) {
@@ -64,8 +79,11 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     func loadNowPlayingMovies(menuIndex: Int) {
         moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
-        self.navigationController?.view.addSubview(overlayView)
+        
+        addOverlay()
+        
         self.title = sideMenuItems[menuIndex]
+        
         DataServices.shared.getNowPlaying { (success, movies) in
             if success {
                 if let movies = movies {
@@ -76,14 +94,17 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
                 // error handling
                 print("error")
             }
-            self.overlayView.removeFromSuperview()
+            self.removeOverlay()
         }
     }
     
     func loadPopularMovies(menuIndex: Int) {
         moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
-        self.navigationController?.view.addSubview(overlayView)
+        
+        addOverlay()
+        
         self.title = sideMenuItems[menuIndex]
+        
         DataServices.shared.getPopular { (success, movies) in
             if success {
                 if let movies = movies {
@@ -94,14 +115,17 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
                 // error handling
                 print("error")
             }
-            self.overlayView.removeFromSuperview()
+            self.removeOverlay()
         }
     }
     
     func loadTopRatedMovies(menuIndex: Int) {
         moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
-        self.navigationController?.view.addSubview(overlayView)
+        
+        addOverlay()
+        
         self.title = sideMenuItems[menuIndex]
+        
         DataServices.shared.getTopRated { (success, movies) in
             if success {
                 if let movies = movies {
@@ -112,14 +136,17 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
                 // error handling
                 print("error")
             }
-            self.overlayView.removeFromSuperview()
+            self.removeOverlay()
         }
     }
     
     func loadUpcomingMovies(menuIndex: Int) {
         moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
-        self.navigationController?.view.addSubview(overlayView)
+        
+        addOverlay()
+        
         self.title = sideMenuItems[menuIndex]
+        
         DataServices.shared.getUpcoming { (success, movies) in
             if success {
                 if let movies = movies {
@@ -130,7 +157,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
                 // error handling
                 print("error")
             }
-            self.overlayView.removeFromSuperview()
+            self.removeOverlay()
         }
     }
     
