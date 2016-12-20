@@ -17,7 +17,8 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     var indicator: UIActivityIndicatorView!
     var overlayView: UIView!
-    var sideMenuItems = ["Now Playing", "Popular", "Top Rated", "Upcoming"]
+    var sideMenuItems = [["Now Playing", "Popular", "Top Rated", "Upcoming"]]
+    var sideMenuHeaders = ["Movies"]
     
     let Cell_Identifier = "Cell"
 
@@ -29,7 +30,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         moviesCollectionView.backgroundColor = UIColor.black
         
-        sideMenu = SideMenu(menuWidth: UIScreen.main.bounds.width * 0.8, parentVC: self.navigationController!, backgroundColor: UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.5), tableData: sideMenuItems)
+        sideMenu = SideMenu(menuWidth: UIScreen.main.bounds.width * 0.8, parentVC: self.navigationController!, backgroundColor: UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.5), tableData: sideMenuItems, headerData: sideMenuHeaders)
         sideMenu.delegate = self
         
         setupOverlayView()
@@ -82,7 +83,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         addOverlay()
         
-        self.title = sideMenuItems[menuIndex]
+        self.title = sideMenuItems[0][menuIndex]
         
         DataServices.shared.getNowPlaying { (success, movies) in
             if success {
@@ -103,7 +104,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         addOverlay()
         
-        self.title = sideMenuItems[menuIndex]
+        self.title = sideMenuItems[0][menuIndex]
         
         DataServices.shared.getPopular { (success, movies) in
             if success {
@@ -124,7 +125,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         addOverlay()
         
-        self.title = sideMenuItems[menuIndex]
+        self.title = sideMenuItems[0][menuIndex]
         
         DataServices.shared.getTopRated { (success, movies) in
             if success {
@@ -145,7 +146,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         addOverlay()
         
-        self.title = sideMenuItems[menuIndex]
+        self.title = sideMenuItems[0][menuIndex]
         
         DataServices.shared.getUpcoming { (success, movies) in
             if success {
@@ -214,18 +215,20 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     // MARK: SideMenuDelegate
-    func didSelectAnItem(view: SideMenu, item: String, index: Int) {
-        switch index {
-        case 0:
-            loadNowPlayingMovies(menuIndex: 0)
-        case 1:
-            loadPopularMovies(menuIndex: 1)
-        case 2:
-            loadTopRatedMovies(menuIndex: 2)
-        case 3:
-            loadUpcomingMovies(menuIndex: 3)
-        default:
-            loadNowPlayingMovies(menuIndex: 0)
+    func didSelectAnItem(view: SideMenu, item: String, section:Int, row: Int) {
+        if section == 0 {
+            switch row {
+            case 0:
+                loadNowPlayingMovies(menuIndex: 0)
+            case 1:
+                loadPopularMovies(menuIndex: 1)
+            case 2:
+                loadTopRatedMovies(menuIndex: 2)
+            case 3:
+                loadUpcomingMovies(menuIndex: 3)
+            default:
+                loadNowPlayingMovies(menuIndex: 0)
+            }
         }
         sideMenu.toggleMenu(open: false)
     }

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol SideMenuDelegate {
-    func didSelectAnItem(view: SideMenu, item: String, index: Int)
+    func didSelectAnItem(view: SideMenu, item: String, section:Int, row: Int)
 }
 
 class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
@@ -18,17 +18,18 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
     var bgColor: UIColor!
     
     var tableView: UITableView!
-    var tableData = [String]()
+    var tableData = [[String]]()
+    var headerData = [String]()
     
     var delegate: SideMenuDelegate?
     
     var parentViewController: UIViewController!
     
     convenience init(menuWidth: CGFloat, parentVC: UIViewController) {
-        self.init(menuWidth: menuWidth, parentVC: parentVC, backgroundColor: UIColor.orange, tableData: [])
+        self.init(menuWidth: menuWidth, parentVC: parentVC, backgroundColor: UIColor.orange, tableData: [[]], headerData: [])
     }
     
-    init(menuWidth: CGFloat, parentVC: UIViewController, backgroundColor: UIColor, tableData: [String]) {
+    init(menuWidth: CGFloat, parentVC: UIViewController, backgroundColor: UIColor, tableData: [[String]], headerData: [String]) {
         super.init(frame: CGRect(x: -menuWidth - 20, y: 0, width: menuWidth, height: parentVC.view.bounds.height))
         
         self.menuWidth = menuWidth
@@ -41,6 +42,7 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
         animator = UIDynamicAnimator(referenceView: parentVC.view)
         
         self.tableData = tableData
+        self.headerData = headerData
         
         setupView(parentVC: parentVC)
         
@@ -133,26 +135,43 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
     
     // MARK: UITableViewDataSource
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return tableData.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tableData.count
+        return tableData[section].count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-        cell.textLabel?.text = tableData[indexPath.row]
+        cell.textLabel?.text = tableData[indexPath.section][indexPath.row]
         cell.textLabel?.textColor = UIColor.white
         cell.backgroundColor = bgColor
         
         return cell
     }
     
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return headerData[section]
+    }
+    
     // MARK: UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        delegate?.didSelectAnItem(view: self, item: tableData[indexPath.row], index: indexPath.row)
+        delegate?.didSelectAnItem(view: self, item: tableData[indexPath.section][indexPath.row], section: indexPath.section, row: indexPath.row)
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 30))
+        headerView.backgroundColor = bgColor
+        
+        let headerText = UILabel(frame: CGRect(x: 10, y: 0, width: tableView.bounds.width, height: 30))
+        headerText.text = headerData[section]
+        headerText.textColor = UIColor.white
+        headerText.font = UIFont(name: "Helvetica-Bold", size: 20)
+        headerView.addSubview(headerText)
+        
+        return headerView
     }
     
 }

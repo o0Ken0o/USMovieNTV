@@ -15,7 +15,6 @@ class MovieServices {
     let apiKey = "ba0a292f6231bfc33b918d9c7cb31095"
     let baseURL = "https://api.themoviedb.org/3"
     let getImageBaseURL = "https://image.tmdb.org/t/p"
-    let movieDomain = "/movie"
         
     // /movie/{movie_id}
     func getMovieDetails(movieID: Int, with completion: @escaping (_ success: Bool, _ movie: Movie?) -> ()) {
@@ -134,7 +133,7 @@ class MovieServices {
     }
     
     func getImage(posterPath: String, with completion: @escaping (_ success: Bool, _ image: UIImage?) -> ()) {
-        if let imageLocalPath = checkImageExistence(imagePath: posterPath) {
+        if let imageLocalPath = Utilities().checkImageExistence(imagePath: posterPath) {
             let data = FileManager.default.contents(atPath: imageLocalPath)
             let image = UIImage(data: data!)
             completion(true, image)
@@ -144,7 +143,7 @@ class MovieServices {
                 var image: UIImage? = nil
                 do {
                     let data = try Data(contentsOf: URL(string: url)!)
-                    let escapedImageFullPath = "\(self.getDocumentDirectory()!)/\(posterPath)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+                    let escapedImageFullPath = "\(Utilities().getDocumentDirectory()!)/\(posterPath)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
                     
                     FileManager.default.createFile(atPath: escapedImageFullPath, contents: data, attributes: nil)
                     
@@ -161,21 +160,5 @@ class MovieServices {
                 completion(false, image)
             }
         }
-    }
-    
-    private func checkImageExistence(imagePath: String) -> String? {
-        if let docPath = getDocumentDirectory() {
-            let imageFullPath = "\(docPath)/\(imagePath)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-            
-            if FileManager.default.fileExists(atPath: imageFullPath!) {
-                return imageFullPath
-            }
-        }
-        
-        return nil
-    }
-    
-    private func getDocumentDirectory() -> String? {
-        return NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first
     }
 }
