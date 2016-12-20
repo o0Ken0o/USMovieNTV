@@ -18,6 +18,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     var sideMenu: SideMenu!
     
     var selectedMovie: Movie?
+    var selectedTV: TV?
     
     var indicator: UIActivityIndicatorView!
     var overlayView: UIView!
@@ -268,6 +269,9 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         if isMovie {
             selectedMovie = movies[indexPath.row]
             performSegue(withIdentifier: "MovieDetailsViewController", sender: nil)
+        } else {
+            selectedTV = tvs[indexPath.row]
+            performSegue(withIdentifier: "TVShowDetailsViewController", sender: nil)
         }
     }
     
@@ -275,6 +279,9 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         if segue.identifier == "MovieDetailsViewController" {
             let movieDetailsVC = segue.destination as! MovieDetailsViewController
             movieDetailsVC.movie = selectedMovie!
+        } else if segue.identifier == "TVShowDetailsViewController" {
+            let tvDetailsVC = segue.destination as! TVShowDetailsViewController
+            tvDetailsVC.tv = selectedTV
         }
     }
     
