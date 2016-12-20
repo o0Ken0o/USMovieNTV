@@ -20,6 +20,8 @@ struct TV {
     var episodeRunTime: [Int]?
     var overview: String?
     var posterPath: String?
+    var firstAirDate: Date?
+    var popularity: Float?
     
     init?(tvJSON: JSON) {
         if let id = tvJSON["id"].int {
@@ -83,6 +85,16 @@ struct TV {
         
         if let posterPath = tvJSON["poster_path"].string {
             self.posterPath = posterPath
+        }
+        
+        if let firstAirDate = tvJSON["first_air_date"].string {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-mm-dd"
+            self.firstAirDate = dateFormatter.date(from: firstAirDate)
+        }
+        
+        if let popularity = tvJSON["popularity"].float {
+            self.popularity = popularity
         }
     }
 }

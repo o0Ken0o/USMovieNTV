@@ -10,15 +10,19 @@ import UIKit
 
 class MoviesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, SideMenuDelegate {
     @IBOutlet weak var moviesCollectionView: UICollectionView!
+    
+    var isMovie = true
+    
     var movies = [Movie]()
+    var tvs = [TV]()
     var sideMenu: SideMenu!
     
     var selectedMovie: Movie?
     
     var indicator: UIActivityIndicatorView!
     var overlayView: UIView!
-    var sideMenuItems = [["Now Playing", "Popular", "Top Rated", "Upcoming"]]
-    var sideMenuHeaders = ["Movies"]
+    var sideMenuItems = [["Now Playing", "Popular", "Top Rated", "Upcoming"],["Airing Today"]]
+    var sideMenuHeaders = ["Movies", "TV Shows"]
     
     let Cell_Identifier = "Cell"
 
@@ -162,6 +166,27 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         }
     }
     
+    func loadAirPlayingTVShows(menuIndex: Int) {
+        moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
+        
+        addOverlay()
+        
+        self.title = sideMenuItems[1][menuIndex]
+        
+        DataServices.shared.getAiringToday { (success, tvs) in
+            if success {
+                if let tvs = tvs {
+                    self.tvs = tvs
+                    self.moviesCollectionView.reloadData()
+                }
+            } else {
+                print("error")
+            }
+            
+            self.removeOverlay()
+        }
+    }
+    
     
     
     // MARK: UICollectionViewDataSource
@@ -170,41 +195,80 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return movies.count
+        return isMovie ? movies.count : tvs.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let movie = movies[indexPath.row]
         
         let cell = moviesCollectionView.dequeueReusableCell(withReuseIdentifier: Cell_Identifier, for: indexPath) as! MovieCollectionViewCell
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-mm-dd"
-        cell.releaseDateLabel.text = dateFormatter.string(from: movie.releaseDate!)
-        
-        let popularity = String(format: "%.1f", movie.popularity)
-        cell.popularityLabel.text = "☆ \(popularity)"
-        
-        cell.posterImageView.image = UIImage(named: "movieNTV")
-        cell.posterImageView.backgroundColor = UIColor.darkGray
-        
-        if let posterPath = movie.posterPath {
-            DataServices.shared.getImage(posterPath: posterPath) { (success, image) in
-                if success {
-                    cell.posterImageView.image = image
-                }
-            }
-        } else {
+        if isMovie {
+            let movie = movies[indexPath.row]
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-mm-dd"
+            cell.releaseDateLabel.text = dateFormatter.string(from: movie.releaseDate!)
+            
+            let popularity = String(format: "%.1f", movie.popularity)
+            cell.popularityLabel.text = "☆ \(popularity)"
+            
             cell.posterImageView.image = UIImage(named: "movieNTV")
+            cell.posterImageView.backgroundColor = UIColor.darkGray
+            
+            if let posterPath = movie.posterPath {
+                DataServices.shared.getImage(posterPath: posterPath) { (success, image) in
+                    if success {
+                        cell.posterImageView.image = image
+                    }
+                }
+            } else {
+                cell.posterImageView.image = UIImage(named: "movieNTV")
+            }
+            
+            return cell
+        } else {
+            let tv = tvs[indexPath.row]
+            
+            if let firstAirDate = tv.firstAirDate {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-mm-dd"
+                cell.releaseDateLabel.text = dateFormatter.string(from: firstAirDate)
+                cell.releaseDateLabel.isHidden = false
+            } else {
+                cell.releaseDateLabel.isHidden = true
+            }
+            
+            if let popularity = tv.popularity {
+                let popularityStr = String(format: "%.1f", popularity)
+                cell.popularityLabel.text = "☆ \(popularityStr)"
+                cell.popularityLabel.isHidden = false
+            } else {
+                cell.popularityLabel.isHidden = true
+            }
+            
+            cell.posterImageView.image = UIImage(named: "movieNTV")
+            cell.posterImageView.backgroundColor = UIColor.darkGray
+            
+            if let posterPath = tv.posterPath {
+                DataServices.shared.getImage(posterPath: posterPath) { (success, image) in
+                    if success {
+                        cell.posterImageView.image = image
+                    }
+                }
+            } else {
+                cell.posterImageView.image = UIImage(named: "movieNTV")
+            }
+            
+            return cell
         }
-        
-        return cell
     }
     
     // MARK: UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        selectedMovie = movies[indexPath.row]
-        performSegue(withIdentifier: "MovieDetailsViewController", sender: nil)
+        if isMovie {
+            selectedMovie = movies[indexPath.row]
+            performSegue(withIdentifier: "MovieDetailsViewController", sender: nil)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -217,6 +281,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     // MARK: SideMenuDelegate
     func didSelectAnItem(view: SideMenu, item: String, section:Int, row: Int) {
         if section == 0 {
+            isMovie = true
             switch row {
             case 0:
                 loadNowPlayingMovies(menuIndex: 0)
@@ -229,7 +294,16 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
             default:
                 loadNowPlayingMovies(menuIndex: 0)
             }
+        } else {
+            isMovie = false
+            switch row {
+            case 0:
+                loadAirPlayingTVShows(menuIndex: 0)
+            default:
+                loadAirPlayingTVShows(menuIndex: 0)
+            }
         }
+        
         sideMenu.toggleMenu(open: false)
     }
 }
