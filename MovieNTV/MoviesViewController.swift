@@ -29,7 +29,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         moviesCollectionView.backgroundColor = UIColor.black
         
-        sideMenu = SideMenu(menuWidth: UIScreen.main.bounds.width / 2.5, parentVC: self.navigationController!, backgroundColor: UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.5), tableData: sideMenuItems)
+        sideMenu = SideMenu(menuWidth: UIScreen.main.bounds.width * 0.8, parentVC: self.navigationController!, backgroundColor: UIColor.init(red: 0, green: 0, blue: 0, alpha: 0.5), tableData: sideMenuItems)
         sideMenu.delegate = self
         
         overlayView = UIView(frame: self.view.bounds)
@@ -156,6 +156,9 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         let popularity = String(format: "%.1f", movie.popularity)
         cell.popularityLabel.text = "☆ \(popularity)"
+        
+        cell.posterImageView.image = UIImage(named: "movieNTV")
+        cell.posterImageView.backgroundColor = UIColor.darkGray
         
         if let posterPath = movie.posterPath {
             DataServices.shared.getImage(posterPath: posterPath) { (success, image) in
