@@ -22,6 +22,7 @@
 		1FFFA59A1E09293000789588 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFA5991E09293000789588 /* Utilities.swift */; };
 		1FFFA59C1E092BC400789588 /* TVServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFA59B1E092BC400789588 /* TVServices.swift */; };
 		1FFFA59E1E092DC400789588 /* TV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFA59D1E092DC400789588 /* TV.swift */; };
+		1FFFA5A01E095D7200789588 /* TVShowDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFA59F1E095D7200789588 /* TVShowDetailsViewController.swift */; };
 		E0CF35862422961CC674CD89 /* Pods_MovieNTV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39FFDB9ACE144D1091DEDAE1 /* Pods_MovieNTV.framework */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +44,7 @@
 		1FFFA5991E09293000789588 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		1FFFA59B1E092BC400789588 /* TVServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TVServices.swift; sourceTree = "<group>"; };
 		1FFFA59D1E092DC400789588 /* TV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TV.swift; sourceTree = "<group>"; };
+		1FFFA59F1E095D7200789588 /* TVShowDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TVShowDetailsViewController.swift; sourceTree = "<group>"; };
 		204A145B113C074D0D01FAF0 /* Pods-MovieNTV.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieNTV.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovieNTV/Pods-MovieNTV.debug.xcconfig"; sourceTree = "<group>"; };
 		39FFDB9ACE144D1091DEDAE1 /* Pods_MovieNTV.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieNTV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		637BF30B6EA4CA900D33450E /* Pods-MovieNTV.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieNTV.release.xcconfig"; path = "Pods/Target Support Files/Pods-MovieNTV/Pods-MovieNTV.release.xcconfig"; sourceTree = "<group>"; };
@@ -100,6 +102,7 @@
 				1F2A9D0D1E03D516005F3941 /* LatestMovieViewController.swift */,
 				1F0C285A1E067931004BBDB7 /* MoviesViewController.swift */,
 				1F0C28601E06C10F004BBDB7 /* MovieDetailsViewController.swift */,
+				1FFFA59F1E095D7200789588 /* TVShowDetailsViewController.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 				1F0C28611E06C10F004BBDB7 /* MovieDetailsViewController.swift in Sources */,
 				1F2A9D0E1E03D516005F3941 /* LatestMovieViewController.swift in Sources */,
 				1F0C285B1E067931004BBDB7 /* MoviesViewController.swift in Sources */,
+				1FFFA5A01E095D7200789588 /* TVShowDetailsViewController.swift in Sources */,
 				1F2A9D0C1E03D516005F3941 /* AppDelegate.swift in Sources */,
 				1F0C285F1E06955F004BBDB7 /* SideMenu.swift in Sources */,
 				1FFFA59E1E092DC400789588 /* TV.swift in Sources */,

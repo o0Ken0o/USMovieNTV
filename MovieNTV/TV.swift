@@ -22,6 +22,8 @@ struct TV {
     var posterPath: String?
     var firstAirDate: Date?
     var popularity: Float?
+    var voteAverage: Float?
+    var voteCount: Int?
     
     init?(tvJSON: JSON) {
         if let id = tvJSON["id"].int {
@@ -95,6 +97,14 @@ struct TV {
         
         if let popularity = tvJSON["popularity"].float {
             self.popularity = popularity
+        }
+        
+        if let voteAverage = tvJSON["vote_average"].float {
+            self.voteAverage = voteAverage
+        }
+        
+        if let voteCount = tvJSON["vote_count"].int {
+            self.voteCount = voteCount
         }
     }
 }

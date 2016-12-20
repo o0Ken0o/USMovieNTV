@@ -36,4 +36,19 @@ class TVServices {
             }
         })
     }
+    
+    // /tv/tvId
+    func getTVDetails(tvId: Int, with completion: @escaping (_ success: Bool, _ tv: TV?) -> ()) {
+        let url = "\(baseURL)/tv/\(tvId)?api_key=\(apiKey)"
+        
+        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
+            switch response.result {
+            case .success(let value):
+                let tv = TV(tvJSON: JSON(value))
+                completion(true, tv)
+            case .failure:
+                completion(false, nil)
+            }
+        })
+    }
 }
