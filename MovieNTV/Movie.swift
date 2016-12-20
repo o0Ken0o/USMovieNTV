@@ -12,9 +12,9 @@ import SwiftyJSON
 struct Movie {
     var adult: Bool = false
     var backdropPath: String?
-    var belongsToCollection: [JSON]?
+    var belongsToCollection: [String]?
     var budget: Int = 0
-    var genres: [JSON]?
+    var genres: [String]?
     var homepage: String?
     var id: Int = -1
     var imdbId: String?
@@ -23,12 +23,12 @@ struct Movie {
     var overview: String?
     var popularity: Float
     var posterPath: String?
-    var productionCompanies: [JSON]?
-    var productionCountries: [JSON]?
+    var productionCompanies: [String]?
+    var productionCountries: [String]?
     var releaseDate: Date?
     var revenueUSD: Int
     var runTimeMins: Int?
-    var spokenLanguages: [JSON]?
+    var spokenLanguages: [String]?
     var status: String
     var tagLine: String?
     var title: String
@@ -56,7 +56,14 @@ struct Movie {
         }
         
         if let belongs_to_collection = movieJSON["belongs_to_collection"].array {
-            self.belongsToCollection = belongs_to_collection
+            if belongs_to_collection.count > 0 {
+                self.belongsToCollection = [String]()
+                for belong in belongs_to_collection {
+                    if let belongStr = belong["name"].string {
+                        self.belongsToCollection?.append(belongStr)
+                    }
+                }
+            }
         } else {
             self.belongsToCollection = nil
         }
@@ -68,7 +75,15 @@ struct Movie {
         }
         
         if let genres = movieJSON["genres"].array {
-            self.genres = genres
+            if genres.count > 0 {
+                self.genres = [String]()
+                for genre in genres {
+                    if let genreStr = genre["name"].string {
+                        self.genres?.append(genreStr)
+                    }
+                }
+            }
+
         } else {
             self.genres = nil
         }
@@ -116,13 +131,27 @@ struct Movie {
         }
         
         if let production_companies = movieJSON["production_companies"].array {
-            self.productionCompanies = production_companies
+            if production_companies.count > 0 {
+                self.productionCompanies = [String]()
+                for company in production_companies {
+                    if let companyStr = company["name"].string {
+                        self.productionCompanies?.append(companyStr)
+                    }
+                }
+            }
         } else {
             self.productionCompanies = nil
         }
         
         if let production_countries = movieJSON["production_countries"].array {
-            self.productionCountries = production_countries
+            if production_countries.count > 0 {
+                self.productionCountries = [String]()
+                for country in production_countries {
+                    if let countryStr = country["name"].string {
+                        self.productionCountries?.append(countryStr)
+                    }
+                }
+            }
         } else {
             self.productionCountries = nil
         }
@@ -148,7 +177,14 @@ struct Movie {
         }
         
         if let spoken_languages = movieJSON["spoken_languages"].array {
-            self.spokenLanguages = spoken_languages
+            if spoken_languages.count > 0 {
+                self.spokenLanguages = [String]()
+                for language in spoken_languages {
+                    if let languageStr = language["name"].string {
+                        self.spokenLanguages?.append(languageStr)
+                    }
+                }
+            }
         } else {
             self.spokenLanguages = nil
         }
@@ -191,7 +227,7 @@ struct Movie {
 
     }
     
-    init(adult: Bool, backdropPath: String?, budget: Int, genres: [JSON]?, homepage: String?, id: Int, imdbId: String?, originalLanguage: String, originalTitle: String, overview: String?, popularity: Float, posterPath: String?, productionCompanies: [JSON]?, productionCountries: [JSON]?, releaseDate: Date?, revenueUSD: Int, runTimeMins: Int?, spokenLanguages: [JSON]?, status: String, tagLine: String?, title: String, video: Bool, voteAverage: Float, voteCount: Int) {
+    init(adult: Bool, backdropPath: String?, budget: Int, genres: [String]?, homepage: String?, id: Int, imdbId: String?, originalLanguage: String, originalTitle: String, overview: String?, popularity: Float, posterPath: String?, productionCompanies: [String]?, productionCountries: [String]?, releaseDate: Date?, revenueUSD: Int, runTimeMins: Int?, spokenLanguages: [String]?, status: String, tagLine: String?, title: String, video: Bool, voteAverage: Float, voteCount: Int) {
         
         self.adult = adult
         self.backdropPath = backdropPath
