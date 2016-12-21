@@ -8,10 +8,11 @@
 
 import UIKit
 
-class MoviesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, SideMenuDelegate {
+class MoviesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, SideMenuDelegate, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var moviesCollectionView: UICollectionView!
     
     var isMovie = true
+    var isCollectionView = true
     
     var movies = [Movie]()
     var tvs = [TV]()
@@ -24,6 +25,8 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     var overlayView: UIView!
     let sideMenuItems = SideMenuItems.menuItems
     let sideMenuHeaders = SideMenuItems.headerItems
+    
+    var moviesTableView: UITableView!
     
     let Cell_Identifier = "Cell"
 
@@ -81,6 +84,29 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         collectionViewFlowLayout.minimumLineSpacing = cellSpace * 3
         collectionViewFlowLayout.minimumInteritemSpacing = cellSpace
         moviesCollectionView.collectionViewLayout = collectionViewFlowLayout
+        
+        var frame = self.view.frame
+        frame.origin.y += (self.navigationController?.navigationBar.bounds.height)!
+        frame.size.height -= (self.navigationController?.navigationBar.bounds.height)!
+        moviesTableView = UITableView(frame: frame)
+        moviesTableView.delegate = self
+        moviesTableView.dataSource = self
+        moviesTableView.backgroundColor = UIColor.black
+        moviesTableView.register(UINib.init(nibName: "MovieTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "MovieTableViewCell")
+    }
+    
+    @IBAction func tableOrCollectionView(_ sender: Any) {
+        print("tableOrCollectionView")
+        
+        if isCollectionView {
+            isCollectionView = false
+            self.moviesCollectionView.isHidden = true
+            self.view.addSubview(moviesTableView)
+        } else {
+            isCollectionView = true
+            self.moviesCollectionView.isHidden = false
+            self.moviesTableView.removeFromSuperview()
+        }
     }
     
     func loadNowPlayingMovies() {
@@ -330,6 +356,47 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
             let tvDetailsVC = segue.destination as! TVShowDetailsViewController
             tvDetailsVC.tv = selectedTV
         }
+    }
+    
+    // MARK: UITableViewDataSource
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return isMovie ? movies.count : tvs.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MovieTableViewCell", for: indexPath) as! MovieTableViewCell
+        
+        cell.posterImageView.image = UIImage(named: "movieNTV")
+        if isMovie {
+            let movie = movies[indexPath.row]
+            if let posterImagePath = movie.posterPath {
+                DataServices.shared.getImage(posterPath: posterImagePath, with: { (success, image) in
+                    if success, let image = image {
+                        cell.posterImageView.image = image
+                    }
+                })
+            }
+        } else {
+            let tv = tvs[indexPath.row]
+            if let posterImagePath = tv.posterPath {
+                DataServices.shared.getImage(posterPath: posterImagePath, with: { (success, image) in
+                    if success, let image = image {
+                        cell.posterImageView.image = image
+                    }
+                })
+            }
+        }
+        
+        return cell
+    }
+    
+    // MARK: UITableViewDelegate
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 170
     }
     
     // MARK: SideMenuDelegate
