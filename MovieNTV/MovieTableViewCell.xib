@@ -5,6 +5,8 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,19 +20,41 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="movieNTV" translatesAutoresizingMaskIntoConstraints="NO" id="zXR-1H-43s">
-                        <rect key="frame" x="20" y="20" width="329" height="132.5"/>
+                        <rect key="frame" x="20" y="20" width="74.5" height="132.5"/>
                         <color key="backgroundColor" red="0.84705882349999995" green="0.84705882349999995" blue="0.84705882349999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="zXR-1H-43s" secondAttribute="height" multiplier="9:16" id="U4q-b7-B3q"/>
+                        </constraints>
                     </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HE5-3v-EBv">
+                        <rect key="frame" x="124.5" y="46.5" width="216.5" height="20"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rwB-qP-s2z">
+                        <rect key="frame" x="124.5" y="106.5" width="216.5" height="20"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
+                    <constraint firstItem="HE5-3v-EBv" firstAttribute="leading" secondItem="zXR-1H-43s" secondAttribute="trailing" constant="30" id="2Sv-kK-pCA"/>
+                    <constraint firstItem="rwB-qP-s2z" firstAttribute="centerY" secondItem="zXR-1H-43s" secondAttribute="centerY" constant="30" id="4Oq-hg-aqB"/>
                     <constraint firstItem="zXR-1H-43s" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="8mh-0f-nCw"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="HE5-3v-EBv" secondAttribute="trailing" constant="20" id="Apf-E5-LQK"/>
                     <constraint firstAttribute="bottom" secondItem="zXR-1H-43s" secondAttribute="bottom" constant="20" id="Fcr-e5-TIQ"/>
-                    <constraint firstAttribute="trailing" secondItem="zXR-1H-43s" secondAttribute="trailing" constant="20" id="lpC-er-QSg"/>
+                    <constraint firstItem="rwB-qP-s2z" firstAttribute="leading" secondItem="HE5-3v-EBv" secondAttribute="leading" id="VWN-S3-AEm"/>
+                    <constraint firstItem="rwB-qP-s2z" firstAttribute="trailing" secondItem="HE5-3v-EBv" secondAttribute="trailing" id="mUH-Lq-2fu"/>
                     <constraint firstItem="zXR-1H-43s" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="p9y-IB-JH8"/>
+                    <constraint firstItem="HE5-3v-EBv" firstAttribute="centerY" secondItem="zXR-1H-43s" secondAttribute="centerY" constant="-30" id="qeu-ZM-6Ki"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="firstAirDateLabel" destination="HE5-3v-EBv" id="vmU-th-pdO"/>
+                <outlet property="popularityLabel" destination="rwB-qP-s2z" id="izY-Or-6EU"/>
                 <outlet property="posterImageView" destination="zXR-1H-43s" id="70m-Kw-xyr"/>
             </connections>
             <point key="canvasLocation" x="58.5" y="224.5"/>

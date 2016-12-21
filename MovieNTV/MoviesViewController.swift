@@ -11,6 +11,9 @@ import UIKit
 class MoviesViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, SideMenuDelegate, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var moviesCollectionView: UICollectionView!
     
+    @IBOutlet weak var collectionOrTableBarButton: UIBarButtonItem!
+    
+    
     var isMovie = true
     var isCollectionView = true
     
@@ -86,7 +89,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         moviesCollectionView.collectionViewLayout = collectionViewFlowLayout
         
         var frame = self.view.frame
-        frame.origin.y += (self.navigationController?.navigationBar.bounds.height)!
+        frame.origin = self.moviesCollectionView.frame.origin
         frame.size.height -= (self.navigationController?.navigationBar.bounds.height)!
         moviesTableView = UITableView(frame: frame)
         moviesTableView.delegate = self
@@ -96,22 +99,21 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     @IBAction func tableOrCollectionView(_ sender: Any) {
-        print("tableOrCollectionView")
         
         if isCollectionView {
             isCollectionView = false
             self.moviesCollectionView.isHidden = true
             self.view.addSubview(moviesTableView)
+            collectionOrTableBarButton.image = UIImage(named: "collectionView")
         } else {
             isCollectionView = true
             self.moviesCollectionView.isHidden = false
             self.moviesTableView.removeFromSuperview()
+            collectionOrTableBarButton.image = UIImage(named: "tableView")
         }
     }
     
     func loadNowPlayingMovies() {
-        moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
-        
         addOverlay()
         
         DataServices.shared.getNowPlaying { (success, movies) in
@@ -129,8 +131,6 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func loadPopularMovies() {
-        moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
-        
         addOverlay()
         
         DataServices.shared.getPopular { (success, movies) in
@@ -148,8 +148,6 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func loadTopRatedMovies() {
-        moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
-        
         addOverlay()
         
         DataServices.shared.getTopRated { (success, movies) in
@@ -167,8 +165,6 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func loadUpcomingMovies() {
-        moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
-        
         addOverlay()
         
         DataServices.shared.getUpcoming { (success, movies) in
@@ -186,8 +182,6 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func loadAirPlayingTVShows() {
-        moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
-        
         addOverlay()
         
         DataServices.shared.getAiringToday { (success, tvs) in
@@ -205,8 +199,6 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func loadTVOnTheAir() {
-        moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
-        
         addOverlay()
         
         DataServices.shared.getTVOnTheAir { (success, tvs) in
@@ -224,8 +216,6 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func loadTVPopular() {
-        moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
-        
         addOverlay()
         
         DataServices.shared.getTVPopular { (success, tvs) in
@@ -243,8 +233,6 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     }
     
     func loadTVTopRated() {
-        moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
-        
         addOverlay()
         
         DataServices.shared.getTVTopRated { (success, tvs) in
@@ -371,6 +359,9 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieTableViewCell", for: indexPath) as! MovieTableViewCell
         
         cell.posterImageView.image = UIImage(named: "movieNTV")
+        cell.firstAirDateLabel.text = "--"
+        cell.popularityLabel.text = "☆ --"
+        
         if isMovie {
             let movie = movies[indexPath.row]
             if let posterImagePath = movie.posterPath {
@@ -380,6 +371,16 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
                     }
                 })
             }
+            
+            if let releaseDate = movie.releaseDate {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-mm-dd"
+                cell.firstAirDateLabel.text = dateFormatter.string(from: releaseDate)
+            }
+            
+            
+            let popularityStr = String(format: "%.1f", movie.popularity)
+            cell.popularityLabel.text = "☆ \(popularityStr)"
         } else {
             let tv = tvs[indexPath.row]
             if let posterImagePath = tv.posterPath {
@@ -388,6 +389,17 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
                         cell.posterImageView.image = image
                     }
                 })
+            }
+            
+            if let firstAirDate = tv.firstAirDate {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-mm-dd"
+                cell.firstAirDateLabel.text = dateFormatter.string(from: firstAirDate)
+            }
+            
+            if let popularity = tv.popularity {
+                let popularityStr = String(format: "%.1f", popularity)
+                cell.popularityLabel.text = "☆ \(popularityStr)"
             }
         }
         
@@ -399,9 +411,27 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         return 170
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if isMovie {
+            selectedMovie = movies[indexPath.row]
+            performSegue(withIdentifier: "MovieDetailsViewController", sender: nil)
+        } else {
+            selectedTV = tvs[indexPath.row]
+            performSegue(withIdentifier: "TVShowDetailsViewController", sender: nil)
+        }
+        
+    }
+    
     // MARK: SideMenuDelegate
     func didSelectAnItem(view: SideMenu, item: String, section:Int, row: Int) {
+        
         self.title = sideMenuItems[section][row]
+        moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
+        moviesTableView.setContentOffset(CGPoint.zero, animated: true)
+        
         if section == 0 {
             isMovie = true
             switch row {
