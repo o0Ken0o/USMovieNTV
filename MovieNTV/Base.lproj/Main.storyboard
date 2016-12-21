@@ -101,6 +101,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="collectionOrTableBarButton" destination="fsc-6l-W9U" id="kD9-fk-hQL"/>
                         <outlet property="moviesCollectionView" destination="9Mb-WR-Ioc" id="aRP-zD-fBh"/>
                         <segue destination="1rY-ba-0GR" kind="show" identifier="MovieDetailsViewController" id="KcG-kM-PFc"/>
                         <segue destination="98b-tO-4Rl" kind="show" identifier="TVShowDetailsViewController" id="VYP-7d-78t"/>
