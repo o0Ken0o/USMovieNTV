@@ -94,6 +94,11 @@
                                 <action selector="menuTapped:" destination="J1B-Ec-VSQ" id="21y-ul-4uD"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="tableView" id="fsc-6l-W9U">
+                            <connections>
+                                <action selector="tableOrCollectionView:" destination="J1B-Ec-VSQ" id="caJ-9t-59j"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="moviesCollectionView" destination="9Mb-WR-Ioc" id="aRP-zD-fBh"/>
@@ -619,5 +624,6 @@
     <resources>
         <image name="menu_icon" width="30" height="30"/>
         <image name="movieNTV" width="1024" height="1024"/>
+        <image name="tableView" width="30" height="30"/>
     </resources>
 </document>
