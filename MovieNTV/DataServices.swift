@@ -54,6 +54,21 @@ class DataServices {
         tvServices.getAiringToday(with: completion)
     }
     
+    // /tv/on_the_air
+    func getTVOnTheAir(with completion: @escaping (_ success: Bool, _ tvs: [TV]?) -> ()) {
+        tvServices.getTVOnTheAir(with: completion)
+    }
+    
+    // /tv/popular
+    func getTVPopular(with completion: @escaping (_ success: Bool, _ tvs: [TV]?) -> ()) {
+        tvServices.getTVPopular(with: completion)
+    }
+    
+    // /tv/top_rated
+    func getTVTopRated(with completion: @escaping (_ success: Bool, _ tvs: [TV]?) -> ()) {
+        tvServices.getTVTopRated(with: completion)
+    }
+    
     func getTVDetails(tvId: Int, with completion: @escaping (_ success: Bool, _ tv: TV?) -> ()) {
         tvServices.getTVDetails(tvId: tvId, with: completion)
     }

@@ -114,6 +114,15 @@ class TVShowDetailsViewController: UIViewController {
             self.titleLabel.text = originalName
         }
         
+        if let genres = tvDetails?.genres {
+            if genres.count > 0 {
+                self.genresLabel.text = ""
+                for genre in genres {
+                    self.genresLabel.text?.append(genre)
+                }
+            }
+        }
+        
         if let language = tvDetails?.originalLanguage {
             self.languageLabel.text = language
         }

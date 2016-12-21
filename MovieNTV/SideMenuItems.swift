@@ -9,6 +9,6 @@
 import Foundation
 
 class SideMenuItems {
-    static let menuItems = [["Now Playing", "Popular", "Top Rated", "Upcoming"],["Airing Today"]]
+    static let menuItems = [["Now Playing", "Popular", "Top Rated", "Upcoming"],["Airing Today", "On The Air", "Popular", "Top Rated"]]
     static let headerItems = ["Movies", "TV Shows"]
 }

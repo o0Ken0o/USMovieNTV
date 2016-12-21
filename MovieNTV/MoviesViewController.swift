@@ -178,6 +178,63 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         }
     }
     
+    func loadTVOnTheAir() {
+        moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
+        
+        addOverlay()
+        
+        DataServices.shared.getTVOnTheAir { (success, tvs) in
+            if success {
+                if let tvs = tvs {
+                    self.tvs = tvs
+                    self.moviesCollectionView.reloadData()
+                }
+            } else {
+                print("error")
+            }
+            
+            self.removeOverlay()
+        }
+    }
+    
+    func loadTVPopular() {
+        moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
+        
+        addOverlay()
+        
+        DataServices.shared.getTVPopular { (success, tvs) in
+            if success {
+                if let tvs = tvs {
+                    self.tvs = tvs
+                    self.moviesCollectionView.reloadData()
+                }
+            } else {
+                print("error")
+            }
+            
+            self.removeOverlay()
+        }
+    }
+    
+    func loadTVTopRated() {
+        moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
+        
+        addOverlay()
+        
+        DataServices.shared.getTVTopRated { (success, tvs) in
+            if success {
+                if let tvs = tvs {
+                    self.tvs = tvs
+                    self.moviesCollectionView.reloadData()
+                }
+            } else {
+                print("error")
+            }
+            
+            self.removeOverlay()
+        }
+    }
+    
     
     
     // MARK: UICollectionViewDataSource
@@ -297,6 +354,12 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
             switch row {
             case 0:
                 loadAirPlayingTVShows()
+            case 1:
+                loadTVOnTheAir()
+            case 2:
+                loadTVPopular()
+            case 3:
+                loadTVTopRated()
             default:
                 loadAirPlayingTVShows()
             }
