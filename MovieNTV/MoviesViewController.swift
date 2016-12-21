@@ -22,8 +22,8 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     var indicator: UIActivityIndicatorView!
     var overlayView: UIView!
-    var sideMenuItems = [["Now Playing", "Popular", "Top Rated", "Upcoming"],["Airing Today"]]
-    var sideMenuHeaders = ["Movies", "TV Shows"]
+    let sideMenuItems = SideMenuItems.menuItems
+    let sideMenuHeaders = SideMenuItems.headerItems
     
     let Cell_Identifier = "Cell"
 
@@ -42,7 +42,7 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         
         setupView()
         
-        loadNowPlayingMovies(menuIndex: 0)
+        loadNowPlayingMovies()
     }
     
     func setupOverlayView() {
@@ -83,12 +83,10 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         moviesCollectionView.collectionViewLayout = collectionViewFlowLayout
     }
     
-    func loadNowPlayingMovies(menuIndex: Int) {
+    func loadNowPlayingMovies() {
         moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
         
         addOverlay()
-        
-        self.title = sideMenuItems[0][menuIndex]
         
         DataServices.shared.getNowPlaying { (success, movies) in
             if success {
@@ -104,12 +102,10 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         }
     }
     
-    func loadPopularMovies(menuIndex: Int) {
+    func loadPopularMovies() {
         moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
         
         addOverlay()
-        
-        self.title = sideMenuItems[0][menuIndex]
         
         DataServices.shared.getPopular { (success, movies) in
             if success {
@@ -125,12 +121,10 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         }
     }
     
-    func loadTopRatedMovies(menuIndex: Int) {
+    func loadTopRatedMovies() {
         moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
         
         addOverlay()
-        
-        self.title = sideMenuItems[0][menuIndex]
         
         DataServices.shared.getTopRated { (success, movies) in
             if success {
@@ -146,12 +140,10 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         }
     }
     
-    func loadUpcomingMovies(menuIndex: Int) {
+    func loadUpcomingMovies() {
         moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
         
         addOverlay()
-        
-        self.title = sideMenuItems[0][menuIndex]
         
         DataServices.shared.getUpcoming { (success, movies) in
             if success {
@@ -167,12 +159,10 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         }
     }
     
-    func loadAirPlayingTVShows(menuIndex: Int) {
+    func loadAirPlayingTVShows() {
         moviesCollectionView.setContentOffset(CGPoint.zero, animated: true)
         
         addOverlay()
-        
-        self.title = sideMenuItems[1][menuIndex]
         
         DataServices.shared.getAiringToday { (success, tvs) in
             if success {
@@ -287,27 +277,28 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     
     // MARK: SideMenuDelegate
     func didSelectAnItem(view: SideMenu, item: String, section:Int, row: Int) {
+        self.title = sideMenuItems[section][row]
         if section == 0 {
             isMovie = true
             switch row {
             case 0:
-                loadNowPlayingMovies(menuIndex: 0)
+                loadNowPlayingMovies()
             case 1:
-                loadPopularMovies(menuIndex: 1)
+                loadPopularMovies()
             case 2:
-                loadTopRatedMovies(menuIndex: 2)
+                loadTopRatedMovies()
             case 3:
-                loadUpcomingMovies(menuIndex: 3)
+                loadUpcomingMovies()
             default:
-                loadNowPlayingMovies(menuIndex: 0)
+                loadNowPlayingMovies()
             }
         } else {
             isMovie = false
             switch row {
             case 0:
-                loadAirPlayingTVShows(menuIndex: 0)
+                loadAirPlayingTVShows()
             default:
-                loadAirPlayingTVShows(menuIndex: 0)
+                loadAirPlayingTVShows()
             }
         }
         
