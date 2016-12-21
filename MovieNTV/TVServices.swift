@@ -51,4 +51,71 @@ class TVServices {
             }
         })
     }
+    
+    // /tv/on_the_air
+    func getTVOnTheAir(with completion: @escaping (_ success: Bool, _ tvs: [TV]?) -> ()) {
+        let url = "\(baseURL)/tv/on_the_air?api_key=\(apiKey)"
+        var tvShowsArray = [TV]()
+        
+        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
+            switch response.result {
+            case .success(let value):
+                if let tvsJSON = JSON(value)["results"].array {
+                    for tvJSON in tvsJSON {
+                        if let tv = TV(tvJSON: tvJSON) {
+                            tvShowsArray.append(tv)
+                        }
+                    }
+                }
+                completion(true, tvShowsArray)
+            case .failure:
+                completion(false, nil)
+            }
+        })
+    }
+    
+    // /tv/popular
+    func getTVPopular(with completion: @escaping (_ success: Bool, _ tvs: [TV]?) -> ()) {
+        let url = "\(baseURL)/tv/popular?api_key=\(apiKey)"
+        var tvShowsArray = [TV]()
+        
+        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
+            switch response.result {
+            case .success(let value):
+                if let tvsJSON = JSON(value)["results"].array {
+                    for tvJSON in tvsJSON {
+                        if let tv = TV(tvJSON: tvJSON) {
+                            tvShowsArray.append(tv)
+                        }
+                    }
+                }
+                completion(true, tvShowsArray)
+            case .failure:
+                completion(false, nil)
+            }
+        })
+    }
+    
+    // /tv/top_rated
+    func getTVTopRated(with completion: @escaping (_ success: Bool, _ tvs: [TV]?) -> ()) {
+        let url = "\(baseURL)/tv/top_rated?api_key=\(apiKey)"
+        var tvShowsArray = [TV]()
+        
+        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
+            switch response.result {
+            case .success(let value):
+                if let tvsJSON = JSON(value)["results"].array {
+                    for tvJSON in tvsJSON {
+                        if let tv = TV(tvJSON: tvJSON) {
+                            tvShowsArray.append(tv)
+                        }
+                    }
+                }
+                completion(true, tvShowsArray)
+            case .failure:
+                completion(false, nil)
+            }
+        })
+    }
+    
 }
