@@ -104,7 +104,7 @@
                             </barButtonItem>
                             <barButtonItem systemItem="search" id="cvw-3z-VC6">
                                 <connections>
-                                    <segue destination="m5Z-ht-Qcb" kind="presentation" id="6Ju-jj-wFE"/>
+                                    <segue destination="m5Z-ht-Qcb" kind="show" id="6Ju-jj-wFE"/>
                                 </connections>
                             </barButtonItem>
                         </rightBarButtonItems>
@@ -125,7 +125,7 @@
         <!--Search Result View Controller-->
         <scene sceneID="joR-1d-LZp">
             <objects>
-                <viewController id="m5Z-ht-Qcb" customClass="SearchResultViewController" customModule="MovieNTV" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="m5Z-ht-Qcb" customClass="SearchResultViewController" customModule="MovieNTV" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="WhX-xm-2kb"/>
                         <viewControllerLayoutGuide type="bottom" id="wge-Te-LhX"/>
@@ -134,42 +134,52 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" showsCancelButton="YES" showsScopeBar="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gyw-uf-Ysn">
-                                <rect key="frame" x="0.0" y="20" width="375" height="88"/>
-                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <scopeButtonTitles>
-                                    <string>Title</string>
-                                    <string>Title</string>
-                                </scopeButtonTitles>
-                            </searchBar>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="gVc-16-iKY">
+                                <rect key="frame" x="0.0" y="64" width="375" height="29"/>
+                                <segments>
+                                    <segment title="Movies"/>
+                                    <segment title="TV Shows"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentedValueChanged:" destination="m5Z-ht-Qcb" eventType="valueChanged" id="9ZZ-Ei-OTr"/>
+                                </connections>
+                            </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="l7E-Nn-dVE">
-                                <rect key="frame" x="0.0" y="108" width="375" height="559"/>
+                                <rect key="frame" x="0.0" y="94" width="375" height="529"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="wge-Te-LhX" firstAttribute="top" secondItem="l7E-Nn-dVE" secondAttribute="bottom" id="4jJ-9c-fPu"/>
-                            <constraint firstItem="l7E-Nn-dVE" firstAttribute="top" secondItem="Gyw-uf-Ysn" secondAttribute="bottom" id="8ha-Xl-EPu"/>
-                            <constraint firstItem="Gyw-uf-Ysn" firstAttribute="leading" secondItem="ui6-4A-Nws" secondAttribute="leading" id="Mmh-IP-jci"/>
-                            <constraint firstItem="Gyw-uf-Ysn" firstAttribute="top" secondItem="WhX-xm-2kb" secondAttribute="bottom" id="Rs0-N2-fb7"/>
-                            <constraint firstAttribute="trailing" secondItem="l7E-Nn-dVE" secondAttribute="trailing" id="lAb-eh-SaP"/>
-                            <constraint firstItem="l7E-Nn-dVE" firstAttribute="leading" secondItem="ui6-4A-Nws" secondAttribute="leading" id="ngt-U9-Bsa"/>
-                            <constraint firstAttribute="trailing" secondItem="Gyw-uf-Ysn" secondAttribute="trailing" id="xdo-ac-qfb"/>
+                            <constraint firstItem="l7E-Nn-dVE" firstAttribute="top" secondItem="gVc-16-iKY" secondAttribute="bottom" constant="2" id="2mz-VG-m8N"/>
+                            <constraint firstItem="gVc-16-iKY" firstAttribute="top" secondItem="WhX-xm-2kb" secondAttribute="bottom" id="7tu-ji-vlb"/>
+                            <constraint firstItem="gVc-16-iKY" firstAttribute="leading" secondItem="ui6-4A-Nws" secondAttribute="leading" id="aTD-i1-sYO"/>
+                            <constraint firstAttribute="trailing" secondItem="l7E-Nn-dVE" secondAttribute="trailing" id="hmU-FI-bFW"/>
+                            <constraint firstAttribute="trailing" secondItem="gVc-16-iKY" secondAttribute="trailing" id="iAm-n7-bPw"/>
+                            <constraint firstItem="l7E-Nn-dVE" firstAttribute="leading" secondItem="ui6-4A-Nws" secondAttribute="leading" id="rVI-Kz-m9B"/>
+                            <constraint firstItem="wge-Te-LhX" firstAttribute="top" secondItem="l7E-Nn-dVE" secondAttribute="bottom" id="zXo-sH-64x"/>
                         </constraints>
                     </view>
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="xL5-VP-FNL">
+                        <barButtonItem key="rightBarButtonItem" title="Close" id="hQj-JG-nJH">
+                            <connections>
+                                <action selector="closeTapped:" destination="m5Z-ht-Qcb" id="edR-nv-ZVY"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
-                        <outlet property="searchBar" destination="Gyw-uf-Ysn" id="wEm-SU-uhr"/>
+                        <outlet property="closeBarButton" destination="hQj-JG-nJH" id="N0R-jk-cMY"/>
                         <outlet property="searchResultTableView" destination="l7E-Nn-dVE" id="wcl-Bx-nig"/>
+                        <segue destination="98b-tO-4Rl" kind="show" identifier="TVShowDetailsViewController" id="8PY-vp-V0z"/>
+                        <segue destination="1rY-ba-0GR" kind="show" identifier="MovieDetailsViewController" id="4Fn-hB-7T5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5Wt-7I-VJI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2106" y="36"/>
+            <point key="canvasLocation" x="2276" y="36"/>
         </scene>
         <!--Show Details View Controller-->
         <scene sceneID="b7L-fe-wRa">
@@ -415,7 +425,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uUV-Zw-4UU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2125" y="974"/>
+            <point key="canvasLocation" x="2276" y="975"/>
         </scene>
         <!--Movie Details View Controller-->
         <scene sceneID="PXz-3g-g1l">
@@ -687,4 +697,8 @@
         <image name="movieNTV" width="1024" height="1024"/>
         <image name="tableView" width="30" height="30"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="4Fn-hB-7T5"/>
+        <segue reference="8PY-vp-V0z"/>
+    </inferredMetricsTieBreakers>
 </document>
