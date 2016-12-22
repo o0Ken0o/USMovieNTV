@@ -46,7 +46,6 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
         
         setupView(parentVC: parentVC)
         
-        
         let swipeOpenGest = UISwipeGestureRecognizer(target: self, action: #selector(SideMenu.handleGestures(recognizer:)))
         swipeOpenGest.direction = .right
         if let navVC = parentVC as? UINavigationController {
@@ -121,6 +120,7 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
         tableView.dataSource = self
         tableView.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")
         tableView.backgroundColor = bgColor
+        tableView.isScrollEnabled = false
         self.addSubview(tableView)
         
         let imageView = UIImageView(image: UIImage(named: "movieNTV"))
