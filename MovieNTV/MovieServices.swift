@@ -132,6 +132,37 @@ class MovieServices {
         })
     }
     
+    // /search/movie
+    func searchMovies(query: String, with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
+        
+        if query.characters.count == 0 {
+            return
+        }
+        
+        let queryEncode = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        
+        if let queryEncodeStr = queryEncode {
+            let url = "\(baseURL)/search/movie?api_key=\(apiKey)&query=\(queryEncodeStr)"
+            var moviesArray = [Movie]()
+                        
+            Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
+                switch response.result {
+                case .success(let value):
+                    if let moviesJSON = JSON(value)["results"].array {
+                        for movieJSON in moviesJSON {
+                            if let movie = Movie(movieJSON: movieJSON) {
+                                moviesArray.append(movie)
+                            }
+                        }
+                    }
+                    completion(true, moviesArray)
+                case .failure:
+                    completion(false, nil)
+                }
+            })
+        }
+    }
+    
     func getImage(posterPath: String, with completion: @escaping (_ success: Bool, _ image: UIImage?) -> ()) {
         if let imageLocalPath = Utilities().checkImageExistence(imagePath: posterPath) {
             let data = FileManager.default.contents(atPath: imageLocalPath)

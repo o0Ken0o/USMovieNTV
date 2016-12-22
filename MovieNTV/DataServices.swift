@@ -49,6 +49,11 @@ class DataServices {
         movieServices.getUpcoming(with: completion)
     }
     
+    // /search/movie
+    func searchMovies(query: String, with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
+        movieServices.searchMovies(query: query, with: completion)
+    }
+    
     // /tv/airing_today
     func getAiringToday(with completion: @escaping (_ success: Bool, _ tvs: [TV]?) -> ()){
         tvServices.getAiringToday(with: completion)
@@ -67,6 +72,11 @@ class DataServices {
     // /tv/top_rated
     func getTVTopRated(with completion: @escaping (_ success: Bool, _ tvs: [TV]?) -> ()) {
         tvServices.getTVTopRated(with: completion)
+    }
+    
+    // /search/tv
+    func searchTVShows(query: String, with completion: @escaping (_ success: Bool, _ movie: [TV]?) -> ()) {
+        tvServices.searchTVShows(query: query, with: completion)
     }
     
     func getTVDetails(tvId: Int, with completion: @escaping (_ success: Bool, _ tv: TV?) -> ()) {
