@@ -27,13 +27,20 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HE5-3v-EBv">
-                        <rect key="frame" x="124.5" y="46.5" width="216.5" height="20"/>
+                        <rect key="frame" x="124.5" y="106.5" width="216.5" height="20"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rwB-qP-s2z">
-                        <rect key="frame" x="124.5" y="106.5" width="216.5" height="20"/>
+                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.20000000000000001" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rwB-qP-s2z">
+                        <rect key="frame" x="20" y="132" width="74.5" height="20"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YEJ-Pz-yyN">
+                        <rect key="frame" x="124.5" y="46.5" width="216" height="20"/>
                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
@@ -42,20 +49,24 @@
                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 <constraints>
                     <constraint firstItem="HE5-3v-EBv" firstAttribute="leading" secondItem="zXR-1H-43s" secondAttribute="trailing" constant="30" id="2Sv-kK-pCA"/>
-                    <constraint firstItem="rwB-qP-s2z" firstAttribute="centerY" secondItem="zXR-1H-43s" secondAttribute="centerY" constant="30" id="4Oq-hg-aqB"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="YEJ-Pz-yyN" secondAttribute="trailing" constant="20" id="3mI-9e-72L"/>
                     <constraint firstItem="zXR-1H-43s" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="8mh-0f-nCw"/>
                     <constraint firstAttribute="trailingMargin" secondItem="HE5-3v-EBv" secondAttribute="trailing" constant="20" id="Apf-E5-LQK"/>
                     <constraint firstAttribute="bottom" secondItem="zXR-1H-43s" secondAttribute="bottom" constant="20" id="Fcr-e5-TIQ"/>
-                    <constraint firstItem="rwB-qP-s2z" firstAttribute="leading" secondItem="HE5-3v-EBv" secondAttribute="leading" id="VWN-S3-AEm"/>
-                    <constraint firstItem="rwB-qP-s2z" firstAttribute="trailing" secondItem="HE5-3v-EBv" secondAttribute="trailing" id="mUH-Lq-2fu"/>
+                    <constraint firstItem="rwB-qP-s2z" firstAttribute="bottom" secondItem="zXR-1H-43s" secondAttribute="bottom" id="QWR-z9-IZ7"/>
+                    <constraint firstItem="YEJ-Pz-yyN" firstAttribute="centerY" secondItem="zXR-1H-43s" secondAttribute="centerY" constant="-30" id="gqM-Px-Y5F"/>
                     <constraint firstItem="zXR-1H-43s" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="p9y-IB-JH8"/>
-                    <constraint firstItem="HE5-3v-EBv" firstAttribute="centerY" secondItem="zXR-1H-43s" secondAttribute="centerY" constant="-30" id="qeu-ZM-6Ki"/>
+                    <constraint firstItem="HE5-3v-EBv" firstAttribute="centerY" secondItem="zXR-1H-43s" secondAttribute="centerY" constant="30" id="qeu-ZM-6Ki"/>
+                    <constraint firstItem="rwB-qP-s2z" firstAttribute="trailing" secondItem="zXR-1H-43s" secondAttribute="trailing" id="vso-bQ-zEx"/>
+                    <constraint firstItem="rwB-qP-s2z" firstAttribute="leading" secondItem="zXR-1H-43s" secondAttribute="leading" id="xoQ-3V-SgH"/>
+                    <constraint firstItem="YEJ-Pz-yyN" firstAttribute="leading" secondItem="zXR-1H-43s" secondAttribute="trailing" constant="30" id="yRT-Ie-S6b"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="firstAirDateLabel" destination="HE5-3v-EBv" id="vmU-th-pdO"/>
                 <outlet property="popularityLabel" destination="rwB-qP-s2z" id="izY-Or-6EU"/>
                 <outlet property="posterImageView" destination="zXR-1H-43s" id="70m-Kw-xyr"/>
+                <outlet property="titleLabel" destination="YEJ-Pz-yyN" id="vhd-bQ-i4I"/>
             </connections>
             <point key="canvasLocation" x="58.5" y="224.5"/>
         </tableViewCell>

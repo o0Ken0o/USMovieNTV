@@ -52,6 +52,7 @@ class SearchResultViewController: UIViewController, UISearchBarDelegate, UITable
         cell.posterImageView.image = UIImage(named: "movieNTV")
         cell.firstAirDateLabel.text = "--"
         cell.popularityLabel.text = "☆ --"
+        cell.titleLabel.text = "title: --"
         
         if isMovie {
             let movie = resultMoviesArray[indexPath.row]
@@ -72,6 +73,8 @@ class SearchResultViewController: UIViewController, UISearchBarDelegate, UITable
             
             let popularityStr = String(format: "%.1f", movie.popularity)
             cell.popularityLabel.text = "☆ \(popularityStr)"
+            
+            cell.titleLabel.text = movie.originalTitle
         } else {
             let tv = resultTVsArray[indexPath.row]
             if let posterImagePath = tv.posterPath {
@@ -91,6 +94,10 @@ class SearchResultViewController: UIViewController, UISearchBarDelegate, UITable
             if let popularity = tv.popularity {
                 let popularityStr = String(format: "%.1f", popularity)
                 cell.popularityLabel.text = "☆ \(popularityStr)"
+            }
+            
+            if let titleStr = tv.originalName {
+                cell.titleLabel.text = titleStr
             }
         }
         
