@@ -36,6 +36,8 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UIApplication.shared.statusBarStyle = .lightContent
+        
         moviesCollectionView.dataSource = self
         moviesCollectionView.delegate = self
         

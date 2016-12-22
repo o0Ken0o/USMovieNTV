@@ -118,4 +118,34 @@ class TVServices {
         })
     }
     
+    // /search/tv
+    func searchTVShows(query: String, with completion: @escaping (_ success: Bool, _ movie: [TV]?) -> ()) {
+        if query.characters.count == 0 {
+            return
+        }
+        
+        let queryEncode = query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        
+        if let queryEncodeStr = queryEncode {
+            let url = "\(baseURL)/search/tv?api_key=\(apiKey)&query=\(queryEncodeStr)"
+            var tvsArray = [TV]()
+                        
+            Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
+                switch response.result {
+                case .success(let value):
+                    if let tvsJSON = JSON(value)["results"].array {
+                        for tvJSON in tvsJSON {
+                            if let tv = TV(tvJSON: tvJSON) {
+                                tvsArray.append(tv)
+                            }
+                        }
+                    }
+                    completion(true, tvsArray)
+                case .failure:
+                    completion(false, nil)
+                }
+            })
+        }
+    }
+    
 }

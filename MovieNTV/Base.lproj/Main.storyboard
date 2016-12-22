@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="T0N-n5-hmm">
-    <device id="retina4_0" orientation="portrait">
+    <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -19,11 +20,11 @@
                         <viewControllerLayoutGuide type="bottom" id="YBv-p7-26v"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="cQy-pr-oQf">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="9Mb-WR-Ioc">
-                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="559"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="KvO-xl-1z2">
                                     <size key="itemSize" width="93" height="117"/>
@@ -88,18 +89,28 @@
                             <constraint firstItem="9Mb-WR-Ioc" firstAttribute="top" secondItem="bki-Hc-EoD" secondAttribute="bottom" id="igP-or-k0M"/>
                         </constraints>
                     </view>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" title="Now Playing" id="v6J-TT-qp2">
                         <barButtonItem key="leftBarButtonItem" image="menu_icon" id="LjM-ER-xeI">
                             <connections>
                                 <action selector="menuTapped:" destination="J1B-Ec-VSQ" id="21y-ul-4uD"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="tableView" id="fsc-6l-W9U">
-                            <connections>
-                                <action selector="tableOrCollectionView:" destination="J1B-Ec-VSQ" id="caJ-9t-59j"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem image="tableView" id="fsc-6l-W9U">
+                                <connections>
+                                    <action selector="tableOrCollectionView:" destination="J1B-Ec-VSQ" id="caJ-9t-59j"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="search" id="cvw-3z-VC6">
+                                <connections>
+                                    <segue destination="m5Z-ht-Qcb" kind="presentation" id="6Ju-jj-wFE"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="collectionOrTableBarButton" destination="fsc-6l-W9U" id="kD9-fk-hQL"/>
                         <outlet property="moviesCollectionView" destination="9Mb-WR-Ioc" id="aRP-zD-fBh"/>
@@ -110,6 +121,55 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tGU-7Q-IJF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1244" y="35.532233883058474"/>
+        </scene>
+        <!--Search Result View Controller-->
+        <scene sceneID="joR-1d-LZp">
+            <objects>
+                <viewController id="m5Z-ht-Qcb" customClass="SearchResultViewController" customModule="MovieNTV" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="WhX-xm-2kb"/>
+                        <viewControllerLayoutGuide type="bottom" id="wge-Te-LhX"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ui6-4A-Nws">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" showsCancelButton="YES" showsScopeBar="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gyw-uf-Ysn">
+                                <rect key="frame" x="0.0" y="20" width="375" height="88"/>
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="barTintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <scopeButtonTitles>
+                                    <string>Title</string>
+                                    <string>Title</string>
+                                </scopeButtonTitles>
+                            </searchBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="l7E-Nn-dVE">
+                                <rect key="frame" x="0.0" y="108" width="375" height="559"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="wge-Te-LhX" firstAttribute="top" secondItem="l7E-Nn-dVE" secondAttribute="bottom" id="4jJ-9c-fPu"/>
+                            <constraint firstItem="l7E-Nn-dVE" firstAttribute="top" secondItem="Gyw-uf-Ysn" secondAttribute="bottom" id="8ha-Xl-EPu"/>
+                            <constraint firstItem="Gyw-uf-Ysn" firstAttribute="leading" secondItem="ui6-4A-Nws" secondAttribute="leading" id="Mmh-IP-jci"/>
+                            <constraint firstItem="Gyw-uf-Ysn" firstAttribute="top" secondItem="WhX-xm-2kb" secondAttribute="bottom" id="Rs0-N2-fb7"/>
+                            <constraint firstAttribute="trailing" secondItem="l7E-Nn-dVE" secondAttribute="trailing" id="lAb-eh-SaP"/>
+                            <constraint firstItem="l7E-Nn-dVE" firstAttribute="leading" secondItem="ui6-4A-Nws" secondAttribute="leading" id="ngt-U9-Bsa"/>
+                            <constraint firstAttribute="trailing" secondItem="Gyw-uf-Ysn" secondAttribute="trailing" id="xdo-ac-qfb"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <connections>
+                        <outlet property="searchBar" destination="Gyw-uf-Ysn" id="wEm-SU-uhr"/>
+                        <outlet property="searchResultTableView" destination="l7E-Nn-dVE" id="wcl-Bx-nig"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Wt-7I-VJI" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2106" y="36"/>
         </scene>
         <!--Show Details View Controller-->
         <scene sceneID="b7L-fe-wRa">
@@ -124,7 +184,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p09-yT-9MD">
-                                <rect key="frame" x="0.0" y="64" width="375" height="806"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="762"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e0l-3D-Eal">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="791"/>
@@ -370,7 +430,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" indicatorStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="AtK-bd-TMa">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="766"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="722"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t4j-8W-xZh">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="763.5"/>
@@ -603,7 +663,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="T0N-n5-hmm" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" barStyle="black" id="bbc-xp-R4J">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" barStyle="black" id="bbc-xp-R4J">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="tintColor" red="0.9047851562" green="0.9047851562" blue="0.9047851562" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
