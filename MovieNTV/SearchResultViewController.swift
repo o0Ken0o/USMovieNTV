@@ -9,9 +9,11 @@
 import UIKit
 
 class SearchResultViewController: UIViewController, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource {
-    @IBOutlet weak var searchBar: UISearchBar!
+    var searchBar: UISearchBar!
     
     @IBOutlet weak var searchResultTableView: UITableView!
+    
+    @IBOutlet weak var closeBarButton: UIBarButtonItem!
     
     var resultMoviesArray = [Movie]()
     var resultTVsArray = [TV]()
@@ -23,14 +25,20 @@ class SearchResultViewController: UIViewController, UISearchBarDelegate, UITable
     var indicator: UIActivityIndicatorView!
     var overlayView: UIView!
     
+    var selectedTV: TV?
+    var selectedMovie: Movie?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // added a key View controller-based status bar appearance in info.plist
         UIApplication.shared.statusBarStyle = .lightContent
         
+        self.navigationItem.hidesBackButton = true
+        self.searchBar = UISearchBar(frame: (self.navigationController?.navigationBar.frame)!)
+        self.navigationItem.titleView = self.searchBar
+        
         searchBar.delegate = self
-        searchBar.scopeButtonTitles = ["Movies", "TV Shows"]
         
         searchResultTableView.register(UINib.init(nibName: "MovieTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "MovieTableViewCell")
         searchResultTableView.delegate = self
@@ -109,6 +117,30 @@ class SearchResultViewController: UIViewController, UISearchBarDelegate, UITable
         return 170
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        if isMovie {
+            selectedMovie = resultMoviesArray[indexPath.row]
+            performSegue(withIdentifier: "MovieDetailsViewController", sender: nil)
+        } else {
+            selectedTV = resultTVsArray[indexPath.row]
+            performSegue(withIdentifier: "TVShowDetailsViewController", sender: nil)
+        }
+    }
+    
+    // MARK: customized methods
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "TVShowDetailsViewController" {
+            let tvShowDetailsVC = segue.destination as! TVShowDetailsViewController
+            tvShowDetailsVC.tv = selectedTV!
+        } else {
+            let movieDetailsVC = segue.destination as! MovieDetailsViewController
+            movieDetailsVC.movie = selectedMovie!
+        }
+    }
+    
     func addOverlay() {
         overlayView = UIView(frame: self.view.bounds)
         overlayView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
@@ -174,6 +206,18 @@ class SearchResultViewController: UIViewController, UISearchBarDelegate, UITable
         
     }
     
+    @IBAction func closeTapped(_ sender: Any) {
+        self.searchBar.resignFirstResponder()
+        self.view.endEditing(true)
+        _ = self.navigationController?.popViewController(animated: true)
+    }
+    
+    
+    @IBAction func segmentedValueChanged(_ sender: UISegmentedControl) {
+        isMovie = (sender.selectedSegmentIndex == 0)
+        searchMoviesOrTVs()
+    }
+    
     // MARK: UISearchBarDelegate
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
@@ -185,12 +229,7 @@ class SearchResultViewController: UIViewController, UISearchBarDelegate, UITable
         searchMoviesOrTVs()
     
     }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        self.view.endEditing(true)
-        dismiss(animated: true, completion: nil)
-    }
-    
+        
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         isMovie = (selectedScope == 0)
         searchMoviesOrTVs()
