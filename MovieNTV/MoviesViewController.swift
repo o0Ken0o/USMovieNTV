@@ -74,6 +74,12 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
         overlayView.removeFromSuperview()
     }
     
+    func reloadData() {
+        moviesCollectionView.reloadData()
+        moviesTableView.reloadData()
+
+    }
+    
     @IBAction func menuTapped(_ sender: Any) {
         sideMenu.toggleMenu(open: true)
     }
@@ -122,12 +128,12 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
             if success {
                 if let movies = movies {
                     self.movies = movies
-                    self.moviesCollectionView.reloadData()
                 }
             } else {
                 // error handling
                 print("error")
             }
+            self.reloadData()
             self.removeOverlay()
         }
     }
@@ -139,12 +145,12 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
             if success {
                 if let movies = movies {
                     self.movies = movies
-                    self.moviesCollectionView.reloadData()
                 }
             } else {
                 // error handling
                 print("error")
             }
+            self.reloadData()
             self.removeOverlay()
         }
     }
@@ -156,12 +162,12 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
             if success {
                 if let movies = movies {
                     self.movies = movies
-                    self.moviesCollectionView.reloadData()
                 }
             } else {
                 // error handling
                 print("error")
             }
+            self.reloadData()
             self.removeOverlay()
         }
     }
@@ -173,12 +179,12 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
             if success {
                 if let movies = movies {
                     self.movies = movies
-                    self.moviesCollectionView.reloadData()
                 }
             } else {
                 // error handling
                 print("error")
             }
+            self.reloadData()
             self.removeOverlay()
         }
     }
@@ -190,12 +196,11 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
             if success {
                 if let tvs = tvs {
                     self.tvs = tvs
-                    self.moviesCollectionView.reloadData()
                 }
             } else {
                 print("error")
             }
-            
+            self.reloadData()
             self.removeOverlay()
         }
     }
@@ -207,12 +212,11 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
             if success {
                 if let tvs = tvs {
                     self.tvs = tvs
-                    self.moviesCollectionView.reloadData()
                 }
             } else {
                 print("error")
             }
-            
+            self.reloadData()
             self.removeOverlay()
         }
     }
@@ -224,12 +228,11 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
             if success {
                 if let tvs = tvs {
                     self.tvs = tvs
-                    self.moviesCollectionView.reloadData()
                 }
             } else {
                 print("error")
             }
-            
+            self.reloadData()
             self.removeOverlay()
         }
     }
@@ -241,12 +244,11 @@ class MoviesViewController: UIViewController, UICollectionViewDataSource, UIColl
             if success {
                 if let tvs = tvs {
                     self.tvs = tvs
-                    self.moviesCollectionView.reloadData()
                 }
             } else {
                 print("error")
             }
-            
+            self.reloadData()
             self.removeOverlay()
         }
     }
