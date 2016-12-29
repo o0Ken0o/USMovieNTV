@@ -161,6 +161,16 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
                 self.backgroundView.removeFromSuperview()
             }
         }
+        
+        // in case another controller is shown modally in our navVC if there is one
+        if let navVC = parentViewController as? UINavigationController {
+            if open {
+                self.parentViewController.view.addGestureRecognizer(panGest)
+            } else {
+                self.parentViewController.view.removeGestureRecognizer(panGest)
+                navVC.viewControllers.first?.view.addGestureRecognizer(panGest)
+            }
+        }
     }
     
     func setupView(parentVC: UIViewController) {
@@ -231,6 +241,16 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
         headerText.textColor = UIColor.white
         headerText.font = UIFont(name: "Helvetica-Bold", size: 20)
         headerView.addSubview(headerText)
+        
+        // bottom border
+        let bottom_border = CALayer()
+        let bottom_thickness = CGFloat(4.0)
+        bottom_border.borderColor = UIColor.white.cgColor
+        bottom_border.frame = CGRect(x: 0, y: headerView.frame.size.height - bottom_thickness, width:  headerView.frame.size.width, height: headerView.frame.size.height)
+        bottom_border.borderWidth = bottom_thickness
+        headerView.layer.addSublayer(bottom_border)
+        
+        headerView.layer.masksToBounds = true
         
         return headerView
     }
