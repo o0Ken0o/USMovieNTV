@@ -22,6 +22,9 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
     var headerData = [String]()
     
     var delegate: SideMenuDelegate?
+    var lastPanPoint: CGPoint?
+    
+    var panGest: UIPanGestureRecognizer!
     
     var parentViewController: UIViewController!
     
@@ -30,7 +33,7 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     init(menuWidth: CGFloat, parentVC: UIViewController, backgroundColor: UIColor, tableData: [[String]], headerData: [String]) {
-        super.init(frame: CGRect(x: -menuWidth - 20, y: 0, width: menuWidth, height: parentVC.view.bounds.height))
+        super.init(frame: CGRect(x: -menuWidth, y: 0, width: menuWidth, height: parentVC.view.bounds.height))
         
         self.menuWidth = menuWidth
         self.parentViewController = parentVC
@@ -46,13 +49,20 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
         
         setupView(parentVC: parentVC)
         
-        let swipeOpenGest = UISwipeGestureRecognizer(target: self, action: #selector(SideMenu.handleGestures(recognizer:)))
-        swipeOpenGest.direction = .right
+        panGest = UIPanGestureRecognizer(target: self, action: #selector(SideMenu.handleGestures(recognizer:)))
+        panGest.minimumNumberOfTouches = 1
+        panGest.maximumNumberOfTouches = 2
+        
+//        parentVC.view.addGestureRecognizer(panGest)
+        
         if let navVC = parentVC as? UINavigationController {
-            navVC.viewControllers.first?.view.addGestureRecognizer(swipeOpenGest)
+            navVC.viewControllers.first?.view.addGestureRecognizer(panGest)
+        } else if let navVC = parentVC.navigationController {
+            navVC.viewControllers.first?.view.addGestureRecognizer(panGest)
         } else {
-            parentVC.view.addGestureRecognizer(swipeOpenGest)
+            parentVC.view.addGestureRecognizer(panGest)
         }
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -60,16 +70,71 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
     }
     
     func handleGestures(recognizer: UIGestureRecognizer) {
-        if let swipe = recognizer as? UISwipeGestureRecognizer {
-            if swipe.direction == .right {
-                toggleMenu(open: true)
+        if let _ = recognizer as? UITapGestureRecognizer {
+            toggleMenu(open: false)
+        }
+        
+        if let panRecognizer = recognizer as? UIPanGestureRecognizer {
+            let cgPoint = panRecognizer.translation(in: parentViewController.view)
+                slideMenu(cgPoint, panRecognizer)
+        }
+    }
+    
+    func slideMenu(_ cgPoint: CGPoint, _ pan: UIPanGestureRecognizer) {
+        UIView.animate(withDuration: 0.1, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
+            
+            var tempXVari: CGFloat = 0
+            if let lastPoint = self.lastPanPoint {
+                tempXVari = cgPoint.x - lastPoint.x
             } else {
-                toggleMenu(open: false)
+                tempXVari = cgPoint.x
+            }
+            
+            self.lastPanPoint = cgPoint
+            
+            let tempCenterX = self.center.x + tempXVari
+            if tempCenterX < (self.bounds.width / 2.0 * (-1)) {
+                self.center.x = -(self.bounds.width / 2.0)
+            } else if tempCenterX > self.bounds.width / 2.0 {
+                self.center.x = self.bounds.width / 2.0
+            } else {
+                self.center.x += tempXVari
+            }
+            
+            let xMovedPercent = (self.center.x + self.bounds.width / 2.0) / self.bounds.width
+            self.backgroundView.alpha = 0.8 * xMovedPercent
+            
+        }, completion: nil)
+        
+        if pan.state == .ended {
+            UIView.animate(withDuration: 0.5, delay: 0.1, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
+                
+                if self.center.x > 0 {
+                    self.center.x = self.bounds.width / 2.0
+                    self.backgroundView.alpha = 0.8
+                } else {
+                    self.center.x = -(self.bounds.width / 2.0)
+                    self.backgroundView.alpha = 0.0
+                    self.backgroundView.removeFromSuperview()
+                }
+                
+                self.lastPanPoint = nil
+                
+            }, completion: nil)
+            
+            // in case another controller is shown modally in our navVC if there is one
+            if let navVC = parentViewController as? UINavigationController {
+                if self.center.x > 0 {
+                    self.parentViewController.view.addGestureRecognizer(panGest)
+                } else {
+                    self.parentViewController.view.removeGestureRecognizer(panGest)
+                    navVC.viewControllers.first?.view.addGestureRecognizer(panGest)
+                }
             }
         }
         
-        if let _ = recognizer as? UITapGestureRecognizer {
-            toggleMenu(open: false)
+        if pan.state == .began {
+            parentViewController.view.insertSubview(backgroundView, belowSubview: self)
         }
     }
     
@@ -105,10 +170,6 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(SideMenu.handleGestures(recognizer:)))
         backgroundView.addGestureRecognizer(tap)
-        
-        let swipeCloseGest = UISwipeGestureRecognizer(target: self, action: #selector(SideMenu.handleGestures(recognizer:)))
-        swipeCloseGest.direction = .left
-        backgroundView.addGestureRecognizer(swipeCloseGest)
         
         parentVC.view.insertSubview(backgroundView, belowSubview: self)
         
