@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina5_5" orientation="portrait">
+    <device id="retina3_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -19,18 +19,18 @@
                         <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="movieNTV" translatesAutoresizingMaskIntoConstraints="NO" id="HTA-bn-U9c">
-                                <rect key="frame" x="70" y="191" width="274" height="274"/>
+                                <rect key="frame" x="66" y="106" width="188" height="188"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="HTA-bn-U9c" secondAttribute="height" multiplier="1:1" id="kvI-ZM-L97"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="USMovieNTV" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MxB-Ml-caA">
-                                <rect key="frame" x="114" y="475" width="187" height="35"/>
+                                <rect key="frame" x="66.5" y="304" width="187" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="SHN-wS-H2T"/>
                                     <constraint firstAttribute="width" constant="187" id="xkA-a3-5pK"/>
@@ -39,12 +39,30 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tmdb_logo" translatesAutoresizingMaskIntoConstraints="NO" id="8Aj-MG-xK8">
+                                <rect key="frame" x="16" y="377" width="60" height="83"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="83" id="ORe-gA-jPa"/>
+                                    <constraint firstAttribute="width" constant="60" id="zCz-Sz-LUQ"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This product uses the TMDb API but is not endorsed or certified by TMDb." textAlignment="natural" lineBreakMode="clip" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bVa-7B-CMd">
+                                <rect key="frame" x="96" y="395" width="204" height="49"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.18367187500000004" green="0.18367187500000004" blue="0.18367187500000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="HTA-bn-U9c" secondAttribute="trailing" constant="50" id="1nI-Fz-P4T"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="8Aj-MG-xK8" secondAttribute="bottom" constant="20" id="Cb6-U6-0yz"/>
+                            <constraint firstItem="bVa-7B-CMd" firstAttribute="centerY" secondItem="8Aj-MG-xK8" secondAttribute="centerY" id="Hnr-MJ-8La"/>
+                            <constraint firstItem="8Aj-MG-xK8" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" id="POt-Jc-1iM"/>
                             <constraint firstItem="MxB-Ml-caA" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="VYP-4u-d7G"/>
                             <constraint firstItem="HTA-bn-U9c" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" constant="-40" id="c4a-KY-dMn"/>
+                            <constraint firstItem="bVa-7B-CMd" firstAttribute="leading" secondItem="8Aj-MG-xK8" secondAttribute="trailing" constant="20" id="c97-ae-0uD"/>
+                            <constraint firstAttribute="trailing" secondItem="bVa-7B-CMd" secondAttribute="trailing" constant="20" id="czi-84-bZn"/>
                             <constraint firstItem="HTA-bn-U9c" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="50" id="jlT-a6-h5U"/>
                             <constraint firstItem="MxB-Ml-caA" firstAttribute="top" secondItem="HTA-bn-U9c" secondAttribute="bottom" constant="10" id="qmT-yY-VNo"/>
                         </constraints>
@@ -52,10 +70,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="52" y="374.66266866566718"/>
+            <point key="canvasLocation" x="50.724637681159422" y="374.18478260869568"/>
         </scene>
     </scenes>
     <resources>
         <image name="movieNTV" width="1024" height="1024"/>
+        <image name="tmdb_logo" width="156" height="138"/>
     </resources>
 </document>
