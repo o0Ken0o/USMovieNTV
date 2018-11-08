@@ -27,7 +27,7 @@
 		1FFFA59C1E092BC400789588 /* TVServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFA59B1E092BC400789588 /* TVServices.swift */; };
 		1FFFA59E1E092DC400789588 /* TV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFA59D1E092DC400789588 /* TV.swift */; };
 		1FFFA5A01E095D7200789588 /* TVShowDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FFFA59F1E095D7200789588 /* TVShowDetailsViewController.swift */; };
-		E0CF35862422961CC674CD89 /* Pods_MovieNTV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39FFDB9ACE144D1091DEDAE1 /* Pods_MovieNTV.framework */; };
+		5C3ECBF8FB1CB02D087D3ED3 /* Pods_MovieNTV.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A87AF6BE1B37E2F7EABA16FE /* Pods_MovieNTV.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,9 +53,9 @@
 		1FFFA59B1E092BC400789588 /* TVServices.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TVServices.swift; sourceTree = "<group>"; };
 		1FFFA59D1E092DC400789588 /* TV.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TV.swift; sourceTree = "<group>"; };
 		1FFFA59F1E095D7200789588 /* TVShowDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TVShowDetailsViewController.swift; sourceTree = "<group>"; };
-		204A145B113C074D0D01FAF0 /* Pods-MovieNTV.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieNTV.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovieNTV/Pods-MovieNTV.debug.xcconfig"; sourceTree = "<group>"; };
-		39FFDB9ACE144D1091DEDAE1 /* Pods_MovieNTV.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieNTV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		637BF30B6EA4CA900D33450E /* Pods-MovieNTV.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieNTV.release.xcconfig"; path = "Pods/Target Support Files/Pods-MovieNTV/Pods-MovieNTV.release.xcconfig"; sourceTree = "<group>"; };
+		A87AF6BE1B37E2F7EABA16FE /* Pods_MovieNTV.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MovieNTV.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E13669D57A814C369B6D4EC1 /* Pods-MovieNTV.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieNTV.release.xcconfig"; path = "Pods/Target Support Files/Pods-MovieNTV/Pods-MovieNTV.release.xcconfig"; sourceTree = "<group>"; };
+		F65B49DD9FDD83D8F3B559FA /* Pods-MovieNTV.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieNTV.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MovieNTV/Pods-MovieNTV.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E0CF35862422961CC674CD89 /* Pods_MovieNTV.framework in Frameworks */,
+				5C3ECBF8FB1CB02D087D3ED3 /* Pods_MovieNTV.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,8 +75,8 @@
 			children = (
 				1F2A9D0A1E03D516005F3941 /* MovieNTV */,
 				1F2A9D091E03D516005F3941 /* Products */,
-				D11E9999E1FC7D802497DD1A /* Pods */,
-				E995D115533B7E5732B68D84 /* Frameworks */,
+				79C6BED700E7AC34EB1EA92F /* Pods */,
+				3466156FE12F09DC90892197 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -148,21 +148,21 @@
 			name = Services;
 			sourceTree = "<group>";
 		};
-		D11E9999E1FC7D802497DD1A /* Pods */ = {
+		3466156FE12F09DC90892197 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				204A145B113C074D0D01FAF0 /* Pods-MovieNTV.debug.xcconfig */,
-				637BF30B6EA4CA900D33450E /* Pods-MovieNTV.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
-		E995D115533B7E5732B68D84 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				39FFDB9ACE144D1091DEDAE1 /* Pods_MovieNTV.framework */,
+				A87AF6BE1B37E2F7EABA16FE /* Pods_MovieNTV.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		79C6BED700E7AC34EB1EA92F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F65B49DD9FDD83D8F3B559FA /* Pods-MovieNTV.debug.xcconfig */,
+				E13669D57A814C369B6D4EC1 /* Pods-MovieNTV.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -172,12 +172,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1F2A9D1A1E03D516005F3941 /* Build configuration list for PBXNativeTarget "MovieNTV" */;
 			buildPhases = (
-				769E0D21E11441A68DD9ED84 /* [CP] Check Pods Manifest.lock */,
+				ED279653F2B9D52E93AB3BE3 /* [CP] Check Pods Manifest.lock */,
 				1F2A9D041E03D516005F3941 /* Sources */,
 				1F2A9D051E03D516005F3941 /* Frameworks */,
 				1F2A9D061E03D516005F3941 /* Resources */,
-				22FF7134243884B4155C9B40 /* [CP] Embed Pods Frameworks */,
-				EEEF051775D3C22E8CF479A9 /* [CP] Copy Pods Resources */,
+				DF3BC4C1D0DFDEFBDFEF9717 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -238,49 +237,56 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		22FF7134243884B4155C9B40 /* [CP] Embed Pods Frameworks */ = {
+		DF3BC4C1D0DFDEFBDFEF9717 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
+			inputFileListPaths = (
+			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-MovieNTV/Pods-MovieNTV-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MovieNTV/Pods-MovieNTV-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		769E0D21E11441A68DD9ED84 /* [CP] Check Pods Manifest.lock */ = {
+		ED279653F2B9D52E93AB3BE3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
+			inputFileListPaths = (
+			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MovieNTV-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		EEEF051775D3C22E8CF479A9 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-MovieNTV/Pods-MovieNTV-resources.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -426,7 +432,7 @@
 		};
 		1F2A9D1B1E03D516005F3941 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 204A145B113C074D0D01FAF0 /* Pods-MovieNTV.debug.xcconfig */;
+			baseConfigurationReference = F65B49DD9FDD83D8F3B559FA /* Pods-MovieNTV.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = J7X9SXGFF7;
@@ -442,7 +448,7 @@
 		};
 		1F2A9D1C1E03D516005F3941 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 637BF30B6EA4CA900D33450E /* Pods-MovieNTV.release.xcconfig */;
+			baseConfigurationReference = E13669D57A814C369B6D4EC1 /* Pods-MovieNTV.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = J7X9SXGFF7;
