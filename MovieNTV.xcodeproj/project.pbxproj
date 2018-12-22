@@ -91,15 +91,11 @@
 		1F2A9D0A1E03D516005F3941 /* MovieNTV */ = {
 			isa = PBXGroup;
 			children = (
+				3976E99B21CE7B6C00E8FE33 /* Main */,
 				1F2A9D221E03E368005F3941 /* Services */,
 				1F2A9D1F1E03DAEF005F3941 /* Model */,
 				1F2A9D1E1E03DADA005F3941 /* View */,
 				1F2A9D1D1E03DACC005F3941 /* Controller */,
-				1F2A9D0B1E03D516005F3941 /* AppDelegate.swift */,
-				1F2A9D0F1E03D516005F3941 /* Main.storyboard */,
-				1F2A9D141E03D516005F3941 /* LaunchScreen.storyboard */,
-				1F2A9D171E03D516005F3941 /* Info.plist */,
-				1F2A9D121E03D516005F3941 /* Assets.xcassets */,
 			);
 			path = MovieNTV;
 			sourceTree = "<group>";
@@ -154,6 +150,18 @@
 				A87AF6BE1B37E2F7EABA16FE /* Pods_MovieNTV.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3976E99B21CE7B6C00E8FE33 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				1F2A9D0B1E03D516005F3941 /* AppDelegate.swift */,
+				1F2A9D0F1E03D516005F3941 /* Main.storyboard */,
+				1F2A9D141E03D516005F3941 /* LaunchScreen.storyboard */,
+				1F2A9D171E03D516005F3941 /* Info.plist */,
+				1F2A9D121E03D516005F3941 /* Assets.xcassets */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 		79C6BED700E7AC34EB1EA92F /* Pods */ = {
