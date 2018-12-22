@@ -17,31 +17,3 @@ extension BaseCoordinator {
         fatalError()
     }
 }
-
-class AppCoordinator: BaseCoordinator {
-    private let window: UIWindow
-    private let rootVC: UITabBarController
-    private var moviesCoordinator: MoviesCoordinator!
-    private var tvsCoordinator: TVsCoordinator!
-    
-    init(window: UIWindow) {
-        self.window = window
-        self.rootVC = UITabBarController()
-    }
-    
-    func start() {
-        let firstVC = UINavigationController()
-        let secondVC = UINavigationController()
-        let controllers = [firstVC, secondVC]
-        
-        self.rootVC.viewControllers = controllers
-        self.window.rootViewController = rootVC
-        self.window.makeKeyAndVisible()
-        
-        self.moviesCoordinator = MoviesCoordinator(presenter: firstVC, tabBarTag: 0)
-        self.tvsCoordinator = TVsCoordinator(presenter: secondVC, tabBarTag: 1)
-        
-        self.moviesCoordinator.start()
-        self.tvsCoordinator.start()
-    }
-}
