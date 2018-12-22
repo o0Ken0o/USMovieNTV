@@ -144,7 +144,7 @@ class SearchResultViewController: UIViewController, UISearchBarDelegate, UITable
     func addOverlay() {
         overlayView = UIView(frame: self.view.bounds)
         overlayView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.8)
-        indicator = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        indicator = UIActivityIndicatorView(style: .whiteLarge)
         indicator.center = self.overlayView.center
         indicator.startAnimating()
         overlayView.addSubview(indicator)

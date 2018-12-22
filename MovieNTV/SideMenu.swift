@@ -69,7 +69,7 @@ class SideMenu: UIView, UITableViewDataSource, UITableViewDelegate {
         super.init(coder: aDecoder)
     }
     
-    func handleGestures(recognizer: UIGestureRecognizer) {
+    @objc func handleGestures(recognizer: UIGestureRecognizer) {
         if let _ = recognizer as? UITapGestureRecognizer {
             toggleMenu(open: false)
         }
