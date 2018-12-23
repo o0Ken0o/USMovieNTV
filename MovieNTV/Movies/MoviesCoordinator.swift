@@ -21,7 +21,6 @@ class MoviesCoordinator: BaseCoordinator {
     func start() {
         self.moviesVC = MoviesVC()
         self.moviesVC.edgesForExtendedLayout = []
-        self.moviesVC.view.backgroundColor = .orange
         self.moviesVC.title = "Movies"
         self.moviesVC.tabBarItem = UITabBarItem(title: "Movies", image: UIImage(named: "movie_icon"), tag: tabBarTag)
         
