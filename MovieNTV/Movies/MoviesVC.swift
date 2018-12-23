@@ -25,28 +25,20 @@ class MoviesVC: UIViewController {
         return size
     }()
     
-    fileprivate let headers: [String] = {
-        return ["Now Playing", "Popular", "Top Related", "Upcoming"]
-    }()
-    
-    enum MovieType: Int {
-        case nowPlaying, popular, topRated, upComing
-    }
-    
     lazy var nowPlayingLabel: UILabel = {
-        return createAHeaderLabel(header: headers[0])
+        return createAHeaderLabel(header: MovieType.nowPlaying.header)
     }()
     
     lazy var popularLabel: UILabel = {
-        return createAHeaderLabel(header: headers[1])
+        return createAHeaderLabel(header: MovieType.popular.header)
     }()
     
     lazy var topRelatedLabel: UILabel = {
-        return createAHeaderLabel(header: headers[2])
+        return createAHeaderLabel(header: MovieType.topRated.header)
     }()
     
     lazy var upComingLabel: UILabel = {
-        return createAHeaderLabel(header: headers[3])
+        return createAHeaderLabel(header: MovieType.upComing.header)
     }()
     
     lazy var nowPlayingCollectionView: UICollectionView = {
