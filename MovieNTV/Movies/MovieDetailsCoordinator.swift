@@ -22,6 +22,8 @@ class MovieDetailsCoordinator: BaseCoordinator {
     
     func start() {
         self.movieDetailsVC = MovieDetailsVC()
+        self.movieDetailsVC.dataServices = dataServices
+        self.movieDetailsVC.displayWith(movie: movie)
         self.presenter.present(movieDetailsVC, animated: true)
     }
 }
