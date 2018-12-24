@@ -9,6 +9,10 @@
 import UIKit
 import SnapKit
 
+protocol MoviesVCDelegate: class {
+    func didSelect(movie: Movie)
+}
+
 class MoviesVC: UIViewController {
     // TODO: extract the following info into a viewModel
     fileprivate let itemSize: CGSize = {
@@ -65,6 +69,7 @@ class MoviesVC: UIViewController {
     }()
     
     var dataServices: DataServices!
+    weak var delegate: MoviesVCDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -243,5 +248,8 @@ extension MoviesVC: UICollectionViewDataSource {
 }
 
 extension MoviesVC: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let moviesCollectionView = collectionView as? MoviesCollectionView else { return }
+        self.delegate?.didSelect(movie: moviesCollectionView.movies[indexPath.row])
+    }
 }
