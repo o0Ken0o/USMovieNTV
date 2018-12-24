@@ -64,7 +64,6 @@ class MoviesVC: UIViewController {
     lazy var scrollView: UIScrollView = { [unowned self] in
         let scrollView = UIScrollView()
         scrollView.backgroundColor = UIColor(white: 1, alpha: 0.08)
-        scrollView.contentSize = self.view.frame.size
         return scrollView
     }()
     
@@ -204,6 +203,7 @@ class MoviesVC: UIViewController {
             make.top.equalTo(self.upComingLabel.snp_bottomMargin)
             make.left.right.equalTo(self.view)
             make.height.equalTo(itemSize.height)
+            make.bottom.equalTo(scrollView)
         }
     }
     
