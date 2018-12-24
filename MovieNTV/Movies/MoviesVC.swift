@@ -41,33 +41,30 @@ class MoviesVC: UIViewController {
         return createAHeaderLabel(header: MovieType.upComing.header)
     }()
     
-    lazy var nowPlayingCollectionView: UICollectionView = {
-        return self.createACollectionView(tag: MovieType.nowPlaying.rawValue)
+    lazy var nowPlayingCollectionView: MoviesCollectionView = {
+        return self.createACollectionView()
     }()
     
-    lazy var popularCollectionView: UICollectionView = {
-        return self.createACollectionView(tag: MovieType.popular.rawValue)
+    lazy var popularCollectionView: MoviesCollectionView = {
+        return self.createACollectionView()
     }()
     
-    lazy var topRelatedCollectionView: UICollectionView = {
-        return self.createACollectionView(tag: MovieType.topRated.rawValue)
+    lazy var topRelatedCollectionView: MoviesCollectionView = {
+        return self.createACollectionView()
     }()
     
-    lazy var upComingCollectionView: UICollectionView = {
-        return self.createACollectionView(tag: MovieType.upComing.rawValue)
+    lazy var upComingCollectionView: MoviesCollectionView = {
+        return self.createACollectionView()
     }()
     
     lazy var scrollView: UIScrollView = { [unowned self] in
         let scrollView = UIScrollView()
+        scrollView.backgroundColor = UIColor(white: 1, alpha: 0.08)
         scrollView.contentSize = self.view.frame.size
         return scrollView
     }()
     
     var dataServices: DataServices!
-    var nowPlayingMovies = [Movie]()
-    var popularMovies = [Movie]()
-    var topRatedMovies = [Movie]()
-    var upComingMovies = [Movie]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,7 +85,7 @@ class MoviesVC: UIViewController {
                 return
             }
             
-            self.nowPlayingMovies = movies
+            self.nowPlayingCollectionView.movies = movies
             self.nowPlayingCollectionView.reloadData()
         }
     }
@@ -99,7 +96,7 @@ class MoviesVC: UIViewController {
                 return
             }
             
-            self.popularMovies = movies
+            self.popularCollectionView.movies = movies
             self.popularCollectionView.reloadData()
         }
     }
@@ -110,7 +107,7 @@ class MoviesVC: UIViewController {
                 return
             }
             
-            self.topRatedMovies = movies
+            self.topRelatedCollectionView.movies = movies
             self.topRelatedCollectionView.reloadData()
         }
     }
@@ -121,7 +118,7 @@ class MoviesVC: UIViewController {
                 return
             }
             
-            self.upComingMovies = movies
+            self.upComingCollectionView.movies = movies
             self.upComingCollectionView.reloadData()
         }
     }
@@ -212,13 +209,12 @@ class MoviesVC: UIViewController {
         return label
     }
     
-    private func createACollectionView(tag: Int) -> UICollectionView {
+    private func createACollectionView() -> MoviesCollectionView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = itemSize
         
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.tag = tag
+        let collectionView = MoviesCollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(MovieCell.classForCoder(), forCellWithReuseIdentifier: MovieCell.identifier)
@@ -229,49 +225,18 @@ class MoviesVC: UIViewController {
 
 extension MoviesVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let movieType = MovieType(rawValue: collectionView.tag) else { return 0 }
-        
-        var count = 0
-        
-        switch movieType {
-        case .nowPlaying:
-            count = nowPlayingMovies.count
-            
-        case .popular:
-            count = popularMovies.count
-            
-        case .topRated:
-            count = topRatedMovies.count
-            
-        case .upComing:
-            count = upComingMovies.count
-        }
-        
-        return count
+        guard let moviesCollectionView = collectionView as? MoviesCollectionView else { return 0 }
+        return moviesCollectionView.movies.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.identifier, for: indexPath) as? MovieCell,
-            let movieType = MovieType(rawValue: collectionView.tag) else { return MovieCell() }
-        
-        var movies = [Movie]()
-        
-        switch movieType {
-        case .nowPlaying:
-            movies = nowPlayingMovies
-            
-        case .popular:
-            movies = popularMovies
-            
-        case .topRated:
-            movies = topRatedMovies
-            
-        case .upComing:
-            movies = upComingMovies
+        guard let moviesCollectionView = collectionView as? MoviesCollectionView,
+            let cell = moviesCollectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.identifier, for: indexPath) as? MovieCell else {
+            return MovieCell()
         }
         
         cell.cleanUp4Reuse()
-        cell.setupWith(movie: movies[indexPath.row])
+        cell.setupWith(movie: moviesCollectionView.movies[indexPath.row])
         
         return cell
     }

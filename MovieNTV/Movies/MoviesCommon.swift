@@ -24,3 +24,7 @@ enum MovieType: Int {
         }
     }
 }
+
+protocol WithMovies {
+    var movies: [Movie] { get set }
+}
