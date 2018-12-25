@@ -21,7 +21,6 @@ class TVsCoordinator: BaseCoordinator {
     func start() {
         self.tvsVC = TVsVC()
         self.tvsVC.edgesForExtendedLayout = []
-        self.tvsVC.view.backgroundColor = .cyan
         self.tvsVC.title = "TVs"
         self.tvsVC.tabBarItem = UITabBarItem(title: "TVs", image: UIImage(named: "tv_icon"), tag: tabBarTag)
         
