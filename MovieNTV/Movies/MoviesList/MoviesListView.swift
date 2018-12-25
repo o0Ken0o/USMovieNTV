@@ -1,134 +1,106 @@
 //
-//  MoviesVC.swift
+//  MoviesListView.swift
 //  MovieNTV
 //
-//  Created by Kam Hei Siu on 22/12/2018.
+//  Created by Kam Hei Siu on 25/12/2018.
 //  Copyright © 2018 Ken Siu. All rights reserved.
 //
 
 import UIKit
-import SnapKit
 
-protocol MoviesVCDelegate: class {
+protocol MoviesListViewDelegate: class {
     func didSelect(movie: Movie)
 }
 
-class MoviesVC: UIViewController {
+class MoviesListView: UIView {
+    weak var delegate: MoviesListViewDelegate?
+    
     // TODO: extract the following info into a viewModel
-    fileprivate let itemSize: CGSize = {
+    private let itemSize: CGSize = {
         let width = UIScreen.main.bounds.size.width / 3
         let height = width * 1.3
         let size = CGSize(width: width, height: height)
         return size
     }()
     
-    fileprivate let headerSize: CGSize = {
+    private let headerSize: CGSize = {
         let width = UIScreen.main.bounds.size.width / 3
         let height = CGFloat(60.0)
         let size = CGSize(width: width, height: height)
         return size
     }()
     
-    lazy var nowPlayingLabel: UILabel = {
+    private lazy var nowPlayingLabel: UILabel = {
         return createAHeaderLabel(header: MovieType.nowPlaying.header)
     }()
     
-    lazy var popularLabel: UILabel = {
+    private lazy var popularLabel: UILabel = {
         return createAHeaderLabel(header: MovieType.popular.header)
     }()
     
-    lazy var topRelatedLabel: UILabel = {
+    private lazy var topRelatedLabel: UILabel = {
         return createAHeaderLabel(header: MovieType.topRated.header)
     }()
     
-    lazy var upComingLabel: UILabel = {
+    private lazy var upComingLabel: UILabel = {
         return createAHeaderLabel(header: MovieType.upComing.header)
     }()
     
-    lazy var nowPlayingCollectionView: MoviesCollectionView = {
+    private lazy var nowPlayingCollectionView: MoviesCollectionView = {
         return self.createACollectionView()
     }()
     
-    lazy var popularCollectionView: MoviesCollectionView = {
+    private lazy var popularCollectionView: MoviesCollectionView = {
         return self.createACollectionView()
     }()
     
-    lazy var topRelatedCollectionView: MoviesCollectionView = {
+    private lazy var topRelatedCollectionView: MoviesCollectionView = {
         return self.createACollectionView()
     }()
     
-    lazy var upComingCollectionView: MoviesCollectionView = {
+    private lazy var upComingCollectionView: MoviesCollectionView = {
         return self.createACollectionView()
     }()
     
-    lazy var scrollView: UIScrollView = { [unowned self] in
+    private lazy var scrollView: UIScrollView = { [unowned self] in
         let scrollView = UIScrollView()
         scrollView.backgroundColor = UIColor(white: 1, alpha: 0.08)
         return scrollView
     }()
     
-    var dataServices: DataServices!
-    weak var delegate: MoviesVCDelegate?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
         addViews()
-        
         setupConstraints()
-        
-        loadNowPlayingMovies()
-        loadPopularMovies()
-        loadTopRatedMovies()
-        loadUpcomingMovies()
     }
     
-    private func loadNowPlayingMovies() {
-        dataServices.getNowPlaying { (success, movies) in
-            guard success, let movies = movies else {
-                return
-            }
-            
-            self.nowPlayingCollectionView.movies = movies
-            self.nowPlayingCollectionView.reloadData()
-        }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
-    private func loadPopularMovies() {
-        dataServices.getPopular { (success, movies) in
-            guard success, let movies = movies else {
-                return
-            }
-            
-            self.popularCollectionView.movies = movies
-            self.popularCollectionView.reloadData()
-        }
+    func showNowPlaying(movies: [Movie]) {
+        self.nowPlayingCollectionView.movies = movies
+        self.nowPlayingCollectionView.reloadData()
     }
     
-    private func loadTopRatedMovies() {
-        dataServices.getTopRated { (success, movies) in
-            guard success, let movies = movies else {
-                return
-            }
-            
-            self.topRelatedCollectionView.movies = movies
-            self.topRelatedCollectionView.reloadData()
-        }
+    func showPopular(movies: [Movie]) {
+        self.popularCollectionView.movies = movies
+        self.popularCollectionView.reloadData()
     }
     
-    private func loadUpcomingMovies() {
-        dataServices.getUpcoming { (success, movies) in
-            guard success, let movies = movies else {
-                return
-            }
-            
-            self.upComingCollectionView.movies = movies
-            self.upComingCollectionView.reloadData()
-        }
+    func showTopRated(movies: [Movie]) {
+        self.topRelatedCollectionView.movies = movies
+        self.topRelatedCollectionView.reloadData()
+    }
+    
+    func showUpcoming(movies: [Movie]) {
+        self.upComingCollectionView.movies = movies
+        self.upComingCollectionView.reloadData()
     }
     
     private func addViews() {
-        self.view.addSubview(self.scrollView)
+        self.addSubview(self.scrollView)
         
         self.scrollView.addSubview(self.nowPlayingLabel)
         self.scrollView.addSubview(self.popularLabel)
@@ -149,15 +121,15 @@ class MoviesVC: UIViewController {
     
     private func setupScrollViewConstraints() {
         self.scrollView.snp.makeConstraints { (make) in
-            make.top.bottom.left.right.equalTo(self.view)
+            make.top.bottom.left.right.equalTo(self)
         }
     }
     
     private func setupHeaderLabelsConstraints() {
         self.nowPlayingLabel.snp.makeConstraints { (make) in
             make.top.equalTo(self.scrollView)
-            make.left.equalTo(self.view).offset(10)
-            make.right.equalTo(self.view)
+            make.left.equalTo(self).offset(10)
+            make.right.equalTo(self)
             make.height.equalTo(headerSize.height)
         }
         
@@ -183,25 +155,25 @@ class MoviesVC: UIViewController {
     private func setupCollectionViewConstraints() {
         self.nowPlayingCollectionView.snp.makeConstraints { (make) in
             make.top.equalTo(self.nowPlayingLabel.snp_bottomMargin)
-            make.left.right.equalTo(self.view)
+            make.left.right.equalTo(self)
             make.height.equalTo(itemSize.height)
         }
         
         self.popularCollectionView.snp.makeConstraints { (make) in
             make.top.equalTo(self.popularLabel.snp_bottomMargin)
-            make.left.right.equalTo(self.view)
+            make.left.right.equalTo(self)
             make.height.equalTo(itemSize.height)
         }
         
         self.topRelatedCollectionView.snp.makeConstraints { (make) in
             make.top.equalTo(self.topRelatedLabel.snp_bottomMargin)
-            make.left.right.equalTo(self.view)
+            make.left.right.equalTo(self)
             make.height.equalTo(itemSize.height)
         }
         
         self.upComingCollectionView.snp.makeConstraints { (make) in
             make.top.equalTo(self.upComingLabel.snp_bottomMargin)
-            make.left.right.equalTo(self.view)
+            make.left.right.equalTo(self)
             make.height.equalTo(itemSize.height)
             make.bottom.equalTo(scrollView)
         }
@@ -228,7 +200,7 @@ class MoviesVC: UIViewController {
     }
 }
 
-extension MoviesVC: UICollectionViewDataSource {
+extension MoviesListView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let moviesCollectionView = collectionView as? MoviesCollectionView else { return 0 }
         return moviesCollectionView.movies.count
@@ -237,7 +209,7 @@ extension MoviesVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let moviesCollectionView = collectionView as? MoviesCollectionView,
             let cell = moviesCollectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.identifier, for: indexPath) as? MovieCell else {
-            return MovieCell()
+                return MovieCell()
         }
         
         cell.cleanUp4Reuse()
@@ -247,7 +219,7 @@ extension MoviesVC: UICollectionViewDataSource {
     }
 }
 
-extension MoviesVC: UICollectionViewDelegate {
+extension MoviesListView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let moviesCollectionView = collectionView as? MoviesCollectionView else { return }
         self.delegate?.didSelect(movie: moviesCollectionView.movies[indexPath.row])
