@@ -41,4 +41,10 @@ extension MoviesCoordinator: MoviesVCDelegate {
         self.movieDetailsCoordinator = MovieDetailsCoordinator(presenter: presenter, movie: movie)
         self.movieDetailsCoordinator?.start()
     }
+    
+    func viewIsLoaded() {
+        // just a workaround to make the selected index 0
+        self.presenter.tabBarController?.selectedIndex = 1
+        self.presenter.tabBarController?.selectedIndex = 0
+    }
 }

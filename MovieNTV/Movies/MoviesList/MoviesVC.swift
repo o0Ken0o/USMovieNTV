@@ -11,6 +11,7 @@ import SnapKit
 
 protocol MoviesVCDelegate: class {
     func didSelect(movie: Movie)
+    func viewIsLoaded()
 }
 
 class MoviesVC: UIViewController, HasCustomView {
@@ -28,6 +29,7 @@ class MoviesVC: UIViewController, HasCustomView {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.delegate?.viewIsLoaded()
         
         loadNowPlayingMovies()
         loadPopularMovies()
