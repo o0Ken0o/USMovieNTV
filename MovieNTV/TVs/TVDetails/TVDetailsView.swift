@@ -439,13 +439,10 @@ extension TVDetailsView {
             self.titleLabel.text = originalName
         }
         
-        if let genres = tv.genres {
-            if genres.count > 0 {
-                self.genresLabel.text = ""
-                for genre in genres {
-                    self.genresLabel.text?.append(genre)
-                }
-            }
+        if let genres = tv.genres, genres.count > 0 {
+            var genresStr = genres.reduce("") { genres, next in "\(genres), \(next)" }
+            genresStr = String(genresStr.dropFirst(2))
+            self.genresLabel.text = genresStr
         }
         
         if let language = tv.originalLanguage {
@@ -460,35 +457,20 @@ extension TVDetailsView {
             self.noOfEpisodesLabel.text = "\(noOfEpisodes)"
         }
         
-        if let runTimes = tv.episodeRunTime {
-            if runTimes.count > 0 {
-                self.runtimeLabel.text = ""
-                for (i,runtime) in runTimes.enumerated() {
-                    if i != runTimes.count - 1 {
-                        self.runtimeLabel.text?.append("\(runtime), ")
-                    } else {
-                        self.runtimeLabel.text?.append("\(runtime)")
-                    }
-                }
-            }
+        if let runTimes = tv.episodeRunTime, runTimes.count > 0 {
+            var runtimesStr = runTimes.reduce("") { runtimesStr, nextRuntime in "\(runtimesStr), \(nextRuntime)" }
+            runtimesStr = String(runtimesStr.dropFirst(2))
+            self.runtimeLabel.text = runtimesStr
         }
         
         if let overview = tv.overview {
             self.overviewLabel.text = overview
         }
         
-        if let createdBy = tv.createdBys {
-            if createdBy.count > 0 {
-                createdByLabel.text = ""
-                for (i, createdByStr) in createdBy.enumerated() {
-                    if i != createdBy.count - 1 {
-                        createdByLabel.text?.append("\(createdByStr), ")
-                    } else {
-                        createdByLabel.text?.append(createdByStr)
-                    }
-                    
-                }
-            }
+        if let createdBy = tv.createdBys, createdBy.count > 0 {
+            var createdByText = createdBy.reduce("") { createdByStr, nextCreatedBy in "\(createdByStr), \(nextCreatedBy)" }
+            createdByText = String(createdByText.dropFirst(2))
+            createdByLabel.text = createdByText
         }
     }
 }

@@ -420,82 +420,56 @@ extension MovieDetailsView {
     
     private func show(genres: [String]?) {
         if let genres = genres, genres.count > 0 {
-            var text = ""
-            for (i, genreStr) in genres.enumerated() {
-                if i != genres.count - 1 {
-                    text.append("\(genreStr), ")
-                } else {
-                    text.append(genreStr)
-                }
-            }
-            genresLabel.text = text
+            var genresStr = genres.reduce("") { genres, next in "\(genres), \(next)" }
+            genresStr = String(genresStr.dropFirst(2))
+            self.genresLabel.text = genresStr
         }
     }
     
     private func show(spokenLanguages: [String]?) {
-        if let languages = spokenLanguages, languages.count > 0 {
-            var text = ""
-            for (i, languageStr) in languages.enumerated() {
-                if i != languages.count - 1 {
-                    _ = text.append("\(languageStr), ")
-                } else {
-                    _ = text.append(languageStr)
-                }
-            }
-            languagesLabel.text = text
-        } else {
-            languagesLabel.text? = "--"
+        guard let languages = spokenLanguages, languages.count > 0  else {
+            languagesLabel.text = ""
+            return
         }
+        
+        var languagesStr = languages.reduce("") { languages, nextLanguage in "\(languages), \(nextLanguage)" }
+        languagesStr = String(languagesStr.dropFirst(2))
+        self.languagesLabel.text = languagesStr
     }
     
     private func show(productionCompanies: [String]?) {
-        if let companies = productionCompanies, companies.count > 0 {
-            var text = ""
-            for (i, companyStr) in companies.enumerated() {
-                if i != companies.count - 1 {
-                    _ = text.append("\(companyStr), ")
-                } else {
-                    _ = text.append(companyStr)
-                }
-            }
-            companiesLabel.text = text
-        } else {
-            companiesLabel.text? = "--"
+        guard let companies = productionCompanies, companies.count > 0 else {
+            companiesLabel.text = "--"
+            return
         }
+        
+        var companiesStr = companies.reduce("") { companiesStr, nextCompany in "\(companiesStr), \(nextCompany)" }
+        companiesStr = String(companiesStr.dropFirst(2))
+        companiesLabel.text = companiesStr
     }
     
     private func show(productionCountries: [String]?) {
-        if let countries = productionCountries, countries.count > 0 {
-            var text = ""
-            for (i, countryStr) in countries.enumerated() {
-                if i != countries.count - 1 {
-                    _ = text.append("\(countryStr), ")
-                } else {
-                    _ = text.append(countryStr)
-                }
-                
-            }
-            countriesLabel.text = text
-        } else {
+        guard let countries = productionCountries, countries.count > 0 else {
             countriesLabel.text = "--"
+            return
         }
+        
+        var countriesStr = countries.reduce("") { countriesStr, nextCountry in "\(countriesStr), \(nextCountry)" }
+        countriesStr = String(countriesStr.dropFirst(2))
+        countriesLabel.text = countriesStr
     }
     
     private func show(releaseDate: Date?) {
-        if let releaseDate = releaseDate {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-mm-dd"
-            releaseDateLabel.text = dateFormatter.string(from: releaseDate)
-        } else {
-            releaseDateLabel.text = "--"
-        }
+        releaseDateLabel.text = "--"
+        guard let releaseDate = releaseDate else { return }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-mm-dd"
+        releaseDateLabel.text = dateFormatter.string(from: releaseDate)
     }
     
     private func show(runTimeMins: Int?) {
-        if let runtime = runTimeMins {
-            runtimeLabel.text = "\(runtime)"
-        } else {
-            runtimeLabel.text = "--"
-        }
+        runtimeLabel.text = "--"
+        guard let runtime = runTimeMins else { return }
+        runtimeLabel.text = "\(runtime)"
     }
 }
