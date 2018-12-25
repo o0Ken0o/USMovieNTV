@@ -131,16 +131,16 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var companiesTextLabel: UILabel = {
+    private var createdByTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .lightGray
         label.textAlignment = .left
-        label.text = "Companies:"
+        label.text = "Created By:"
         return label
     }()
     
-    private var companiesLabel: UILabel = {
+    private var createdByLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .white
@@ -148,16 +148,16 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var countriesTextLabel: UILabel = {
+    private var noOfSeasonTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .lightGray
         label.textAlignment = .left
-        label.text = "Countries:"
+        label.text = "No Of Seasons:"
         return label
     }()
     
-    private var countriesLabel: UILabel = {
+    private var noOfSeasonLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
@@ -165,16 +165,16 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var releaseDateTextLabel: UILabel = {
+    private var noOfEpisodesTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .lightGray
         label.textAlignment = .left
-        label.text = "Release Date:"
+        label.text = "No of Episodes:"
         return label
     }()
     
-    private var releaseDateLabel: UILabel = {
+    private var noOfEpisodesLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
@@ -199,6 +199,23 @@ class TVDetailsView: UIView {
         return label
     }()
     
+    private var overviewTextLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
+        label.textColor = .lightGray
+        label.textAlignment = .left
+        label.text = "Overview:"
+        return label
+    }()
+    
+    private var overviewLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
+        label.textColor = .white
+        label.textAlignment = .left
+        return label
+    }()
+    
     private func addViews() {
         self.addSubview(scrollView)
         self.scrollView.addSubview(posterImageView)
@@ -211,14 +228,16 @@ class TVDetailsView: UIView {
         self.scrollView.addSubview(genresLabel)
         self.scrollView.addSubview(languagesTextLabel)
         self.scrollView.addSubview(languagesLabel)
-        self.scrollView.addSubview(companiesTextLabel)
-        self.scrollView.addSubview(companiesLabel)
-        self.scrollView.addSubview(countriesTextLabel)
-        self.scrollView.addSubview(countriesLabel)
-        self.scrollView.addSubview(releaseDateTextLabel)
-        self.scrollView.addSubview(releaseDateLabel)
+        self.scrollView.addSubview(createdByTextLabel)
+        self.scrollView.addSubview(createdByLabel)
+        self.scrollView.addSubview(noOfSeasonTextLabel)
+        self.scrollView.addSubview(noOfSeasonLabel)
+        self.scrollView.addSubview(noOfEpisodesTextLabel)
+        self.scrollView.addSubview(noOfEpisodesLabel)
         self.scrollView.addSubview(runtimeTextLabel)
         self.scrollView.addSubview(runtimeLabel)
+        self.scrollView.addSubview(overviewTextLabel)
+        self.scrollView.addSubview(overviewLabel)
         self.scrollView.addSubview(closeBtn)
     }
     
@@ -232,9 +251,10 @@ class TVDetailsView: UIView {
         setupGenresLabelConstraints()
         setupLanguagesLabelConstraints()
         setupCompaniesLabelConstraints()
-        setupCountriesLabelConstraints()
-        setupReleaseDateLabelConstraints()
+        setupnoOfSeasonLabelConstraints()
+        setupnoOfEpisodesLabelConstraints()
         setupRunTimeLabelConstraints()
+        setupOverviewLabelConstraints()
     }
     
     private func setupCloseBtnConstraints() {
@@ -325,39 +345,39 @@ class TVDetailsView: UIView {
     }
     
     private func setupCompaniesLabelConstraints() {
-        self.companiesTextLabel.snp.makeConstraints { (make) in
+        self.createdByTextLabel.snp.makeConstraints { (make) in
             make.top.equalTo(self.languagesTextLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
         }
         
-        self.companiesLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.companiesTextLabel)
+        self.createdByLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(self.createdByTextLabel)
             make.left.equalTo(self.titleLabel)
             make.right.equalTo(self.titleLabel)
         }
     }
     
-    private func setupCountriesLabelConstraints() {
-        self.countriesTextLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.companiesTextLabel.snp.bottom).offset(5)
+    private func setupnoOfSeasonLabelConstraints() {
+        self.noOfSeasonTextLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(self.createdByTextLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
         }
         
-        self.countriesLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.countriesTextLabel)
+        self.noOfSeasonLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(self.noOfSeasonTextLabel)
             make.left.equalTo(self.titleLabel)
             make.right.equalTo(self.titleLabel)
         }
     }
     
-    private func setupReleaseDateLabelConstraints() {
-        self.releaseDateTextLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.countriesTextLabel.snp.bottom).offset(5)
+    private func setupnoOfEpisodesLabelConstraints() {
+        self.noOfEpisodesTextLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(self.noOfSeasonTextLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
         }
         
-        self.releaseDateLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.releaseDateTextLabel)
+        self.noOfEpisodesLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(self.noOfEpisodesTextLabel)
             make.left.equalTo(self.titleLabel)
             make.right.equalTo(self.titleLabel)
         }
@@ -365,12 +385,25 @@ class TVDetailsView: UIView {
     
     private func setupRunTimeLabelConstraints() {
         self.runtimeTextLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.releaseDateTextLabel.snp.bottom).offset(5)
+            make.top.equalTo(self.noOfEpisodesTextLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
         }
         
         self.runtimeLabel.snp.makeConstraints { (make) in
             make.top.equalTo(self.runtimeTextLabel)
+            make.left.equalTo(self.titleLabel)
+            make.right.equalTo(self.titleLabel)
+        }
+    }
+    
+    private func setupOverviewLabelConstraints() {
+        self.overviewTextLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(self.runtimeTextLabel.snp.bottom).offset(5)
+            make.left.right.equalTo(self.titleTextLabel)
+        }
+        
+        self.overviewLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(self.overviewTextLabel)
             make.left.equalTo(self.titleLabel)
             make.right.equalTo(self.titleLabel)
             make.bottom.equalTo(self.scrollView.snp.bottom)
@@ -385,117 +418,5 @@ class TVDetailsView: UIView {
 extension TVDetailsView {
     func showPoster(image: UIImage?) {
         self.posterImageView.image = image
-    }
-    
-    func displayWith(movie: Movie) {
-        show(popularity: movie.popularity)
-        show(count: movie.voteCount)
-        show(voteAverage: movie.voteAverage)
-        show(title: movie.title)
-        show(genres: movie.genres)
-        show(spokenLanguages: movie.spokenLanguages)
-        show(productionCompanies: movie.productionCompanies)
-        show(productionCountries: movie.productionCountries)
-        show(releaseDate: movie.releaseDate)
-        show(runTimeMins: movie.runTimeMins)
-    }
-    
-    private func show(popularity: Float) {
-        let popularity = String(format: "%.1f", popularity)
-        popularityLabel.text = "☆ \(popularity)"
-    }
-    
-    private func show(count: Int) {
-        countLabel.text = "웃 \(count)"
-    }
-    
-    private func show(voteAverage: Float) {
-        let countAverageStr = String(format: "%.1f", voteAverage)
-        countAverageLabel.text = "♡ \(countAverageStr)"
-    }
-    
-    private func show(title: String) {
-        titleLabel.text = title
-    }
-    
-    private func show(genres: [String]?) {
-        if let genres = genres, genres.count > 0 {
-            var text = ""
-            for (i, genreStr) in genres.enumerated() {
-                if i != genres.count - 1 {
-                    text.append("\(genreStr), ")
-                } else {
-                    text.append(genreStr)
-                }
-            }
-            genresLabel.text = text
-        }
-    }
-    
-    private func show(spokenLanguages: [String]?) {
-        if let languages = spokenLanguages, languages.count > 0 {
-            var text = ""
-            for (i, languageStr) in languages.enumerated() {
-                if i != languages.count - 1 {
-                    _ = text.append("\(languageStr), ")
-                } else {
-                    _ = text.append(languageStr)
-                }
-            }
-            languagesLabel.text = text
-        } else {
-            languagesLabel.text? = "--"
-        }
-    }
-    
-    private func show(productionCompanies: [String]?) {
-        if let companies = productionCompanies, companies.count > 0 {
-            var text = ""
-            for (i, companyStr) in companies.enumerated() {
-                if i != companies.count - 1 {
-                    _ = text.append("\(companyStr), ")
-                } else {
-                    _ = text.append(companyStr)
-                }
-            }
-            companiesLabel.text = text
-        } else {
-            companiesLabel.text? = "--"
-        }
-    }
-    
-    private func show(productionCountries: [String]?) {
-        if let countries = productionCountries, countries.count > 0 {
-            var text = ""
-            for (i, countryStr) in countries.enumerated() {
-                if i != countries.count - 1 {
-                    _ = text.append("\(countryStr), ")
-                } else {
-                    _ = text.append(countryStr)
-                }
-                
-            }
-            countriesLabel.text = text
-        } else {
-            countriesLabel.text = "--"
-        }
-    }
-    
-    private func show(releaseDate: Date?) {
-        if let releaseDate = releaseDate {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-mm-dd"
-            releaseDateLabel.text = dateFormatter.string(from: releaseDate)
-        } else {
-            releaseDateLabel.text = "--"
-        }
-    }
-    
-    private func show(runTimeMins: Int?) {
-        if let runtime = runTimeMins {
-            runtimeLabel.text = "\(runtime)"
-        } else {
-            runtimeLabel.text = "--"
-        }
     }
 }
