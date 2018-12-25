@@ -9,7 +9,7 @@
 import UIKit
 
 protocol TVsListViewDelegate: class {
-    
+    func didSelect(tv: TV)
 }
 
 class TVsListView: UIView {
@@ -194,7 +194,7 @@ class TVsListView: UIView {
         let collectionView = TVsCollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(MovieCell.classForCoder(), forCellWithReuseIdentifier: MovieCell.identifier)
+        collectionView.register(TVCell.classForCoder(), forCellWithReuseIdentifier: TVCell.identifier)
         
         return collectionView
     }
@@ -202,18 +202,18 @@ class TVsListView: UIView {
 
 extension TVsListView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let moviesCollectionView = collectionView as? MoviesCollectionView else { return 0 }
-        return moviesCollectionView.movies.count
+        guard let tvsCollectionView = collectionView as? TVsCollectionView else { return 0 }
+        return tvsCollectionView.tvs.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let moviesCollectionView = collectionView as? MoviesCollectionView,
-            let cell = moviesCollectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.identifier, for: indexPath) as? MovieCell else {
-                return MovieCell()
+        guard let tvsCollectionView = collectionView as? TVsCollectionView,
+            let cell = tvsCollectionView.dequeueReusableCell(withReuseIdentifier: TVCell.identifier, for: indexPath) as? TVCell else {
+                return TVCell()
         }
         
         cell.cleanUp4Reuse()
-        cell.setupWith(movie: moviesCollectionView.movies[indexPath.row])
+        cell.setupWith(tv: tvsCollectionView.tvs[indexPath.row])
         
         return cell
     }
@@ -221,7 +221,7 @@ extension TVsListView: UICollectionViewDataSource {
 
 extension TVsListView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        guard let moviesCollectionView = collectionView as? MoviesCollectionView else { return }
-//        self.delegate?.didSelect(movie: moviesCollectionView.movies[indexPath.row])
+        guard let tvsCollectionView = collectionView as? TVsCollectionView else { return }
+        self.delegate?.didSelect(tv: tvsCollectionView.tvs[indexPath.row])
     }
 }
