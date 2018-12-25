@@ -64,6 +64,6 @@ class TVsVC: UIViewController, HasCustomView {
 
 extension TVsVC: TVsListViewDelegate {
     func didSelect(tv: TV) {
-        print(tv)
+        self.delegate?.didSelect(tv: tv)
     }
 }

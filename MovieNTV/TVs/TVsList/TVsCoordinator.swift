@@ -13,6 +13,7 @@ class TVsCoordinator: BaseCoordinator {
     private let tabBarTag: Int
     private var tvsVC: TVsVC!
     private let dataServices: DataServices = DataServices.shared
+    private var tvDetailsCoordinator: TVDetailsCoordinator!
     
     init(presenter: UINavigationController, tabBarTag:Int) {
         self.presenter = presenter
@@ -37,6 +38,7 @@ class TVsCoordinator: BaseCoordinator {
 
 extension TVsCoordinator: TVsVCDelegate {
     func didSelect(tv: TV) {
-        
+        tvDetailsCoordinator = TVDetailsCoordinator(presenter: presenter, tv: tv)
+        tvDetailsCoordinator.start()
     }
 }
