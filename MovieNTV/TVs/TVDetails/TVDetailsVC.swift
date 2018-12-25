@@ -29,6 +29,17 @@ class TVDetailsVC: UIViewController, HasCustomView {
         super.viewDidLoad()
         
         self.view.backgroundColor = .black
+                
+        dataServices.getTVDetails(tvId: tvId) { [unowned self] (success, tv) in
+            guard success, let tv = tv else { return }
+            self.customView.displayWith(tv: tv)
+            
+            guard let posterPath = tv.posterPath else { return }
+            self.dataServices.getImage(posterPath: posterPath, with: { [unowned self] (success, image) in
+                guard success else { return }
+                self.customView.showPoster(image: image)
+            })
+        }
     }
 }
 

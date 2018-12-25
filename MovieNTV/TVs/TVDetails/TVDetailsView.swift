@@ -419,4 +419,76 @@ extension TVDetailsView {
     func showPoster(image: UIImage?) {
         self.posterImageView.image = image
     }
+    
+    func displayWith(tv: TV) {
+        if let popularity = tv.popularity {
+            let popularityStr = String(format: "%.1f", popularity)
+            popularityLabel.text = "☆ \(popularityStr)"
+        }
+        
+        if let countAverage = tv.voteAverage {
+            let countAverageStr = String(format: "%.1f", countAverage)
+            countAverageLabel.text = "♡ \(countAverageStr)"
+        }
+        
+        if let count = tv.voteCount {
+            countLabel.text = "웃 \(count)"
+        }
+        
+        if let originalName = tv.originalName {
+            self.titleLabel.text = originalName
+        }
+        
+        if let genres = tv.genres {
+            if genres.count > 0 {
+                self.genresLabel.text = ""
+                for genre in genres {
+                    self.genresLabel.text?.append(genre)
+                }
+            }
+        }
+        
+        if let language = tv.originalLanguage {
+            self.languagesLabel.text = language
+        }
+        
+        if let noOfSeasons = tv.noOfSeasons {
+            self.noOfSeasonLabel.text = "\(noOfSeasons)"
+        }
+        
+        if let noOfEpisodes = tv.noOfEpisodes {
+            self.noOfEpisodesLabel.text = "\(noOfEpisodes)"
+        }
+        
+        if let runTimes = tv.episodeRunTime {
+            if runTimes.count > 0 {
+                self.runtimeLabel.text = ""
+                for (i,runtime) in runTimes.enumerated() {
+                    if i != runTimes.count - 1 {
+                        self.runtimeLabel.text?.append("\(runtime), ")
+                    } else {
+                        self.runtimeLabel.text?.append("\(runtime)")
+                    }
+                }
+            }
+        }
+        
+        if let overview = tv.overview {
+            self.overviewLabel.text = overview
+        }
+        
+        if let createdBy = tv.createdBys {
+            if createdBy.count > 0 {
+                createdByLabel.text = ""
+                for (i, createdByStr) in createdBy.enumerated() {
+                    if i != createdBy.count - 1 {
+                        createdByLabel.text?.append("\(createdByStr), ")
+                    } else {
+                        createdByLabel.text?.append(createdByStr)
+                    }
+                    
+                }
+            }
+        }
+    }
 }
