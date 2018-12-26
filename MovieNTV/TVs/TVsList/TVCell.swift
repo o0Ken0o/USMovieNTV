@@ -46,6 +46,7 @@ class TVCell: UICollectionViewCell {
         
         self.posterImageView = UIImageView()
         self.posterImageView.contentMode = .scaleAspectFill
+        self.posterImageView.clipsToBounds = true
         
         self.contentView.addSubview(posterImageView)
         self.contentView.addSubview(releaseDateLabel)

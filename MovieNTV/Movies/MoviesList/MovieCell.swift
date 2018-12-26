@@ -46,6 +46,7 @@ class MovieCell: UICollectionViewCell {
         
         self.posterImageView = UIImageView()
         self.posterImageView.contentMode = .scaleAspectFill
+        self.posterImageView.clipsToBounds = true
         
         self.contentView.addSubview(posterImageView)
         self.contentView.addSubview(releaseDateLabel)
@@ -70,7 +71,9 @@ class MovieCell: UICollectionViewCell {
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-mm-dd"
-        self.releaseDateLabel.text = dateFormatter.string(from: movie.releaseDate!)
+        if let relDate = movie.releaseDate {
+            self.releaseDateLabel.text = dateFormatter.string(from: relDate)
+        }
         
         if let posterPath = movie.posterPath {
             DataServices.shared.getImage(posterPath: posterPath) { (success, image) in
