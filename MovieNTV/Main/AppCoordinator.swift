@@ -13,6 +13,7 @@ class AppCoordinator: BaseCoordinator {
     private let rootVC: UITabBarController
     private var moviesCoordinator: MoviesCoordinator!
     private var tvsCoordinator: TVsCoordinator!
+    private var searchCoordinator: SearchCoordinator!
     
     init(window: UIWindow) {
         self.window = window
@@ -22,7 +23,8 @@ class AppCoordinator: BaseCoordinator {
     func start() {
         let firstVC = UINavigationController()
         let secondVC = UINavigationController()
-        let controllers = [firstVC, secondVC]
+        let thirdVC = UINavigationController()
+        let controllers = [firstVC, secondVC, thirdVC]
         
         self.rootVC.viewControllers = controllers
         self.rootVC.tabBar.barTintColor = .black
@@ -33,9 +35,12 @@ class AppCoordinator: BaseCoordinator {
         self.window.makeKeyAndVisible()
         
         self.moviesCoordinator = MoviesCoordinator(presenter: firstVC, tabBarTag: 0)
-        self.tvsCoordinator = TVsCoordinator(presenter: secondVC, tabBarTag: 1)
-        
         self.moviesCoordinator.start()
+        
+        self.tvsCoordinator = TVsCoordinator(presenter: secondVC, tabBarTag: 1)
         self.tvsCoordinator.start()
+        
+        self.searchCoordinator = SearchCoordinator(presenter: thirdVC, tabBarTag: 2)
+        self.searchCoordinator.start()
     }
 }
