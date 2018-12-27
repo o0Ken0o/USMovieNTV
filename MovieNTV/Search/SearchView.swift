@@ -10,6 +10,7 @@ import UIKit
 
 protocol SearchViewDelegate: class {
     func searchWith(words: String?)
+    func didSelectACell(indexPath: IndexPath)
 }
 
 class SearchView: UIView {
@@ -28,6 +29,7 @@ class SearchView: UIView {
     private lazy var searchBar: UISearchBar = { [unowned self] in
         let searchBar = UISearchBar()
         searchBar.delegate = self
+        searchBar.barTintColor = .black
         return searchBar
     }()
     
@@ -38,7 +40,6 @@ class SearchView: UIView {
     private lazy var resultView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = itemSize
-        layout.headerReferenceSize = CGSize(width: UIScreen.main.bounds.size.width, height: 40)
         layout.minimumInteritemSpacing = cellSpacing
         layout.minimumLineSpacing = cellSpacing
         
@@ -141,10 +142,24 @@ extension SearchView: UICollectionViewDataSource {
     }
 }
 
-extension SearchView: UICollectionViewDelegate {
+// inherits UICollectionViewDelegate
+// MARK: - UICollectionViewDelegate
+// MARK: - UICollectionViewDelegateFlowLayout
+extension SearchView: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        if resultMoviesArray.count == 0 && resultTVsArray.count == 0 {
+            return .zero
+        }
+        
+        return CGSize(width: UIScreen.main.bounds.size.width, height: 40)
+    }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.delegate?.didSelectACell(indexPath: indexPath)
+    }
 }
 
+// MARK: - UISearchBarDelegate
 extension SearchView: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()

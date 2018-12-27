@@ -13,6 +13,8 @@ class SearchCoordinator: BaseCoordinator {
     private let tabBarTag: Int
     private let presenter: UINavigationController!
     private var searchVC: SearchVC!
+    private var movieDetailsCoordinator: MovieDetailsCoordinator!
+    private var tvDetailsCoordinator: TVDetailsCoordinator!
     
     init(presenter: UINavigationController, tabBarTag: Int) {
         self.presenter = presenter
@@ -37,5 +39,13 @@ class SearchCoordinator: BaseCoordinator {
 }
 
 extension SearchCoordinator: SearchVCDelegate {
+    func didSelect(movie: Movie) {
+        self.movieDetailsCoordinator = MovieDetailsCoordinator(presenter: presenter, movie: movie)
+        self.movieDetailsCoordinator.start()
+    }
     
+    func didSelect(tv: TV) {
+        self.tvDetailsCoordinator = TVDetailsCoordinator(presenter: presenter, tv: tv)
+        self.tvDetailsCoordinator.start()
+    }
 }

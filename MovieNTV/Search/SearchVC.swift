@@ -9,7 +9,8 @@
 import UIKit
 
 protocol SearchVCDelegate: class {
-    
+    func didSelect(movie: Movie)
+    func didSelect(tv: TV)
 }
 
 class SearchVC: UIViewController, HasCustomView {
@@ -70,5 +71,13 @@ extension SearchVC: SearchViewDelegate {
         resultTVsArray = []
         searchMovies(words)
         searchTVs(words)
+    }
+    
+    func didSelectACell(indexPath: IndexPath) {
+        if indexPath.section == 0 {
+            self.delegate?.didSelect(movie: resultMoviesArray[indexPath.row])
+        } else if indexPath.section == 1 {
+            self.delegate?.didSelect(tv: resultTVsArray[indexPath.row])
+        }
     }
 }
