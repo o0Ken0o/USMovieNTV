@@ -38,6 +38,7 @@ class SearchView: UIView {
     private lazy var resultView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = itemSize
+        layout.headerReferenceSize = CGSize(width: UIScreen.main.bounds.size.width, height: 40)
         layout.minimumInteritemSpacing = cellSpacing
         layout.minimumLineSpacing = cellSpacing
         
@@ -47,6 +48,7 @@ class SearchView: UIView {
         
         collectionView.register(MovieCell.classForCoder(), forCellWithReuseIdentifier: MovieCell.identifier)
         collectionView.register(TVCell.classForCoder(), forCellWithReuseIdentifier: TVCell.identifier)
+        collectionView.register(SearchResultHeaderView.classForCoder(), forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchResultHeaderView.identifier)
         
         return collectionView
     }()
@@ -129,6 +131,13 @@ extension SearchView: UICollectionViewDataSource {
         }
         
         return UICollectionViewCell()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SearchResultHeaderView.identifier, for: indexPath) as? SearchResultHeaderView else { return SearchResultHeaderView() }
+        let headerStr = indexPath.section == 0 ? "Movies" : "TVs"
+        headerView.updateWith(title: headerStr)
+        return headerView
     }
 }
 
