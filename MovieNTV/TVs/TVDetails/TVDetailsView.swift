@@ -38,14 +38,14 @@ class TVDetailsView: UIView {
             scrollView.frame = self.frame
         }
         return scrollView
-        }()
+    }()
     
     private lazy var closeBtn: UIButton = { [unowned self] in
         let btn = UIButton()
         btn.setImage(UIImage(named: "close_icon"), for: .normal)
         btn.addTarget(self, action: #selector(didTapCloseBtn(sender:)), for: .touchUpInside)
         return btn
-        }()
+    }()
     
     private var posterImageView: UIImageView = {
         let imgV = UIImageView()
@@ -94,6 +94,8 @@ class TVDetailsView: UIView {
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .white
         label.textAlignment = .left
+        label.numberOfLines = 5
+        label.text = " "
         return label
     }()
     
@@ -111,6 +113,8 @@ class TVDetailsView: UIView {
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .white
         label.textAlignment = .left
+        label.numberOfLines = 5
+        label.text = " "
         return label
     }()
     
@@ -128,6 +132,8 @@ class TVDetailsView: UIView {
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .white
         label.textAlignment = .left
+        label.numberOfLines = 5
+        label.text = " "
         return label
     }()
     
@@ -145,6 +151,8 @@ class TVDetailsView: UIView {
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .white
         label.textAlignment = .left
+        label.numberOfLines = 5
+        label.text = " "
         return label
     }()
     
@@ -162,6 +170,7 @@ class TVDetailsView: UIView {
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
         label.textAlignment = .left
+        label.text = " "
         return label
     }()
     
@@ -179,6 +188,7 @@ class TVDetailsView: UIView {
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
         label.textAlignment = .left
+        label.text = " "
         return label
     }()
     
@@ -196,6 +206,7 @@ class TVDetailsView: UIView {
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
         label.textAlignment = .left
+        label.text = " "
         return label
     }()
     
@@ -213,6 +224,8 @@ class TVDetailsView: UIView {
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
         label.textAlignment = .left
+        label.numberOfLines = 25
+        label.text = " "
         return label
     }()
     
@@ -308,7 +321,7 @@ class TVDetailsView: UIView {
         self.titleTextLabel.snp.makeConstraints { (make) in
             make.top.equalTo(self.popularityLabel.snp.bottom).offset(49.5)
             make.left.equalTo(self.popularityLabel)
-            make.width.equalTo(95)
+            make.width.equalTo(107)
         }
         
         self.titleLabel.snp.makeConstraints { (make) in
@@ -320,7 +333,7 @@ class TVDetailsView: UIView {
     
     private func setupGenresLabelConstraints() {
         self.genresTextLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.titleTextLabel.snp.bottom).offset(5)
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
         }
         
@@ -333,7 +346,7 @@ class TVDetailsView: UIView {
     
     private func setupLanguagesLabelConstraints() {
         self.languagesTextLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.genresTextLabel.snp.bottom).offset(5)
+            make.top.equalTo(self.genresLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
         }
         
@@ -346,7 +359,7 @@ class TVDetailsView: UIView {
     
     private func setupCompaniesLabelConstraints() {
         self.createdByTextLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.languagesTextLabel.snp.bottom).offset(5)
+            make.top.equalTo(self.languagesLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
         }
         
@@ -359,7 +372,7 @@ class TVDetailsView: UIView {
     
     private func setupnoOfSeasonLabelConstraints() {
         self.noOfSeasonTextLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.createdByTextLabel.snp.bottom).offset(5)
+            make.top.equalTo(self.createdByLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
         }
         
@@ -372,7 +385,7 @@ class TVDetailsView: UIView {
     
     private func setupnoOfEpisodesLabelConstraints() {
         self.noOfEpisodesTextLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.noOfSeasonTextLabel.snp.bottom).offset(5)
+            make.top.equalTo(self.noOfSeasonLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
         }
         
@@ -385,7 +398,7 @@ class TVDetailsView: UIView {
     
     private func setupRunTimeLabelConstraints() {
         self.runtimeTextLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.noOfEpisodesTextLabel.snp.bottom).offset(5)
+            make.top.equalTo(self.noOfEpisodesLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
         }
         
@@ -398,7 +411,7 @@ class TVDetailsView: UIView {
     
     private func setupOverviewLabelConstraints() {
         self.overviewTextLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.runtimeTextLabel.snp.bottom).offset(5)
+            make.top.equalTo(self.runtimeLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
         }
         
