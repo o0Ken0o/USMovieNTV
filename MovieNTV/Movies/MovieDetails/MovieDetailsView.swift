@@ -94,6 +94,7 @@ class MovieDetailsView: UIView {
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .white
         label.textAlignment = .left
+        label.numberOfLines = 5
         return label
     }()
     
@@ -111,6 +112,7 @@ class MovieDetailsView: UIView {
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .white
         label.textAlignment = .left
+        label.numberOfLines = 5
         return label
     }()
     
@@ -128,6 +130,7 @@ class MovieDetailsView: UIView {
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .white
         label.textAlignment = .left
+        label.numberOfLines = 5
         return label
     }()
     
@@ -145,6 +148,7 @@ class MovieDetailsView: UIView {
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .white
         label.textAlignment = .left
+        label.numberOfLines = 5
         return label
     }()
     
@@ -300,7 +304,7 @@ class MovieDetailsView: UIView {
     
     private func setupGenresLabelConstraints() {
         self.genresTextLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.titleTextLabel.snp.bottom).offset(5)
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
         }
         
@@ -313,7 +317,7 @@ class MovieDetailsView: UIView {
     
     private func setupLanguagesLabelConstraints() {
         self.languagesTextLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.genresTextLabel.snp.bottom).offset(5)
+            make.top.equalTo(self.genresLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
         }
         
@@ -326,7 +330,7 @@ class MovieDetailsView: UIView {
     
     private func setupCompaniesLabelConstraints() {
         self.companiesTextLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.languagesTextLabel.snp.bottom).offset(5)
+            make.top.equalTo(self.languagesLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
         }
         
@@ -339,7 +343,7 @@ class MovieDetailsView: UIView {
     
     private func setupCountriesLabelConstraints() {
         self.countriesTextLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.companiesTextLabel.snp.bottom).offset(5)
+            make.top.equalTo(self.companiesLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
         }
         
@@ -352,7 +356,7 @@ class MovieDetailsView: UIView {
     
     private func setupReleaseDateLabelConstraints() {
         self.releaseDateTextLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.countriesTextLabel.snp.bottom).offset(5)
+            make.top.equalTo(self.countriesLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
         }
         
@@ -365,7 +369,7 @@ class MovieDetailsView: UIView {
     
     private func setupRunTimeLabelConstraints() {
         self.runtimeTextLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.releaseDateTextLabel.snp.bottom).offset(5)
+            make.top.equalTo(self.releaseDateLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
         }
         
