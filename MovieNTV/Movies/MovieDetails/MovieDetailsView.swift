@@ -95,6 +95,7 @@ class MovieDetailsView: UIView {
         label.textColor = .white
         label.textAlignment = .left
         label.numberOfLines = 5
+        label.text = " "
         return label
     }()
     
@@ -113,6 +114,7 @@ class MovieDetailsView: UIView {
         label.textColor = .white
         label.textAlignment = .left
         label.numberOfLines = 5
+        label.text = " "
         return label
     }()
     
@@ -131,6 +133,7 @@ class MovieDetailsView: UIView {
         label.textColor = .white
         label.textAlignment = .left
         label.numberOfLines = 5
+        label.text = " "
         return label
     }()
     
@@ -149,6 +152,7 @@ class MovieDetailsView: UIView {
         label.textColor = .white
         label.textAlignment = .left
         label.numberOfLines = 5
+        label.text = " "
         return label
     }()
     
@@ -166,6 +170,7 @@ class MovieDetailsView: UIView {
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
         label.textAlignment = .left
+        label.text = " "
         return label
     }()
     
@@ -183,6 +188,7 @@ class MovieDetailsView: UIView {
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
         label.textAlignment = .left
+        label.text = " "
         return label
     }()
     
@@ -200,6 +206,7 @@ class MovieDetailsView: UIView {
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
         label.textAlignment = .left
+        label.text = " "
         return label
     }()
     
