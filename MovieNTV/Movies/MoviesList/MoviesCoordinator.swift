@@ -14,6 +14,7 @@ class MoviesCoordinator: BaseCoordinator {
     private var moviesVC: MoviesVC!
     private let dataServices: DataServices = DataServices.shared
     private var movieDetailsCoordinator: MovieDetailsCoordinator?
+    private var moviesViewPresentable: MoviesViewPresentable!
     
     init(presenter: UINavigationController, tabBarTag:Int) {
         self.presenter = presenter
@@ -26,7 +27,9 @@ class MoviesCoordinator: BaseCoordinator {
         self.moviesVC.edgesForExtendedLayout = []
         self.moviesVC.title = "Movies"
         self.moviesVC.tabBarItem = UITabBarItem(title: "Movies", image: UIImage(named: "movie_icon"), tag: tabBarTag)
-        self.moviesVC.dataServices = dataServices
+        
+        self.moviesViewPresentable = MoviesViewModel(dataServices: dataServices)
+        self.moviesVC.moviesViewPresentable = self.moviesViewPresentable
         
         self.presenter.pushViewController(moviesVC, animated: true)
         self.presenter.navigationBar.barTintColor = .black
