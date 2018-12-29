@@ -433,57 +433,18 @@ extension TVDetailsView {
         self.posterImageView.image = image
     }
     
-    func displayWith(tv: TV) {
-        if let popularity = tv.popularity {
-            let popularityStr = String(format: "%.1f", popularity)
-            popularityLabel.text = "☆ \(popularityStr)"
-        }
-        
-        if let countAverage = tv.voteAverage {
-            let countAverageStr = String(format: "%.1f", countAverage)
-            countAverageLabel.text = "♡ \(countAverageStr)"
-        }
-        
-        if let count = tv.voteCount {
-            countLabel.text = "웃 \(count)"
-        }
-        
-        if let originalName = tv.originalName {
-            self.titleLabel.text = originalName
-        }
-        
-        if let genres = tv.genres, genres.count > 0 {
-            var genresStr = genres.reduce("") { genres, next in "\(genres), \(next)" }
-            genresStr = String(genresStr.dropFirst(2))
-            self.genresLabel.text = genresStr
-        }
-        
-        if let language = tv.originalLanguage {
-            self.languagesLabel.text = language
-        }
-        
-        if let noOfSeasons = tv.noOfSeasons {
-            self.noOfSeasonLabel.text = "\(noOfSeasons)"
-        }
-        
-        if let noOfEpisodes = tv.noOfEpisodes {
-            self.noOfEpisodesLabel.text = "\(noOfEpisodes)"
-        }
-        
-        if let runTimes = tv.episodeRunTime, runTimes.count > 0 {
-            var runtimesStr = runTimes.reduce("") { runtimesStr, nextRuntime in "\(runtimesStr), \(nextRuntime)" }
-            runtimesStr = String(runtimesStr.dropFirst(2))
-            self.runtimeLabel.text = runtimesStr
-        }
-        
-        if let overview = tv.overview {
-            self.overviewLabel.text = overview
-        }
-        
-        if let createdBy = tv.createdBys, createdBy.count > 0 {
-            var createdByText = createdBy.reduce("") { createdByStr, nextCreatedBy in "\(createdByStr), \(nextCreatedBy)" }
-            createdByText = String(createdByText.dropFirst(2))
-            createdByLabel.text = createdByText
-        }
+    func displayWith(tvDetailsData: TVDetailsData) {
+        popularityLabel.text = tvDetailsData.popularity
+        countAverageLabel.text = tvDetailsData.countAverage
+        countLabel.text = tvDetailsData.count
+        titleLabel.text = tvDetailsData.originalName
+        genresLabel.text = tvDetailsData.genres
+        languagesLabel.text = tvDetailsData.language
+        noOfSeasonLabel.text = tvDetailsData.noOfSeasons
+        noOfEpisodesLabel.text = tvDetailsData.noOfEpisodes
+        runtimeLabel.text = tvDetailsData.runTimes
+        overviewLabel.text = tvDetailsData.overview
+        createdByLabel.text = tvDetailsData.createdBy
+        posterImageView.sd_setImage(with: URL(string: tvDetailsData.posterImageUrl), placeholderImage: UIImage(named: tvDetailsData.placeHolderImageName))
     }
 }

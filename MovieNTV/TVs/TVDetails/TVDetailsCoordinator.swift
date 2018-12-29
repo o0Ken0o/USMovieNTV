@@ -12,6 +12,7 @@ class TVDetailsCoordinator: BaseCoordinator {
     private let tv: TV
     private let presenter: UINavigationController
     private var tvDetailsVC: TVDetailsVC!
+    private var tvDetailsVM: (TVDetailsPresentable & TVDetailsViewDelegate)!
     private let dataServices: DataServices = DataServices.shared
     
     init(presenter: UINavigationController, tv: TV) {
@@ -20,17 +21,21 @@ class TVDetailsCoordinator: BaseCoordinator {
     }
     
     func start() {
+        self.tvDetailsVM = TVDetailsVM()
+        self.tvDetailsVM.tvId = tv.id
+        self.tvDetailsVM.dataServices = dataServices
+        
+        self.tvDetailsVM.didTapCloseBtnClosure = { [unowned self] in
+            self.didTapCloseBtn()
+        }
+        
         self.tvDetailsVC = TVDetailsVC()
-        self.tvDetailsVC.tvId = tv.id
-        self.tvDetailsVC.delegate = self
-        self.tvDetailsVC.dataServices = dataServices
+        self.tvDetailsVC.tvDetailsVM = self.tvDetailsVM
         
         self.presenter.present(tvDetailsVC, animated: true)
     }
-}
-
-extension TVDetailsCoordinator: TVDetailsVCDelegate {
-    func didTapCloseBtn() {
+    
+    private func didTapCloseBtn() {
         self.tvDetailsVC.dismiss(animated: true)
     }
 }

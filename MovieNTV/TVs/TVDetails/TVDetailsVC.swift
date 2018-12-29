@@ -8,43 +8,26 @@
 
 import UIKit
 
-protocol TVDetailsVCDelegate: class {
-    func didTapCloseBtn()
-}
-
 class TVDetailsVC: UIViewController, HasCustomView {
     typealias CustomView = TVDetailsView
     
     var tvId: Int!
-    var dataServices: DataServices!
-    weak var delegate: TVDetailsVCDelegate?
+    var tvDetailsVM: (TVDetailsPresentable & TVDetailsViewDelegate)!
     
     override func loadView() {
         let customView = TVDetailsView()
-        customView.delegate = self
+        customView.delegate = tvDetailsVM
         view = customView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.view.backgroundColor = .black
-                
-        dataServices.getTVDetails(tvId: tvId) { [unowned self] (success, tv) in
-            guard success, let tv = tv else { return }
-            self.customView.displayWith(tv: tv)
-            
-            guard let posterPath = tv.posterPath else { return }
-            self.dataServices.getImage(posterPath: posterPath, with: { [unowned self] (success, image) in
-                guard success else { return }
-                self.customView.showPoster(image: image)
-            })
+        
+        tvDetailsVM.displayDetails = { [unowned self] tvDetailsData in
+            self.customView.displayWith(tvDetailsData: tvDetailsData)
         }
-    }
-}
-
-extension TVDetailsVC: TVDetailsViewDelegate {
-    func didTapCloseBtn() {
-        self.delegate?.didTapCloseBtn()
+        
+        tvDetailsVM.fetchTVDetails()
     }
 }
