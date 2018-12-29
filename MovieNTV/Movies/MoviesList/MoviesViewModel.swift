@@ -8,11 +8,18 @@
 
 import UIKit
 
+struct MovieCellViewModel {
+    let releaseDate: String
+    let popularity: String
+    let posterImageUrl: String
+    let placeHolderImageName: String
+}
+
 protocol MoviesViewPresentable {
-    var showNowPlayingClosure: (([Movie]) -> ())? { get set }
-    var showPopularClosure: (([Movie]) -> ())? { get set }
-    var showTopRatedClosure: (([Movie]) -> ())? { get set }
-    var showUpComingClosure: (([Movie]) -> ())? { get set }
+    var showNowPlayingClosure: (() -> ())? { get set }
+    var showPopularClosure: (() -> ())? { get set }
+    var showTopRatedClosure: (() -> ())? { get set }
+    var showUpComingClosure: (() -> ())? { get set }
     var itemSize: CGSize { get }
     var headerSize: CGSize { get }
     var itemHeight: CGFloat { get }
@@ -20,14 +27,31 @@ protocol MoviesViewPresentable {
     
     func fetchMovies()
     func numberOfRows(collectionView: UICollectionView) -> Int
+    func movieCellVM(collectionView: UICollectionView, indexPath: IndexPath) -> MovieCellViewModel
+    
+    var viewDidLoadClosure: (() ->())? { get set }
+    var didSelectAMovieClosure: ((Movie) -> ())? { get set }
 }
 
 class MoviesViewModel: MoviesViewPresentable {
     private let dataServices: DataServices
+    
     private var nowPlayingMovies = [Movie]()
     private var popularMovies = [Movie]()
     private var topRatedMovies = [Movie]()
     private var upComingMovies = [Movie]()
+    
+    private var nowPlayingMovieCellViewModels = [MovieCellViewModel]()
+    private var popularMovieCellViewModels = [MovieCellViewModel]()
+    private var topRatedMovieCellViewModels = [MovieCellViewModel]()
+    private var upComingMovieCellViewModels = [MovieCellViewModel]()
+    
+    var showNowPlayingClosure: (() -> ())?
+    var showPopularClosure: (() -> ())?
+    var showTopRatedClosure: (() -> ())?
+    var showUpComingClosure: (() -> ())?
+    var viewDidLoadClosure: (() ->())?
+    var didSelectAMovieClosure: ((Movie) -> ())?
     
     private let itemWidth: CGFloat = {
         return  UIScreen.main.bounds.size.width / 3
@@ -53,11 +77,6 @@ class MoviesViewModel: MoviesViewPresentable {
         return CGSize(width: headerWidth, height: headerHeight)
     }()
     
-    var showNowPlayingClosure: (([Movie]) -> ())?
-    var showPopularClosure: (([Movie]) -> ())?
-    var showTopRatedClosure: (([Movie]) -> ())?
-    var showUpComingClosure: (([Movie]) -> ())?
-    
     init(dataServices: DataServices) {
         self.dataServices = dataServices
     }
@@ -70,8 +89,37 @@ class MoviesViewModel: MoviesViewPresentable {
     }
     
     func numberOfRows(collectionView: UICollectionView) -> Int {
-        guard let moviesCollectionView = collectionView as? MoviesCollectionView else { return 0 }
-        return moviesCollectionView.movies.count
+        guard let type = MovieType(rawValue: collectionView.tag) else { return 0 }
+        
+        switch type {
+        case .nowPlaying:
+            return nowPlayingMovieCellViewModels.count
+        case .popular:
+            return popularMovieCellViewModels.count
+        case .topRated:
+            return topRatedMovieCellViewModels.count
+        case .upComing:
+            return upComingMovieCellViewModels.count
+        }
+    }
+    
+    func didSelect(movie: Movie) {
+        
+    }
+    
+    func movieCellVM(collectionView: UICollectionView, indexPath: IndexPath) -> MovieCellViewModel {
+        guard let type = MovieType(rawValue: collectionView.tag) else { return MovieCellViewModel(releaseDate: "", popularity: "", posterImageUrl: "", placeHolderImageName: "") }
+        
+        switch type {
+        case .nowPlaying:
+            return nowPlayingMovieCellViewModels[indexPath.row]
+        case .popular:
+            return popularMovieCellViewModels[indexPath.row]
+        case .topRated:
+            return topRatedMovieCellViewModels[indexPath.row]
+        case .upComing:
+            return upComingMovieCellViewModels[indexPath.row]
+        }
     }
     
     private func loadNowPlayingMovies() {
@@ -81,7 +129,8 @@ class MoviesViewModel: MoviesViewPresentable {
             }
             
             self.nowPlayingMovies = movies
-            self.showNowPlayingClosure?(self.nowPlayingMovies)
+            self.nowPlayingMovieCellViewModels = self.nowPlayingMovies.map{ [unowned self] in self.transfrom(movie: $0) }
+            self.showNowPlayingClosure?()
         }
     }
     
@@ -92,7 +141,8 @@ class MoviesViewModel: MoviesViewPresentable {
             }
             
             self.popularMovies = movies
-            self.showPopularClosure?(self.popularMovies)
+            self.popularMovieCellViewModels = self.popularMovies.map{ [unowned self] in self.transfrom(movie: $0) }
+            self.showPopularClosure?()
         }
     }
     
@@ -103,7 +153,8 @@ class MoviesViewModel: MoviesViewPresentable {
             }
             
             self.topRatedMovies = movies
-            self.showTopRatedClosure?(self.topRatedMovies)
+            self.topRatedMovieCellViewModels = self.topRatedMovies.map{ [unowned self] in self.transfrom(movie: $0) }
+            self.showTopRatedClosure?()
         }
     }
     
@@ -114,13 +165,44 @@ class MoviesViewModel: MoviesViewPresentable {
             }
             
             self.upComingMovies = movies
-            self.showUpComingClosure?(self.upComingMovies)
+            self.upComingMovieCellViewModels = self.upComingMovies.map{ [unowned self] in self.transfrom(movie: $0) }
+            self.showUpComingClosure?()
         }
+    }
+    
+    private func transfrom(movie: Movie) -> MovieCellViewModel {
+        let popularity = String(format: "%.1f", movie.popularity)
+        let popularityStr = "☆ \(popularity)"
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-mm-dd"
+        let releaseDateStr = movie.releaseDate == nil ? "" : dateFormatter.string(from: movie.releaseDate!)
+        
+        let posterPath = "https://image.tmdb.org/t/p/w500/\(movie.posterPath ?? "")"
+        let placeHolderImageName = "movieNTV"
+        
+        return MovieCellViewModel(releaseDate: releaseDateStr, popularity: popularityStr, posterImageUrl: posterPath, placeHolderImageName: placeHolderImageName)
     }
 }
 
-struct MovieCellViewModel {
-    let releaseDate: String
-    let popularity: String
-    let posterImageUrl: String
+extension MoviesViewModel: MoviesVCDelegate {
+    func didSelect(collectionView: UICollectionView, indexPath: IndexPath) {
+        guard let type = MovieType(rawValue: collectionView.tag) else { return }
+        var movie: Movie!
+        switch type {
+        case .nowPlaying:
+            movie = nowPlayingMovies[indexPath.row]
+        case .popular:
+            movie = popularMovies[indexPath.row]
+        case .topRated:
+            movie = topRatedMovies[indexPath.row]
+        case .upComing:
+            movie = upComingMovies[indexPath.row]
+        }
+        self.didSelectAMovieClosure?(movie)
+    }
+    
+    func viewIsLoaded() {
+        self.viewDidLoadClosure?()
+    }
 }

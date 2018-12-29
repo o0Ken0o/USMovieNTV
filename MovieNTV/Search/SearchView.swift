@@ -122,7 +122,7 @@ extension SearchView: UICollectionViewDataSource {
         if indexPath.section == 0 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.identifier, for: indexPath) as? MovieCell else { return MovieCell() }
             cell.cleanUp4Reuse()
-            cell.setupWith(movie: resultMoviesArray[indexPath.row])
+//            cell.setupWith(movie: resultMoviesArray[indexPath.row])
             return cell
         } else if indexPath.section == 1 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TVCell.identifier, for: indexPath) as? TVCell else { return TVCell() }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class MovieCell: UICollectionViewCell {
     
@@ -65,25 +66,10 @@ class MovieCell: UICollectionViewCell {
         }
     }
     
-    func setupWith(movie: Movie) {
-        let popularity = String(format: "%.1f", movie.popularity)
-        self.popularityLabel.text = "☆ \(popularity)"
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-mm-dd"
-        if let relDate = movie.releaseDate {
-            self.releaseDateLabel.text = dateFormatter.string(from: relDate)
-        }
-        
-        if let posterPath = movie.posterPath {
-            DataServices.shared.getImage(posterPath: posterPath) { (success, image) in
-                if success {
-                    self.posterImageView.image = image
-                }
-            }
-        } else {
-            self.posterImageView.image = UIImage(named: "movieNTV")
-        }
+    func setupWith(vm: MovieCellViewModel) {
+        self.popularityLabel.text = vm.popularity
+        self.releaseDateLabel.text = vm.releaseDate
+        self.posterImageView.sd_setImage(with: URL(string: vm.posterImageUrl), placeholderImage: UIImage(named: vm.placeHolderImageName))
     }
 }
 

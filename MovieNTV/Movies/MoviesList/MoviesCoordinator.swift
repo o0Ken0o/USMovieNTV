@@ -14,7 +14,7 @@ class MoviesCoordinator: BaseCoordinator {
     private var moviesVC: MoviesVC!
     private let dataServices: DataServices = DataServices.shared
     private var movieDetailsCoordinator: MovieDetailsCoordinator?
-    private var moviesViewPresentable: MoviesViewPresentable!
+    private var moviesVM: (MoviesViewPresentable & MoviesVCDelegate)!
     
     init(presenter: UINavigationController, tabBarTag:Int) {
         self.presenter = presenter
@@ -23,29 +23,35 @@ class MoviesCoordinator: BaseCoordinator {
     
     func start() {
         self.moviesVC = MoviesVC()
-        self.moviesVC.delegate = self
         self.moviesVC.edgesForExtendedLayout = []
         self.moviesVC.title = "Movies"
         self.moviesVC.tabBarItem = UITabBarItem(title: "Movies", image: UIImage(named: "movie_icon"), tag: tabBarTag)
         
-        self.moviesViewPresentable = MoviesViewModel(dataServices: dataServices)
-        self.moviesVC.moviesViewPresentable = self.moviesViewPresentable
+        self.moviesVM = MoviesViewModel(dataServices: dataServices)
+        self.moviesVC.moviesVM = self.moviesVM
+        self.moviesVC.delegate = self.moviesVM
         
         self.presenter.pushViewController(moviesVC, animated: true)
         self.presenter.navigationBar.barTintColor = .black
         self.presenter.navigationBar.tintColor = .white
         self.presenter.navigationBar.isTranslucent = false
         self.presenter.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+        
+        self.moviesVM.viewDidLoadClosure = { [unowned self] in
+            self.viewIsLoaded()
+        }
+        
+        self.moviesVM.didSelectAMovieClosure = { [unowned self] movie in
+            self.didSelect(movie: movie)
+        }
     }
-}
-
-extension MoviesCoordinator: MoviesVCDelegate {
-    func didSelect(movie: Movie) {
+    
+    private func didSelect(movie: Movie) {
         self.movieDetailsCoordinator = MovieDetailsCoordinator(presenter: presenter, movie: movie)
         self.movieDetailsCoordinator?.start()
     }
     
-    func viewIsLoaded() {
+    private func viewIsLoaded() {
         // just a workaround to make the selected index 0
         self.presenter.tabBarController?.selectedIndex = 1
         self.presenter.tabBarController?.selectedIndex = 0

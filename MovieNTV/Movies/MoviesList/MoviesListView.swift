@@ -213,7 +213,7 @@ extension MoviesListView: UICollectionViewDataSource {
         }
         
         cell.cleanUp4Reuse()
-        cell.setupWith(movie: moviesCollectionView.movies[indexPath.row])
+//        cell.setupWith(movie: moviesCollectionView.movies[indexPath.row])
         
         return cell
     }
