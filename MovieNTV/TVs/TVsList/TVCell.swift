@@ -65,36 +65,10 @@ class TVCell: UICollectionViewCell {
         }
     }
     
-    func setupWith(tv: TV) {
-        if let firstAirDate = tv.firstAirDate {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-mm-dd"
-            self.releaseDateLabel.text = dateFormatter.string(from: firstAirDate)
-            self.releaseDateLabel.isHidden = false
-        } else {
-            self.releaseDateLabel.isHidden = true
-        }
-        
-        if let popularity = tv.popularity {
-            let popularityStr = String(format: "%.1f", popularity)
-            self.popularityLabel.text = "☆ \(popularityStr)"
-            self.popularityLabel.isHidden = false
-        } else {
-            self.popularityLabel.isHidden = true
-        }
-        
-        self.posterImageView.image = UIImage(named: "movieNTV")
-        self.posterImageView.backgroundColor = UIColor.darkGray
-        
-        if let posterPath = tv.posterPath {
-            DataServices.shared.getImage(posterPath: posterPath) { (success, image) in
-                if success {
-                    self.posterImageView.image = image
-                }
-            }
-        } else {
-            self.posterImageView.image = UIImage(named: "movieNTV")
-        }
+    func setupWith(tvCellVM: TVCellVM) {
+        self.releaseDateLabel.text = tvCellVM.releaseDate
+        self.popularityLabel.text = tvCellVM.popularity
+        self.posterImageView.sd_setImage(with: URL(string: tvCellVM.posterImageUrl), placeholderImage: UIImage(named: tvCellVM.placeHolderImageName))
     }
 }
 

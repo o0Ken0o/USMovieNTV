@@ -8,62 +8,26 @@
 
 import UIKit
 
-protocol TVsVCDelegate: class {
-    func didSelect(tv: TV)
-}
-
 class TVsVC: UIViewController, HasCustomView {
     typealias CustomView = TVsListView
     
-    var dataServices: DataServices!
-    weak var delegate: TVsVCDelegate?
+    var vm: (TVsPresentable & TVsListViewDelegate)!
     
     override func loadView() {
         let customView = CustomView()
-        customView.delegate = self
+        customView.delegate = vm
+        customView.vm = vm
         view = customView
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadAiringToday()
-        loadOnTheAir()
-        loadPopular()
-        loadTopRated()
-    }
-    
-    private func loadAiringToday() {
-        dataServices.getAiringToday { (success, tvs) in
-            guard success, let tvs = tvs else { return }
-            self.customView.showAiringToday(tvs: tvs)
-        }
-    }
-    
-    private func loadOnTheAir() {
-        dataServices.getTVOnTheAir { (success, tvs) in
-            guard success, let tvs = tvs else { return }
-            self.customView.showOnTheAir(tvs: tvs)
-        }
-    }
-    
-    private func loadPopular() {
-        dataServices.getTVPopular { (success, tvs) in
-            guard success, let tvs = tvs else { return }
-            self.customView.showPopular(tvs: tvs)
-        }
-    }
-    
-    private func loadTopRated() {
-        dataServices.getTVTopRated { (success, tvs) in
-            guard success, let tvs = tvs else { return }
-            self.customView.showTopRated(tvs: tvs)
-        }
-    }
-}
-
-extension TVsVC: TVsListViewDelegate {
-    func didSelect(tv: TV) {
-        self.delegate?.didSelect(tv: tv)
+        vm.showAiringToday = { [unowned self] in self.customView.showAiringToday() }
+        vm.showOnTheAir = { [unowned self] in self.customView.showOnTheAir() }
+        vm.showPopular = { [unowned self] in self.customView.showPopular() }
+        vm.showTopRated = { [unowned self] in self.customView.showTopRated() }
+        
+        vm.fetchTVs()
     }
 }

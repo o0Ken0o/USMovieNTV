@@ -9,11 +9,12 @@
 import UIKit
 
 protocol TVsListViewDelegate: class {
-    func didSelect(tv: TV)
+    func didSelect(collectionView: UICollectionView, indexPath: IndexPath)
 }
 
 class TVsListView: UIView {
     weak var delegate: TVsListViewDelegate?
+    var vm: TVsPresentable!
     
     // TODO: extract the following info into a viewModel
     private let itemSize: CGSize = {
@@ -46,20 +47,20 @@ class TVsListView: UIView {
         return createAHeaderLabel(header: TVType.topRated.header)
     }()
     
-    private lazy var airingTodayCollectionView: TVsCollectionView = {
-        return self.createACollectionView()
+    private lazy var airingTodayCollectionView: UICollectionView = {
+        return self.createACollectionView(tag: TVType.airingToday.rawValue)
     }()
     
-    private lazy var onTheAirCollectionView: TVsCollectionView = {
-        return self.createACollectionView()
+    private lazy var onTheAirCollectionView: UICollectionView = {
+        return self.createACollectionView(tag: TVType.onTheAir.rawValue)
     }()
     
-    private lazy var popularCollectionView: TVsCollectionView = {
-        return self.createACollectionView()
+    private lazy var popularCollectionView: UICollectionView = {
+        return self.createACollectionView(tag: TVType.popular.rawValue)
     }()
     
-    private lazy var topRatedCollectionView: TVsCollectionView = {
-        return self.createACollectionView()
+    private lazy var topRatedCollectionView: UICollectionView = {
+        return self.createACollectionView(tag: TVType.topRated.rawValue)
     }()
     
     private lazy var scrollView: UIScrollView = { [unowned self] in
@@ -79,23 +80,19 @@ class TVsListView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func showAiringToday(tvs: [TV]) {
-        self.airingTodayCollectionView.tvs = tvs
+    func showAiringToday() {
         self.airingTodayCollectionView.reloadData()
     }
     
-    func showOnTheAir(tvs: [TV]) {
-        self.onTheAirCollectionView.tvs = tvs
+    func showOnTheAir() {
         self.onTheAirCollectionView.reloadData()
     }
     
-    func showPopular(tvs: [TV]) {
-        self.popularCollectionView.tvs = tvs
+    func showPopular() {
         self.popularCollectionView.reloadData()
     }
     
-    func showTopRated(tvs: [TV]) {
-        self.topRatedCollectionView.tvs = tvs
+    func showTopRated() {
         self.topRatedCollectionView.reloadData()
     }
     
@@ -186,14 +183,15 @@ class TVsListView: UIView {
         return label
     }
     
-    private func createACollectionView() -> TVsCollectionView {
+    private func createACollectionView(tag: Int) -> UICollectionView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.itemSize = itemSize
         
-        let collectionView = TVsCollectionView(frame: .zero, collectionViewLayout: layout)
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.tag = tag
         collectionView.register(TVCell.classForCoder(), forCellWithReuseIdentifier: TVCell.identifier)
         
         return collectionView
@@ -202,18 +200,17 @@ class TVsListView: UIView {
 
 extension TVsListView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let tvsCollectionView = collectionView as? TVsCollectionView else { return 0 }
-        return tvsCollectionView.tvs.count
+        return vm.numberOfItems(collectionView: collectionView, section: section)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let tvsCollectionView = collectionView as? TVsCollectionView,
-            let cell = tvsCollectionView.dequeueReusableCell(withReuseIdentifier: TVCell.identifier, for: indexPath) as? TVCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TVCell.identifier, for: indexPath) as? TVCell else {
                 return TVCell()
         }
         
+        let tvCellVM = vm.tvCellVM(collectionView: collectionView, indexPath: indexPath)
         cell.cleanUp4Reuse()
-        cell.setupWith(tv: tvsCollectionView.tvs[indexPath.row])
+        cell.setupWith(tvCellVM: tvCellVM)
         
         return cell
     }
@@ -221,7 +218,6 @@ extension TVsListView: UICollectionViewDataSource {
 
 extension TVsListView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let tvsCollectionView = collectionView as? TVsCollectionView else { return }
-        self.delegate?.didSelect(tv: tvsCollectionView.tvs[indexPath.row])
+        self.delegate?.didSelect(collectionView: collectionView, indexPath: indexPath)
     }
 }
