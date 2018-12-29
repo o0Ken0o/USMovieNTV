@@ -12,8 +12,7 @@ class MovieDetailsVC: UIViewController, HasCustomView {
     
     typealias CustomView = MovieDetailsView
     
-    var dataServices: DataServices!
-    var movieId: Int!
+    var movieDetailsVM: MovieDetailsPresentable!
     
     override func loadView() {
         let customView = CustomView()
@@ -26,19 +25,11 @@ class MovieDetailsVC: UIViewController, HasCustomView {
         
         self.view.backgroundColor = .black
         
-        dataServices.getMovieDetails(movieID: movieId) { [unowned self] (success, movie) in
-            if success, let movie = movie {
-                self.customView.displayWith(movie: movie)
-                
-                if let posterPath = movie.posterPath {
-                    self.dataServices.getImage(posterPath: posterPath, with: { [unowned self] (success, image) in
-                        if success {
-                            self.customView.showPoster(image: image)
-                        }
-                    })
-                }
-            }
+        movieDetailsVM.displayDetails = { [unowned self] in
+            self.customView.displayWith(vm: self.movieDetailsVM)
         }
+        
+        movieDetailsVM.fetchMovieDetails()
     }
 }
 

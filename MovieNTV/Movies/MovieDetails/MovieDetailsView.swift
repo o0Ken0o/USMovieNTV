@@ -394,93 +394,16 @@ class MovieDetailsView: UIView {
 }
 
 extension MovieDetailsView {
-    func showPoster(image: UIImage?) {
-        self.posterImageView.image = image
-    }
-    
-    func displayWith(movie: Movie) {
-        show(popularity: movie.popularity)
-        show(count: movie.voteCount)
-        show(voteAverage: movie.voteAverage)
-        show(title: movie.title)
-        show(genres: movie.genres)
-        show(spokenLanguages: movie.spokenLanguages)
-        show(productionCompanies: movie.productionCompanies)
-        show(productionCountries: movie.productionCountries)
-        show(releaseDate: movie.releaseDate)
-        show(runTimeMins: movie.runTimeMins)
-    }
-    
-    private func show(popularity: Float) {
-        let popularity = String(format: "%.1f", popularity)
-        popularityLabel.text = "☆ \(popularity)"
-    }
-    
-    private func show(count: Int) {
-        countLabel.text = "웃 \(count)"
-    }
-    
-    private func show(voteAverage: Float) {
-        let countAverageStr = String(format: "%.1f", voteAverage)
-        countAverageLabel.text = "♡ \(countAverageStr)"
-    }
-    
-    private func show(title: String) {
-        titleLabel.text = title
-    }
-    
-    private func show(genres: [String]?) {
-        if let genres = genres, genres.count > 0 {
-            var genresStr = genres.reduce("") { genres, next in "\(genres), \(next)" }
-            genresStr = String(genresStr.dropFirst(2))
-            self.genresLabel.text = genresStr
-        }
-    }
-    
-    private func show(spokenLanguages: [String]?) {
-        guard let languages = spokenLanguages, languages.count > 0  else {
-            languagesLabel.text = ""
-            return
-        }
-        
-        var languagesStr = languages.reduce("") { languages, nextLanguage in "\(languages), \(nextLanguage)" }
-        languagesStr = String(languagesStr.dropFirst(2))
-        self.languagesLabel.text = languagesStr
-    }
-    
-    private func show(productionCompanies: [String]?) {
-        guard let companies = productionCompanies, companies.count > 0 else {
-            companiesLabel.text = "--"
-            return
-        }
-        
-        var companiesStr = companies.reduce("") { companiesStr, nextCompany in "\(companiesStr), \(nextCompany)" }
-        companiesStr = String(companiesStr.dropFirst(2))
-        companiesLabel.text = companiesStr
-    }
-    
-    private func show(productionCountries: [String]?) {
-        guard let countries = productionCountries, countries.count > 0 else {
-            countriesLabel.text = "--"
-            return
-        }
-        
-        var countriesStr = countries.reduce("") { countriesStr, nextCountry in "\(countriesStr), \(nextCountry)" }
-        countriesStr = String(countriesStr.dropFirst(2))
-        countriesLabel.text = countriesStr
-    }
-    
-    private func show(releaseDate: Date?) {
-        releaseDateLabel.text = "--"
-        guard let releaseDate = releaseDate else { return }
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-mm-dd"
-        releaseDateLabel.text = dateFormatter.string(from: releaseDate)
-    }
-    
-    private func show(runTimeMins: Int?) {
-        runtimeLabel.text = "--"
-        guard let runtime = runTimeMins else { return }
-        runtimeLabel.text = "\(runtime)"
+    func displayWith(vm: MovieDetailsPresentable) {
+        self.posterImageView.sd_setImage(with: URL(string: vm.posterImageUrl), placeholderImage: UIImage(named: vm.placeHolderImageName))
+        self.popularityLabel.text = vm.popularity
+        self.countLabel.text = vm.count
+        self.titleLabel.text = vm.title
+        self.genresLabel.text = vm.genres
+        self.languagesLabel.text = vm.spokenLanguages
+        self.companiesLabel.text = vm.productionCompanies
+        self.countriesLabel.text = vm.productionCountries
+        self.releaseDateLabel.text = vm.releaseDate
+        self.runtimeLabel.text = vm.runTimeMins
     }
 }

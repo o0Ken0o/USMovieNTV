@@ -12,6 +12,7 @@ class MovieDetailsCoordinator: BaseCoordinator {
     
     private let presenter: UINavigationController
     private var movieDetailsVC: MovieDetailsVC!
+    private var movieDetailsVM: MovieDetailsPresentable!
     private let dataServices: DataServices = DataServices.shared
     private let movie: Movie
     
@@ -21,9 +22,13 @@ class MovieDetailsCoordinator: BaseCoordinator {
     }
     
     func start() {
+        self.movieDetailsVM = MovieDetailsViewModel()
+        self.movieDetailsVM.dataServices = dataServices
+        self.movieDetailsVM.movieId = movie.id
+        
         self.movieDetailsVC = MovieDetailsVC()
-        self.movieDetailsVC.dataServices = dataServices
-        self.movieDetailsVC.movieId = movie.id
+        self.movieDetailsVC.movieDetailsVM = self.movieDetailsVM
+        
         self.presenter.present(movieDetailsVC, animated: true)
     }
 }
