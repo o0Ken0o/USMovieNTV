@@ -14,8 +14,8 @@ protocol MoviesListViewDelegate: class {
 
 class MoviesListView: UIView {
     weak var delegate: MoviesListViewDelegate?
+    var moviesVM: MoviesViewPresentable!
     
-    // TODO: extract the following info into a viewModel
     private let itemSize: CGSize = {
         let width = UIScreen.main.bounds.size.width / 3
         let height = width * 1.3
@@ -30,39 +30,39 @@ class MoviesListView: UIView {
         return size
     }()
     
-    private lazy var nowPlayingLabel: UILabel = {
+    lazy var nowPlayingLabel: UILabel = {
         return createAHeaderLabel(header: MovieType.nowPlaying.header)
     }()
     
-    private lazy var popularLabel: UILabel = {
+    lazy var popularLabel: UILabel = {
         return createAHeaderLabel(header: MovieType.popular.header)
     }()
     
-    private lazy var topRelatedLabel: UILabel = {
+    lazy var topRelatedLabel: UILabel = {
         return createAHeaderLabel(header: MovieType.topRated.header)
     }()
     
-    private lazy var upComingLabel: UILabel = {
+    lazy var upComingLabel: UILabel = {
         return createAHeaderLabel(header: MovieType.upComing.header)
     }()
     
-    private lazy var nowPlayingCollectionView: MoviesCollectionView = {
-        return self.createACollectionView()
+    lazy var nowPlayingCollectionView: UICollectionView = {
+        return self.createACollectionView(tag: MovieType.nowPlaying.rawValue)
     }()
     
-    private lazy var popularCollectionView: MoviesCollectionView = {
-        return self.createACollectionView()
+    lazy var popularCollectionView: UICollectionView = {
+        return self.createACollectionView(tag: MovieType.popular.rawValue)
     }()
     
-    private lazy var topRelatedCollectionView: MoviesCollectionView = {
-        return self.createACollectionView()
+    lazy var topRelatedCollectionView: UICollectionView = {
+        return self.createACollectionView(tag: MovieType.topRated.rawValue)
     }()
     
-    private lazy var upComingCollectionView: MoviesCollectionView = {
-        return self.createACollectionView()
+    lazy var upComingCollectionView: UICollectionView = {
+        return self.createACollectionView(tag: MovieType.upComing.rawValue)
     }()
     
-    private lazy var scrollView: UIScrollView = { [unowned self] in
+    lazy var scrollView: UIScrollView = { [unowned self] in
         let scrollView = UIScrollView()
         scrollView.backgroundColor = UIColor(white: 1, alpha: 0.08)
         return scrollView
@@ -77,26 +77,6 @@ class MoviesListView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func showNowPlaying(movies: [Movie]) {
-        self.nowPlayingCollectionView.movies = movies
-        self.nowPlayingCollectionView.reloadData()
-    }
-    
-    func showPopular(movies: [Movie]) {
-        self.popularCollectionView.movies = movies
-        self.popularCollectionView.reloadData()
-    }
-    
-    func showTopRated(movies: [Movie]) {
-        self.topRelatedCollectionView.movies = movies
-        self.topRelatedCollectionView.reloadData()
-    }
-    
-    func showUpcoming(movies: [Movie]) {
-        self.upComingCollectionView.movies = movies
-        self.upComingCollectionView.reloadData()
     }
     
     private func addViews() {
@@ -186,42 +166,15 @@ class MoviesListView: UIView {
         return label
     }
     
-    private func createACollectionView() -> MoviesCollectionView {
+    private func createACollectionView(tag: Int) -> UICollectionView {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = itemSize
+        layout.itemSize = self.itemSize
         
-        let collectionView = MoviesCollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.dataSource = self
-        collectionView.delegate = self
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.tag = tag
         collectionView.register(MovieCell.classForCoder(), forCellWithReuseIdentifier: MovieCell.identifier)
         
         return collectionView
-    }
-}
-
-extension MoviesListView: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let moviesCollectionView = collectionView as? MoviesCollectionView else { return 0 }
-        return moviesCollectionView.movies.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let moviesCollectionView = collectionView as? MoviesCollectionView,
-            let cell = moviesCollectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.identifier, for: indexPath) as? MovieCell else {
-                return MovieCell()
-        }
-        
-        cell.cleanUp4Reuse()
-//        cell.setupWith(movie: moviesCollectionView.movies[indexPath.row])
-        
-        return cell
-    }
-}
-
-extension MoviesListView: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let moviesCollectionView = collectionView as? MoviesCollectionView else { return }
-        self.delegate?.didSelect(movie: moviesCollectionView.movies[indexPath.row])
     }
 }

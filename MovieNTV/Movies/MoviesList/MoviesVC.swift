@@ -14,178 +14,52 @@ protocol MoviesVCDelegate: class {
     func viewIsLoaded()
 }
 
-class MoviesVC: UIViewController {
-    
+class MoviesVC: UIViewController, HasCustomView {
+    typealias CustomView = MoviesListView
     weak var delegate: MoviesVCDelegate?
     var moviesVM: (MoviesViewPresentable & MoviesVCDelegate)!
     
-    private lazy var nowPlayingLabel: UILabel = {
-        return createAHeaderLabel(header: MovieType.nowPlaying.header)
-    }()
-    
-    private lazy var popularLabel: UILabel = {
-        return createAHeaderLabel(header: MovieType.popular.header)
-    }()
-    
-    private lazy var topRelatedLabel: UILabel = {
-        return createAHeaderLabel(header: MovieType.topRated.header)
-    }()
-    
-    private lazy var upComingLabel: UILabel = {
-        return createAHeaderLabel(header: MovieType.upComing.header)
-    }()
-    
-    private lazy var nowPlayingCollectionView: UICollectionView = {
-        return self.createACollectionView(tag: MovieType.nowPlaying.rawValue)
-    }()
-    
-    private lazy var popularCollectionView: UICollectionView = {
-        return self.createACollectionView(tag: MovieType.popular.rawValue)
-    }()
-    
-    private lazy var topRelatedCollectionView: UICollectionView = {
-        return self.createACollectionView(tag: MovieType.topRated.rawValue)
-    }()
-    
-    private lazy var upComingCollectionView: UICollectionView = {
-        return self.createACollectionView(tag: MovieType.upComing.rawValue)
-    }()
-    
-    private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.backgroundColor = UIColor(white: 1, alpha: 0.08)
-        return scrollView
-    }()
+    override func loadView() {
+        let customView = CustomView()
+        customView.moviesVM = moviesVM
+        view = customView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.moviesVM.viewIsLoaded()
         
-        addViews()
-        setupConstraints()
+        self.customView.nowPlayingCollectionView.dataSource = self
+        self.customView.nowPlayingCollectionView.delegate = self
+        self.customView.popularCollectionView.dataSource = self
+        self.customView.popularCollectionView.delegate = self
+        self.customView.topRelatedCollectionView.dataSource = self
+        self.customView.topRelatedCollectionView.delegate = self
+        self.customView.upComingCollectionView.dataSource = self
+        self.customView.upComingCollectionView.delegate = self
         
         moviesVM.showNowPlayingClosure = { [weak self] in
             guard let self = self else { return }
-            self.nowPlayingCollectionView.reloadData()
+            self.customView.nowPlayingCollectionView.reloadData()
         }
         
         moviesVM.showPopularClosure = { [weak self] in
             guard let self = self else { return }
-            self.popularCollectionView.reloadData()
+            self.customView.popularCollectionView.reloadData()
         }
         
         moviesVM.showTopRatedClosure = { [weak self] in
             guard let self = self else { return }
-            self.topRelatedCollectionView.reloadData()
+            self.customView.topRelatedCollectionView.reloadData()
         }
         
         moviesVM.showUpComingClosure = { [weak self] in
             guard let self = self else { return }
-            self.upComingCollectionView.reloadData()
+            self.customView.upComingCollectionView.reloadData()
         }
         
         moviesVM.fetchMovies()
-    }
-    
-    private func addViews() {
-        self.view.addSubview(self.scrollView)
-        
-        self.scrollView.addSubview(self.nowPlayingLabel)
-        self.scrollView.addSubview(self.popularLabel)
-        self.scrollView.addSubview(self.topRelatedLabel)
-        self.scrollView.addSubview(self.upComingLabel)
-        
-        self.scrollView.addSubview(self.nowPlayingCollectionView)
-        self.scrollView.addSubview(self.popularCollectionView)
-        self.scrollView.addSubview(self.topRelatedCollectionView)
-        self.scrollView.addSubview(self.upComingCollectionView)
-    }
-    
-    private func setupConstraints() {
-        setupScrollViewConstraints()
-        setupHeaderLabelsConstraints()
-        setupCollectionViewConstraints()
-    }
-    
-    private func setupScrollViewConstraints() {
-        self.scrollView.snp.makeConstraints { (make) in
-            make.top.bottom.left.right.equalTo(self.view)
-        }
-    }
-    
-    private func setupHeaderLabelsConstraints() {
-        self.nowPlayingLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.scrollView)
-            make.left.equalTo(self.view).offset(10)
-            make.right.equalTo(self.view)
-            make.height.equalTo(self.moviesVM.headerHeight)
-        }
-        
-        self.popularLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.nowPlayingCollectionView.snp_bottomMargin)
-            make.left.right.equalTo(self.nowPlayingLabel)
-            make.height.equalTo(self.moviesVM.headerHeight)
-        }
-        
-        self.topRelatedLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.popularCollectionView.snp_bottomMargin)
-            make.left.right.equalTo(self.nowPlayingLabel)
-            make.height.equalTo(self.moviesVM.headerHeight)
-        }
-        
-        self.upComingLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(self.topRelatedCollectionView.snp_bottomMargin)
-            make.left.right.equalTo(self.nowPlayingLabel)
-            make.height.equalTo(self.moviesVM.headerHeight)
-        }
-    }
-    
-    private func setupCollectionViewConstraints() {
-        self.nowPlayingCollectionView.snp.makeConstraints { (make) in
-            make.top.equalTo(self.nowPlayingLabel.snp_bottomMargin)
-            make.left.right.equalTo(self.view)
-            make.height.equalTo(self.moviesVM.itemHeight)
-        }
-        
-        self.popularCollectionView.snp.makeConstraints { (make) in
-            make.top.equalTo(self.popularLabel.snp_bottomMargin)
-            make.left.right.equalTo(self.view)
-            make.height.equalTo(self.moviesVM.itemHeight)
-        }
-        
-        self.topRelatedCollectionView.snp.makeConstraints { (make) in
-            make.top.equalTo(self.topRelatedLabel.snp_bottomMargin)
-            make.left.right.equalTo(self.view)
-            make.height.equalTo(self.moviesVM.itemHeight)
-        }
-        
-        self.upComingCollectionView.snp.makeConstraints { (make) in
-            make.top.equalTo(self.upComingLabel.snp_bottomMargin)
-            make.left.right.equalTo(self.view)
-            make.height.equalTo(self.moviesVM.itemHeight)
-            make.bottom.equalTo(scrollView)
-        }
-    }
-    
-    private func createAHeaderLabel(header: String) -> UILabel {
-        let label = UILabel()
-        label.text = header
-        label.textColor = .white
-        return label
-    }
-    
-    private func createACollectionView(tag: Int) -> UICollectionView {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.itemSize = self.moviesVM.itemSize
-        
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.tag = tag
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.register(MovieCell.classForCoder(), forCellWithReuseIdentifier: MovieCell.identifier)
-        
-        return collectionView
     }
 }
 

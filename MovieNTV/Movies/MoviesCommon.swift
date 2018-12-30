@@ -33,7 +33,3 @@ struct MovieCellViewModel: MediaCellViewModel {
     let posterImageUrl: String
     let placeHolderImageName: String
 }
-
-protocol WithMovies {
-    var movies: [Movie] { get set }
-}

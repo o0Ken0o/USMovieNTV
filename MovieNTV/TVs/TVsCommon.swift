@@ -31,7 +31,3 @@ struct TVCellVM: MediaCellViewModel {
     let posterImageUrl: String
     let placeHolderImageName: String
 }
-
-protocol HasTVs {
-    var tvs: [TV] { get set }
-}
