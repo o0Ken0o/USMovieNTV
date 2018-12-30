@@ -8,31 +8,19 @@
 
 import UIKit
 
-struct TVDetailsData {
-    let popularity: String
-    let countAverage: String
-    let count: String
-    let originalName: String
-    let genres: String
-    let language: String
-    let noOfSeasons: String
-    let noOfEpisodes: String
-    let runTimes: String
-    let overview: String
-    let createdBy: String
-    let posterImageUrl: String
-    let placeHolderImageName: String
-}
-
 protocol TVDetailsPresentable {
     var tvId: Int! { get set }
     var dataServices: DataServices! { get set }
     var displayDetails: ((TVDetailsData) -> ())? { get set }
-    var didTapCloseBtnClosure: (() -> ())? { get set }
+    func didTapCloseBtn()
     func fetchTVDetails()
 }
 
-class TVDetailsVM: TVDetailsPresentable {
+protocol TVDetailsReactable {
+    var didTapCloseBtnClosure: (() -> ())? { get set }
+}
+
+class TVDetailsVM: TVDetailsPresentable, TVDetailsReactable {
     var tvId: Int!
     var dataServices: DataServices!
     var displayDetails: ((TVDetailsData) -> ())?
@@ -104,9 +92,7 @@ class TVDetailsVM: TVDetailsPresentable {
         
         return TVDetailsData(popularity: popularity, countAverage: countAverage, count: count, originalName: originalName, genres: genres, language: language, noOfSeasons: noOfSeasons, noOfEpisodes: noOfEpisodes, runTimes: runTimes, overview: overview, createdBy: createdBy, posterImageUrl: posterImageUrl, placeHolderImageName: placeHolderImageName)
     }
-}
-
-extension TVDetailsVM: TVDetailsViewDelegate {
+    
     func didTapCloseBtn() {
         self.didTapCloseBtnClosure?()
     }

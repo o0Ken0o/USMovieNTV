@@ -31,3 +31,19 @@ struct TVCellVM: MediaCellViewModel {
     let posterImageUrl: String
     let placeHolderImageName: String
 }
+
+struct TVDetailsData {
+    let popularity: String
+    let countAverage: String
+    let count: String
+    let originalName: String
+    let genres: String
+    let language: String
+    let noOfSeasons: String
+    let noOfEpisodes: String
+    let runTimes: String
+    let overview: String
+    let createdBy: String
+    let posterImageUrl: String
+    let placeHolderImageName: String
+}

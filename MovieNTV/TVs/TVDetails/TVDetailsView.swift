@@ -26,7 +26,7 @@ class TVDetailsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private lazy var scrollView: UIScrollView = { [unowned self] in
+    lazy var scrollView: UIScrollView = { [unowned self] in
         let scrollView = UIScrollView()
         if #available(iOS 11, *) {
             guard let windowSafeInsets = UIApplication.shared.keyWindow?.safeAreaInsets,
@@ -40,20 +40,20 @@ class TVDetailsView: UIView {
         return scrollView
     }()
     
-    private lazy var closeBtn: UIButton = { [unowned self] in
+    lazy var closeBtn: UIButton = { [unowned self] in
         let btn = UIButton()
         btn.setImage(UIImage(named: "close_icon"), for: .normal)
         btn.addTarget(self, action: #selector(didTapCloseBtn(sender:)), for: .touchUpInside)
         return btn
     }()
     
-    private var posterImageView: UIImageView = {
+    var posterImageView: UIImageView = {
         let imgV = UIImageView()
         imgV.contentMode = .scaleAspectFill
         return imgV
     }()
     
-    private var popularityLabel: UILabel = {
+    var popularityLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
@@ -62,7 +62,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var countAverageLabel: UILabel = {
+    var countAverageLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
@@ -71,7 +71,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var countLabel: UILabel = {
+    var countLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
@@ -80,7 +80,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var titleTextLabel: UILabel = {
+    var titleTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .lightGray
@@ -89,7 +89,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var titleLabel: UILabel = {
+    var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .white
@@ -99,7 +99,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var genresTextLabel: UILabel = {
+    var genresTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .lightGray
@@ -108,7 +108,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var genresLabel: UILabel = {
+    var genresLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .white
@@ -118,7 +118,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var languagesTextLabel: UILabel = {
+    var languagesTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .lightGray
@@ -127,7 +127,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var languagesLabel: UILabel = {
+    var languagesLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .white
@@ -137,7 +137,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var createdByTextLabel: UILabel = {
+    var createdByTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .lightGray
@@ -146,7 +146,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var createdByLabel: UILabel = {
+    var createdByLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .white
@@ -156,7 +156,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var noOfSeasonTextLabel: UILabel = {
+    var noOfSeasonTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .lightGray
@@ -165,7 +165,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var noOfSeasonLabel: UILabel = {
+    var noOfSeasonLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
@@ -174,7 +174,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var noOfEpisodesTextLabel: UILabel = {
+    var noOfEpisodesTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .lightGray
@@ -183,7 +183,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var noOfEpisodesLabel: UILabel = {
+    var noOfEpisodesLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
@@ -192,7 +192,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var runtimeTextLabel: UILabel = {
+    var runtimeTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .lightGray
@@ -201,7 +201,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var runtimeLabel: UILabel = {
+    var runtimeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
@@ -210,7 +210,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var overviewTextLabel: UILabel = {
+    var overviewTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .lightGray
@@ -219,7 +219,7 @@ class TVDetailsView: UIView {
         return label
     }()
     
-    private var overviewLabel: UILabel = {
+    var overviewLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
@@ -425,26 +425,5 @@ class TVDetailsView: UIView {
     
     @objc private func didTapCloseBtn(sender: UIButton) {
         self.delegate?.didTapCloseBtn()
-    }
-}
-
-extension TVDetailsView {
-    func showPoster(image: UIImage?) {
-        self.posterImageView.image = image
-    }
-    
-    func displayWith(tvDetailsData: TVDetailsData) {
-        popularityLabel.text = tvDetailsData.popularity
-        countAverageLabel.text = tvDetailsData.countAverage
-        countLabel.text = tvDetailsData.count
-        titleLabel.text = tvDetailsData.originalName
-        genresLabel.text = tvDetailsData.genres
-        languagesLabel.text = tvDetailsData.language
-        noOfSeasonLabel.text = tvDetailsData.noOfSeasons
-        noOfEpisodesLabel.text = tvDetailsData.noOfEpisodes
-        runtimeLabel.text = tvDetailsData.runTimes
-        overviewLabel.text = tvDetailsData.overview
-        createdByLabel.text = tvDetailsData.createdBy
-        posterImageView.sd_setImage(with: URL(string: tvDetailsData.posterImageUrl), placeholderImage: UIImage(named: tvDetailsData.placeHolderImageName))
     }
 }

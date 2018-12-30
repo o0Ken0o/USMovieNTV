@@ -12,7 +12,7 @@ class TVDetailsCoordinator: BaseCoordinator {
     private let tv: TV
     private let presenter: UINavigationController
     private var tvDetailsVC: TVDetailsVC!
-    private var tvDetailsVM: (TVDetailsPresentable & TVDetailsViewDelegate)!
+    private var tvDetailsVM: (TVDetailsPresentable & TVDetailsReactable)!
     private let dataServices: DataServices = DataServices.shared
     
     init(presenter: UINavigationController, tv: TV) {
