@@ -12,7 +12,7 @@ class TVsCoordinator: BaseCoordinator {
     private let presenter: UINavigationController
     private let tabBarTag: Int
     private var tvsVC: TVsVC!
-    private var tvsVM: (TVsPresentable & TVsListViewDelegate)!
+    private var tvsVM: (TVsPresentable & TVsReactable)!
     private let dataServices: DataServices = DataServices.shared
     private var tvDetailsCoordinator: TVDetailsCoordinator!
     

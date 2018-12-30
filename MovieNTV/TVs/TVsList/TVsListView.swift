@@ -9,14 +9,12 @@
 import UIKit
 
 protocol TVsListViewDelegate: class {
-    func didSelect(collectionView: UICollectionView, indexPath: IndexPath)
+    
 }
 
 class TVsListView: UIView {
     weak var delegate: TVsListViewDelegate?
-    var vm: TVsPresentable!
     
-    // TODO: extract the following info into a viewModel
     private let itemSize: CGSize = {
         let width = UIScreen.main.bounds.size.width / 3
         let height = width * 1.3
@@ -31,39 +29,39 @@ class TVsListView: UIView {
         return size
     }()
     
-    private lazy var airingTodayLabel: UILabel = {
+    lazy var airingTodayLabel: UILabel = {
         return createAHeaderLabel(header: TVType.airingToday.header)
     }()
     
-    private lazy var onTheAirLabel: UILabel = {
+    lazy var onTheAirLabel: UILabel = {
         return createAHeaderLabel(header: TVType.onTheAir.header)
     }()
     
-    private lazy var popularLabel: UILabel = {
+    lazy var popularLabel: UILabel = {
         return createAHeaderLabel(header: TVType.popular.header)
     }()
     
-    private lazy var topRatedLabel: UILabel = {
+    lazy var topRatedLabel: UILabel = {
         return createAHeaderLabel(header: TVType.topRated.header)
     }()
     
-    private lazy var airingTodayCollectionView: UICollectionView = {
+    lazy var airingTodayCollectionView: UICollectionView = {
         return self.createACollectionView(tag: TVType.airingToday.rawValue)
     }()
     
-    private lazy var onTheAirCollectionView: UICollectionView = {
+    lazy var onTheAirCollectionView: UICollectionView = {
         return self.createACollectionView(tag: TVType.onTheAir.rawValue)
     }()
     
-    private lazy var popularCollectionView: UICollectionView = {
+    lazy var popularCollectionView: UICollectionView = {
         return self.createACollectionView(tag: TVType.popular.rawValue)
     }()
     
-    private lazy var topRatedCollectionView: UICollectionView = {
+    lazy var topRatedCollectionView: UICollectionView = {
         return self.createACollectionView(tag: TVType.topRated.rawValue)
     }()
     
-    private lazy var scrollView: UIScrollView = { [unowned self] in
+    lazy var scrollView: UIScrollView = { [unowned self] in
         let scrollView = UIScrollView()
         scrollView.backgroundColor = UIColor(white: 1, alpha: 0.08)
         return scrollView
@@ -189,35 +187,9 @@ class TVsListView: UIView {
         layout.itemSize = itemSize
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.dataSource = self
-        collectionView.delegate = self
         collectionView.tag = tag
         collectionView.register(TVCell.classForCoder(), forCellWithReuseIdentifier: TVCell.identifier)
         
         return collectionView
-    }
-}
-
-extension TVsListView: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return vm.numberOfItems(collectionView: collectionView, section: section)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TVCell.identifier, for: indexPath) as? TVCell else {
-                return TVCell()
-        }
-        
-        let tvCellVM = vm.tvCellVM(collectionView: collectionView, indexPath: indexPath)
-        cell.cleanUp4Reuse()
-        cell.setupWith(tvCellVM: tvCellVM)
-        
-        return cell
-    }
-}
-
-extension TVsListView: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.delegate?.didSelect(collectionView: collectionView, indexPath: indexPath)
     }
 }

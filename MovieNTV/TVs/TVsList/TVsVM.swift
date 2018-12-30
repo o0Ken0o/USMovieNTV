@@ -19,10 +19,14 @@ protocol TVsPresentable {
     func fetchTVs()
     func numberOfItems(collectionView: UICollectionView, section: Int) -> Int
     func tvCellVM(collectionView: UICollectionView, indexPath: IndexPath) -> TVCellVM
+    func didSelect(collectionView: UICollectionView, indexPath: IndexPath)
+}
+
+protocol TVsReactable {
     var didSelectATV: ((TV) -> ())? { get set }
 }
 
-class TVsVM: TVsPresentable {
+class TVsVM: TVsPresentable, TVsReactable {
     var dataServices: DataServices!
     var tvsHelper: TVsHelper!
     
@@ -78,6 +82,24 @@ class TVsVM: TVsPresentable {
         }
     }
     
+    func didSelect(collectionView: UICollectionView, indexPath: IndexPath) {
+        guard let type = TVType(rawValue: collectionView.tag) else { return }
+        
+        var tv: TV!
+        switch type {
+        case .airingToday:
+            tv = airingTVs[indexPath.row]
+        case .onTheAir:
+            tv = onTheAirTVs[indexPath.row]
+        case .popular:
+            tv = popularTVs[indexPath.row]
+        case .topRated:
+            tv = topRatedTVs[indexPath.row]
+        }
+        
+        self.didSelectATV?(tv)
+    }
+    
     private func loadAiringToday() {
         dataServices.getAiringToday { [unowned self] (success, tvs) in
             guard success, let tvs = tvs else { return }
@@ -112,25 +134,5 @@ class TVsVM: TVsPresentable {
             self.topRatedTVCellVMs = self.topRatedTVs.map{ [unowned self] in self.tvsHelper.tranform(tv: $0) }
             self.showTopRated?()
         }
-    }
-}
-
-extension TVsVM: TVsListViewDelegate {
-    func didSelect(collectionView: UICollectionView, indexPath: IndexPath) {
-        guard let type = TVType(rawValue: collectionView.tag) else { return }
-        
-        var tv: TV!
-        switch type {
-        case .airingToday:
-            tv = airingTVs[indexPath.row]
-        case .onTheAir:
-            tv = onTheAirTVs[indexPath.row]
-        case .popular:
-            tv = popularTVs[indexPath.row]
-        case .topRated:
-            tv = topRatedTVs[indexPath.row]
-        }
-        
-        self.didSelectATV?(tv)
     }
 }
