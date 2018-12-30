@@ -28,6 +28,7 @@ class MoviesCoordinator: BaseCoordinator {
         self.moviesVC.tabBarItem = UITabBarItem(title: "Movies", image: UIImage(named: "movie_icon"), tag: tabBarTag)
         
         self.moviesVM = MoviesViewModel(dataServices: dataServices)
+        self.moviesVM.moviesHelper = MoviesHelper.shared
         self.moviesVC.moviesVM = self.moviesVM
         self.moviesVC.delegate = self.moviesVM
         

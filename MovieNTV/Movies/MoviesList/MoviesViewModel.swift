@@ -8,13 +8,6 @@
 
 import UIKit
 
-struct MovieCellViewModel {
-    let releaseDate: String
-    let popularity: String
-    let posterImageUrl: String
-    let placeHolderImageName: String
-}
-
 protocol MoviesViewPresentable {
     var showNowPlayingClosure: (() -> ())? { get set }
     var showPopularClosure: (() -> ())? { get set }
@@ -24,6 +17,8 @@ protocol MoviesViewPresentable {
     var headerSize: CGSize { get }
     var itemHeight: CGFloat { get }
     var headerHeight: CGFloat { get }
+    
+    var moviesHelper: MoviesHelper! { get set }
     
     func fetchMovies()
     func numberOfRows(collectionView: UICollectionView) -> Int
@@ -35,6 +30,7 @@ protocol MoviesViewPresentable {
 
 class MoviesViewModel: MoviesViewPresentable {
     private let dataServices: DataServices
+    var moviesHelper: MoviesHelper!
     
     private var nowPlayingMovies = [Movie]()
     private var popularMovies = [Movie]()
@@ -129,7 +125,7 @@ class MoviesViewModel: MoviesViewPresentable {
             }
             
             self.nowPlayingMovies = movies
-            self.nowPlayingMovieCellViewModels = self.nowPlayingMovies.map{ [unowned self] in self.transfrom(movie: $0) }
+            self.nowPlayingMovieCellViewModels = self.nowPlayingMovies.map{ [unowned self] in self.moviesHelper.transfrom(movie: $0) }
             self.showNowPlayingClosure?()
         }
     }
@@ -141,7 +137,7 @@ class MoviesViewModel: MoviesViewPresentable {
             }
             
             self.popularMovies = movies
-            self.popularMovieCellViewModels = self.popularMovies.map{ [unowned self] in self.transfrom(movie: $0) }
+            self.popularMovieCellViewModels = self.popularMovies.map{ [unowned self] in self.moviesHelper.transfrom(movie: $0) }
             self.showPopularClosure?()
         }
     }
@@ -153,7 +149,7 @@ class MoviesViewModel: MoviesViewPresentable {
             }
             
             self.topRatedMovies = movies
-            self.topRatedMovieCellViewModels = self.topRatedMovies.map{ [unowned self] in self.transfrom(movie: $0) }
+            self.topRatedMovieCellViewModels = self.topRatedMovies.map{ [unowned self] in self.moviesHelper.transfrom(movie: $0) }
             self.showTopRatedClosure?()
         }
     }
@@ -165,23 +161,9 @@ class MoviesViewModel: MoviesViewPresentable {
             }
             
             self.upComingMovies = movies
-            self.upComingMovieCellViewModels = self.upComingMovies.map{ [unowned self] in self.transfrom(movie: $0) }
+            self.upComingMovieCellViewModels = self.upComingMovies.map{ [unowned self] in self.moviesHelper.transfrom(movie: $0) }
             self.showUpComingClosure?()
         }
-    }
-    
-    private func transfrom(movie: Movie) -> MovieCellViewModel {
-        let popularity = String(format: "%.1f", movie.popularity)
-        let popularityStr = "☆ \(popularity)"
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-mm-dd"
-        let releaseDateStr = movie.releaseDate == nil ? "" : dateFormatter.string(from: movie.releaseDate!)
-        
-        let posterPath = "https://image.tmdb.org/t/p/w500/\(movie.posterPath ?? "")"
-        let placeHolderImageName = "movieNTV"
-        
-        return MovieCellViewModel(releaseDate: releaseDateStr, popularity: popularityStr, posterImageUrl: posterPath, placeHolderImageName: placeHolderImageName)
     }
 }
 

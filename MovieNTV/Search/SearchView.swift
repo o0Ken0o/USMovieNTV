@@ -16,6 +16,8 @@ protocol SearchViewDelegate: class {
 class SearchView: UIView {
     weak var delegate: SearchViewDelegate?
     
+    var searchVM: (SearchViewPresentable & SearchViewDelegate)!
+    
     // TODO: extract the following info into a viewModel
     private let cellSpacing: CGFloat = 3.0
     
@@ -37,7 +39,7 @@ class SearchView: UIView {
     private var resultMoviesArray = [Movie]()
     private var resultTVsArray = [TV]()
     
-    private lazy var resultView: UICollectionView = {
+    lazy var resultView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = itemSize
         layout.minimumInteritemSpacing = cellSpacing
@@ -105,29 +107,25 @@ class SearchView: UIView {
 
 extension SearchView: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return searchVM.numberOfSection()
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if section == 0 {
-            return resultMoviesArray.count
-        } else if section == 1 {
-            return resultTVsArray.count
-        }
-        
-        return 0
+        return searchVM.numberOfitems(section: section)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.identifier, for: indexPath) as? MovieCell else { return MovieCell() }
             cell.cleanUp4Reuse()
-//            cell.setupWith(movie: resultMoviesArray[indexPath.row])
+            let cellVM: MovieCellViewModel = searchVM.cellVM(indexPath: indexPath) as! MovieCellViewModel
+            cell.setupWith(vm: cellVM)
             return cell
         } else if indexPath.section == 1 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TVCell.identifier, for: indexPath) as? TVCell else { return TVCell() }
+            let cellVM: TVCellVM = searchVM.cellVM(indexPath: indexPath) as! TVCellVM
             cell.cleanUp4Reuse()
-//            cell.setupWith(tv: resultTVsArray[indexPath.row])
+            cell.setupWith(tvCellVM: cellVM)
             return cell
         }
         
@@ -147,11 +145,7 @@ extension SearchView: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 extension SearchView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        if resultMoviesArray.count == 0 && resultTVsArray.count == 0 {
-            return .zero
-        }
-        
-        return CGSize(width: UIScreen.main.bounds.size.width, height: 40)
+        return searchVM.headerSize()
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

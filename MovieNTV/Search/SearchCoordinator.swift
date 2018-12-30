@@ -13,6 +13,7 @@ class SearchCoordinator: BaseCoordinator {
     private let tabBarTag: Int
     private let presenter: UINavigationController!
     private var searchVC: SearchVC!
+    private var searchVM: (SearchViewPresentable & SearchViewDelegate)!
     private var movieDetailsCoordinator: MovieDetailsCoordinator!
     private var tvDetailsCoordinator: TVDetailsCoordinator!
     
@@ -22,13 +23,19 @@ class SearchCoordinator: BaseCoordinator {
     }
     
     func start() {
+        self.searchVM = SearchViewModel()
+        self.searchVM.dataServices = dataServices
+        self.searchVM.moviesHelper = MoviesHelper.shared
+        self.searchVM.tvsHelper = TVsHelper.shared
+        
+        self.searchVM.didSelectAMovieClosure = { [unowned self] in self.didSelect(movie: $0) }
+        self.searchVM.didSelectATVClosure = { [unowned self] in self.didSelect(tv: $0) }
+        
         self.searchVC = SearchVC()
+        self.searchVC.searchVM = self.searchVM
         self.searchVC.edgesForExtendedLayout = []
         self.searchVC.title = "Search"
         self.searchVC.tabBarItem = UITabBarItem(title: "Search", image: UIImage(named: "search_icon"), tag: tabBarTag)
-        
-        self.searchVC.delegate = self
-        self.searchVC.dataServices = dataServices
         
         self.presenter.pushViewController(searchVC, animated: true)
         self.presenter.navigationBar.barTintColor = .black
@@ -38,7 +45,7 @@ class SearchCoordinator: BaseCoordinator {
     }
 }
 
-extension SearchCoordinator: SearchVCDelegate {
+extension SearchCoordinator {
     func didSelect(movie: Movie) {
         self.movieDetailsCoordinator = MovieDetailsCoordinator(presenter: presenter, movie: movie)
         self.movieDetailsCoordinator.start()

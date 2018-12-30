@@ -24,6 +24,7 @@ class TVsCoordinator: BaseCoordinator {
     func start() {
         self.tvsVM = TVsVM()
         self.tvsVM.dataServices = dataServices
+        self.tvsVM.tvsHelper = TVsHelper.shared
         
         self.tvsVM.didSelectATV = { [unowned self] tv in
             self.didSelect(tv: tv)

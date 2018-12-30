@@ -8,76 +8,23 @@
 
 import UIKit
 
-protocol SearchVCDelegate: class {
-    func didSelect(movie: Movie)
-    func didSelect(tv: TV)
-}
-
 class SearchVC: UIViewController, HasCustomView {
     typealias CustomView = SearchView
     
-    weak var delegate: SearchVCDelegate?
-    var dataServices: DataServices!
-    private var currentKeywords: String?
-    private var resultMoviesArray = [Movie]()
-    private var resultTVsArray = [TV]()
-    
-    private var searchFired: Int = 0 {
-        didSet {
-            if searchFired == 2 {
-                searchComplete()
-            }
-        }
-    }
+    var searchVM: (SearchViewPresentable & SearchViewDelegate)!
     
     override func loadView() {
         let customView = CustomView()
-        customView.delegate = self
+        customView.delegate = searchVM
+        customView.searchVM = searchVM
         view = customView
     }
     
-    private func searchMovies(_ keywords: String) {
-        dataServices.searchMovies(query: keywords) { (success, movies) in
-            if success, let movies = movies {
-                self.resultMoviesArray = movies
-                self.searchFired += 1
-            }
-        }
-    }
-    
-    private func searchTVs(_ keywords: String) {
-        dataServices.searchTVShows(query: keywords, with: { (success, tvs) in
-            if success, let tvs = tvs {
-                self.resultTVsArray = tvs
-                self.searchFired += 1
-            }
-        })
-    }
-    
-    private func searchComplete() {
-        self.customView.showResult(movies: resultMoviesArray, tvs: resultTVsArray)
-    }
-}
-
-extension SearchVC: SearchViewDelegate {
-    func searchWith(words: String?) {
-        if currentKeywords != words {
-            currentKeywords = words
-        }
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
-        guard let words = currentKeywords else { return }
-        searchFired = 0
-        resultMoviesArray = []
-        resultTVsArray = []
-        searchMovies(words)
-        searchTVs(words)
-    }
-    
-    func didSelectACell(indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            self.delegate?.didSelect(movie: resultMoviesArray[indexPath.row])
-        } else if indexPath.section == 1 {
-            self.delegate?.didSelect(tv: resultTVsArray[indexPath.row])
+        searchVM.showSearchResults = { [unowned self] in
+            self.customView.resultView.reloadData()
         }
     }
 }

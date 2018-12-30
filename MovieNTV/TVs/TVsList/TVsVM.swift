@@ -8,15 +8,9 @@
 
 import UIKit
 
-struct TVCellVM {
-    let releaseDate: String
-    let popularity: String
-    let posterImageUrl: String
-    let placeHolderImageName: String
-}
-
 protocol TVsPresentable {
     var dataServices: DataServices! { get set }
+    var tvsHelper: TVsHelper! { get set }
     var showAiringToday: (() -> ())? { get set }
     var showOnTheAir: (() -> ())? { get set }
     var showPopular: (() -> ())? { get set }
@@ -30,6 +24,7 @@ protocol TVsPresentable {
 
 class TVsVM: TVsPresentable {
     var dataServices: DataServices!
+    var tvsHelper: TVsHelper!
     
     private var airingTVs = [TV]()
     private var onTheAirTVs = [TV]()
@@ -87,7 +82,7 @@ class TVsVM: TVsPresentable {
         dataServices.getAiringToday { [unowned self] (success, tvs) in
             guard success, let tvs = tvs else { return }
             self.airingTVs = tvs
-            self.airingTVCellVMs = self.airingTVs.map{ [unowned self] in self.tranform(tv: $0) }
+            self.airingTVCellVMs = self.airingTVs.map{ [unowned self] in self.tvsHelper.tranform(tv: $0) }
             self.showAiringToday?()
         }
     }
@@ -96,7 +91,7 @@ class TVsVM: TVsPresentable {
         dataServices.getTVOnTheAir { [unowned self] (success, tvs) in
             guard success, let tvs = tvs else { return }
             self.onTheAirTVs = tvs
-            self.onTheAirTVCellVMs = self.onTheAirTVs.map{ [unowned self] in self.tranform(tv: $0) }
+            self.onTheAirTVCellVMs = self.onTheAirTVs.map{ [unowned self] in self.tvsHelper.tranform(tv: $0) }
             self.showOnTheAir?()
         }
     }
@@ -105,7 +100,7 @@ class TVsVM: TVsPresentable {
         dataServices.getTVPopular { [unowned self] (success, tvs) in
             guard success, let tvs = tvs else { return }
             self.popularTVs = tvs
-            self.popularTVCellVMs = self.popularTVs.map{ [unowned self] in self.tranform(tv: $0) }
+            self.popularTVCellVMs = self.popularTVs.map{ [unowned self] in self.tvsHelper.tranform(tv: $0) }
             self.showPopular?()
         }
     }
@@ -114,29 +109,9 @@ class TVsVM: TVsPresentable {
         dataServices.getTVTopRated { [unowned self] (success, tvs) in
             guard success, let tvs = tvs else { return }
             self.topRatedTVs = tvs
-            self.topRatedTVCellVMs = self.topRatedTVs.map{ [unowned self] in self.tranform(tv: $0) }
+            self.topRatedTVCellVMs = self.topRatedTVs.map{ [unowned self] in self.tvsHelper.tranform(tv: $0) }
             self.showTopRated?()
         }
-    }
-    
-    private func tranform(tv: TV) -> TVCellVM {
-        var releaseDate = ""
-        if let firstAirDate = tv.firstAirDate {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-mm-dd"
-            releaseDate = dateFormatter.string(from: firstAirDate)
-        }
-        
-        var popularity = ""
-        if let tvPopularity = tv.popularity {
-            let popularityStr = String(format: "%.1f", tvPopularity)
-            popularity = "☆ \(popularityStr)"
-        }
-        
-        let posterImageUrl = "https://image.tmdb.org/t/p/w500/\(tv.posterPath ?? "")"
-        let placeHolderImageName = "movieNTV"
-        
-        return TVCellVM(releaseDate: releaseDate, popularity: popularity, posterImageUrl: posterImageUrl, placeHolderImageName: placeHolderImageName)
     }
 }
 

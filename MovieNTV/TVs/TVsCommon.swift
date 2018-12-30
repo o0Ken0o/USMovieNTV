@@ -25,6 +25,13 @@ enum TVType: Int {
     }
 }
 
+struct TVCellVM: MediaCellViewModel {
+    let releaseDate: String
+    let popularity: String
+    let posterImageUrl: String
+    let placeHolderImageName: String
+}
+
 protocol HasTVs {
     var tvs: [TV] { get set }
 }
