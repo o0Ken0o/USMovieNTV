@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 protocol MovieDetailsVCDelegate: class {
     func didTapCloseBtn()
@@ -17,6 +19,7 @@ class MovieDetailsVC: UIViewController, HasCustomView {
     typealias CustomView = MovieDetailsView
     weak var delegate: MovieDetailsVCDelegate?
     var movieDetailsVM: MovieDetailsPresentable!
+    private let disposeBag = DisposeBag()
     
     override func loadView() {
         let customView = CustomView()
@@ -29,24 +32,22 @@ class MovieDetailsVC: UIViewController, HasCustomView {
         
         self.view.backgroundColor = .black
         
-        movieDetailsVM.displayDetails = { [unowned self] in
-            self.displayWith(vm: self.movieDetailsVM)
-        }
-        
-        movieDetailsVM.fetchMovieDetails()
+        movieDetailsVM.movieDetailsData
+            .subscribe(onNext: { [unowned self] in self.displayWith(movieDetails: $0) })
+            .disposed(by: disposeBag)
     }
     
-    private func displayWith(vm: MovieDetailsPresentable) {
-        self.customView.posterImageView.sd_setImage(with: URL(string: vm.posterImageUrl), placeholderImage: UIImage(named: vm.placeHolderImageName))
-        self.customView.popularityLabel.text = vm.popularity
-        self.customView.countLabel.text = vm.count
-        self.customView.titleLabel.text = vm.title
-        self.customView.genresLabel.text = vm.genres
-        self.customView.languagesLabel.text = vm.spokenLanguages
-        self.customView.companiesLabel.text = vm.productionCompanies
-        self.customView.countriesLabel.text = vm.productionCountries
-        self.customView.releaseDateLabel.text = vm.releaseDate
-        self.customView.runtimeLabel.text = vm.runTimeMins
+    private func displayWith(movieDetails: MovieDetailsData) {
+        self.customView.posterImageView.sd_setImage(with: URL(string: movieDetails.posterImageUrl), placeholderImage: UIImage(named: movieDetails.placeHolderImageName))
+        self.customView.popularityLabel.text = movieDetails.popularity
+        self.customView.countLabel.text = movieDetails.count
+        self.customView.titleLabel.text = movieDetails.title
+        self.customView.genresLabel.text = movieDetails.genres
+        self.customView.languagesLabel.text = movieDetails.spokenLanguages
+        self.customView.companiesLabel.text = movieDetails.productionCompanies
+        self.customView.countriesLabel.text = movieDetails.productionCountries
+        self.customView.releaseDateLabel.text = movieDetails.releaseDate
+        self.customView.runtimeLabel.text = movieDetails.runTimeMins
     }
 }
 

@@ -392,18 +392,3 @@ class MovieDetailsView: UIView {
         self.delegate?.didTapCloseBtn()
     }
 }
-
-extension MovieDetailsView {
-    func displayWith(vm: MovieDetailsPresentable) {
-        self.posterImageView.sd_setImage(with: URL(string: vm.posterImageUrl), placeholderImage: UIImage(named: vm.placeHolderImageName))
-        self.popularityLabel.text = vm.popularity
-        self.countLabel.text = vm.count
-        self.titleLabel.text = vm.title
-        self.genresLabel.text = vm.genres
-        self.languagesLabel.text = vm.spokenLanguages
-        self.companiesLabel.text = vm.productionCompanies
-        self.countriesLabel.text = vm.productionCountries
-        self.releaseDateLabel.text = vm.releaseDate
-        self.runtimeLabel.text = vm.runTimeMins
-    }
-}

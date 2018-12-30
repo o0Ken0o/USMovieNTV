@@ -8,26 +8,34 @@
 
 import Foundation
 import Alamofire
+import RxAlamofire
+import RxSwift
+import RxCocoa
 import SwiftyJSON
+
+enum ServiceError: Error {
+    case cannotParse
+}
 
 class MovieServices {
 
-    let apiKey = "ba0a292f6231bfc33b918d9c7cb31095"
-    let baseURL = "https://api.themoviedb.org/3"
-    let getImageBaseURL = "https://image.tmdb.org/t/p"
-        
+    private let apiKey = "ba0a292f6231bfc33b918d9c7cb31095"
+    private let baseURL = "https://api.themoviedb.org/3"
+    private let getImageBaseURL = "https://image.tmdb.org/t/p"
+    private let disposeBag = DisposeBag()
+            
     // /movie/{movie_id}
-    func getMovieDetails(movieID: Int, with completion: @escaping (_ success: Bool, _ movie: Movie?) -> ()) {
+    func getMovieDetails(movieID: Int) -> Observable<Movie> {
         let url = "\(baseURL)/movie/\(movieID)?api_key=\(apiKey)"
         
-        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
-            switch response.result {
-            case .success(let value):
-                completion(true, Movie(movieJSON: JSON(value)))
-            case .failure:
-                completion(false, nil)
-            }
-        })
+        return RxAlamofire.requestJSON(.get, url)
+            .flatMap({ (response, json) -> Observable<Movie> in
+                guard response.statusCode / 100 == 2, let movie = Movie(movieJSON: JSON(json)) else {
+                    return Observable.error(ServiceError.cannotParse)
+                }
+                
+                return Observable.just(movie)
+            })
     }
     
     // /movie/latest

@@ -33,3 +33,18 @@ struct MovieCellViewModel: MediaCellViewModel {
     let posterImageUrl: String
     let placeHolderImageName: String
 }
+
+struct MovieDetailsData {
+    let popularity: String
+    let count: String
+    let voteAverage: String
+    let title: String
+    let genres: String
+    let spokenLanguages: String
+    let productionCompanies: String
+    let productionCountries: String
+    let releaseDate: String
+    let runTimeMins: String
+    let posterImageUrl: String
+    let placeHolderImageName: String
+}

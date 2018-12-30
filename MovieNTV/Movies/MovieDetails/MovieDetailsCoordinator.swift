@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class MovieDetailsCoordinator: BaseCoordinator {
     
@@ -15,6 +17,7 @@ class MovieDetailsCoordinator: BaseCoordinator {
     private var movieDetailsVM: (MovieDetailsPresentable & MovieDetailsReactable & MovieDetailsVCDelegate)!
     private let dataServices: DataServices = DataServices.shared
     private let movie: Movie
+    private let disposeBag = DisposeBag()
     
     init(presenter: UINavigationController, movie: Movie) {
         self.presenter = presenter
@@ -22,9 +25,7 @@ class MovieDetailsCoordinator: BaseCoordinator {
     }
     
     func start() {
-        self.movieDetailsVM = MovieDetailsViewModel()
-        self.movieDetailsVM.dataServices = dataServices
-        self.movieDetailsVM.movieId = movie.id
+        self.movieDetailsVM = MovieDetailsViewModel(dataServices: dataServices, movieId: movie.id, moviesHelper: MoviesHelper.shared, disposeBag: disposeBag)
         self.movieDetailsVM.didTapCloseBtnClosure = { [unowned self] in self.didTapCloseBtn() }
         
         self.movieDetailsVC = MovieDetailsVC()

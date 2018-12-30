@@ -8,6 +8,8 @@
 
 import Foundation
 import Alamofire
+import RxSwift
+import RxCocoa
 import SwiftyJSON
 
 class DataServices {
@@ -20,8 +22,8 @@ class DataServices {
     private init() {}
     
     // /movie/{movie_id}
-    func getMovieDetails(movieID: Int, with completion: @escaping (_ success: Bool, _ movie: Movie?) -> ()) {
-        movieServices.getMovieDetails(movieID: movieID, with: completion)
+    func getMovieDetails(movieID: Int) -> Observable<Movie> {
+        return movieServices.getMovieDetails(movieID: movieID)
     }
     
     // /movie/latest
