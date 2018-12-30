@@ -15,11 +15,13 @@ protocol SearchViewPresentable {
     var showSearchResults: (() -> ())? { get set }
     var didSelectAMovieClosure: ((Movie) -> ())? { get set }
     var didSelectATVClosure: ((TV) -> ())? { get set }
+    var cellSpacing: CGFloat { get }
     
     func numberOfSection() -> Int
     func numberOfitems(section: Int) -> Int
     func cellVM(indexPath: IndexPath) -> MediaCellViewModel
     func headerSize() -> CGSize
+    func headerString(indexPath: IndexPath) -> String
 }
 
 class SearchViewModel: SearchViewPresentable {
@@ -29,6 +31,7 @@ class SearchViewModel: SearchViewPresentable {
     var showSearchResults: (() -> ())?
     var didSelectAMovieClosure: ((Movie) -> ())?
     var didSelectATVClosure: ((TV) -> ())?
+    var cellSpacing: CGFloat = 3.0
     
     private var currentKeywords: String?
     private var resultMoviesArray = [Movie]()
@@ -64,6 +67,10 @@ class SearchViewModel: SearchViewPresentable {
         return CGSize(width: UIScreen.main.bounds.size.width, height: 40)
     }
     
+    func headerString(indexPath: IndexPath) -> String {
+        return indexPath.section == 0 ? "Movies" : "TVs"
+    }
+    
     private var searchFired: Int = 0 {
         didSet {
             if searchFired == 2 {
@@ -97,7 +104,7 @@ class SearchViewModel: SearchViewPresentable {
     }
 }
 
-extension SearchViewModel: SearchViewDelegate {
+extension SearchViewModel: SearchVCDelegate {
     func searchWith(words: String?) {
         if currentKeywords != words {
             currentKeywords = words

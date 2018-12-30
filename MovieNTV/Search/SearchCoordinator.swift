@@ -13,7 +13,7 @@ class SearchCoordinator: BaseCoordinator {
     private let tabBarTag: Int
     private let presenter: UINavigationController!
     private var searchVC: SearchVC!
-    private var searchVM: (SearchViewPresentable & SearchViewDelegate)!
+    private var searchVM: (SearchViewPresentable & SearchVCDelegate)!
     private var movieDetailsCoordinator: MovieDetailsCoordinator!
     private var tvDetailsCoordinator: TVDetailsCoordinator!
     
@@ -33,6 +33,7 @@ class SearchCoordinator: BaseCoordinator {
         
         self.searchVC = SearchVC()
         self.searchVC.searchVM = self.searchVM
+        self.searchVC.delegate = self.searchVM
         self.searchVC.edgesForExtendedLayout = []
         self.searchVC.title = "Search"
         self.searchVC.tabBarItem = UITabBarItem(title: "Search", image: UIImage(named: "search_icon"), tag: tabBarTag)
