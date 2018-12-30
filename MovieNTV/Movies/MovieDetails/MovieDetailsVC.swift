@@ -8,10 +8,14 @@
 
 import UIKit
 
+protocol MovieDetailsVCDelegate: class {
+    func didTapCloseBtn()
+}
+
 class MovieDetailsVC: UIViewController, HasCustomView {
     
     typealias CustomView = MovieDetailsView
-    
+    weak var delegate: MovieDetailsVCDelegate?
     var movieDetailsVM: MovieDetailsPresentable!
     
     override func loadView() {
@@ -48,6 +52,6 @@ class MovieDetailsVC: UIViewController, HasCustomView {
 
 extension MovieDetailsVC: MovieDetailsViewDelegate {
     func didTapCloseBtn() {
-        self.dismiss(animated: true)
+        self.delegate?.didTapCloseBtn()
     }
 }

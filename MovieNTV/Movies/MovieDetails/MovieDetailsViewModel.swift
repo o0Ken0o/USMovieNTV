@@ -29,7 +29,11 @@ protocol MovieDetailsPresentable {
     var movieId: Int! { get set }
 }
 
-class MovieDetailsViewModel: MovieDetailsPresentable {
+protocol MovieDetailsReactable {
+    var didTapCloseBtnClosure: (() -> ())? { get set }
+}
+
+class MovieDetailsViewModel: MovieDetailsPresentable, MovieDetailsReactable {
     var popularity: String!
     var count: String!
     var voteAverage: String!
@@ -43,6 +47,7 @@ class MovieDetailsViewModel: MovieDetailsPresentable {
     var posterImageUrl: String!
     var placeHolderImageName: String!
     var displayDetails: (() -> ())?
+    var didTapCloseBtnClosure: (() -> ())?
     
     var dataServices: DataServices!
     var movieId: Int!
@@ -109,5 +114,11 @@ class MovieDetailsViewModel: MovieDetailsPresentable {
                 self.displayDetails?()
             }
         }
+    }
+}
+
+extension MovieDetailsViewModel: MovieDetailsVCDelegate {
+    func didTapCloseBtn() {
+        self.didTapCloseBtnClosure?()
     }
 }

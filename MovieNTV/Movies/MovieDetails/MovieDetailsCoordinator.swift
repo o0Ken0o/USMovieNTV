@@ -12,7 +12,7 @@ class MovieDetailsCoordinator: BaseCoordinator {
     
     private let presenter: UINavigationController
     private var movieDetailsVC: MovieDetailsVC!
-    private var movieDetailsVM: MovieDetailsPresentable!
+    private var movieDetailsVM: (MovieDetailsPresentable & MovieDetailsReactable & MovieDetailsVCDelegate)!
     private let dataServices: DataServices = DataServices.shared
     private let movie: Movie
     
@@ -25,10 +25,16 @@ class MovieDetailsCoordinator: BaseCoordinator {
         self.movieDetailsVM = MovieDetailsViewModel()
         self.movieDetailsVM.dataServices = dataServices
         self.movieDetailsVM.movieId = movie.id
+        self.movieDetailsVM.didTapCloseBtnClosure = { [unowned self] in self.didTapCloseBtn() }
         
         self.movieDetailsVC = MovieDetailsVC()
         self.movieDetailsVC.movieDetailsVM = self.movieDetailsVM
+        self.movieDetailsVC.delegate = self.movieDetailsVM
         
         self.presenter.present(movieDetailsVC, animated: true)
+    }
+    
+    private func didTapCloseBtn() {
+        self.movieDetailsVC.dismiss(animated: true)
     }
 }
