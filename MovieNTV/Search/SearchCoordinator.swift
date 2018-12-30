@@ -13,7 +13,7 @@ class SearchCoordinator: BaseCoordinator {
     private let tabBarTag: Int
     private let presenter: UINavigationController!
     private var searchVC: SearchVC!
-    private var searchVM: (SearchViewPresentable & SearchVCDelegate)!
+    private var searchVM: (SearchViewPresentable & SearchVCDelegate & SearchViewReactable)!
     private var movieDetailsCoordinator: MovieDetailsCoordinator!
     private var tvDetailsCoordinator: TVDetailsCoordinator!
     

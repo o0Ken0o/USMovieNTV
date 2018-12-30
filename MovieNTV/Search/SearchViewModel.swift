@@ -13,9 +13,6 @@ protocol SearchViewPresentable {
     var moviesHelper: MoviesHelper! { get set }
     var tvsHelper: TVsHelper! { get set }
     var showSearchResults: (() -> ())? { get set }
-    var didSelectAMovieClosure: ((Movie) -> ())? { get set }
-    var didSelectATVClosure: ((TV) -> ())? { get set }
-    var cellSpacing: CGFloat { get }
     
     func numberOfSection() -> Int
     func numberOfitems(section: Int) -> Int
@@ -24,14 +21,18 @@ protocol SearchViewPresentable {
     func headerString(indexPath: IndexPath) -> String
 }
 
-class SearchViewModel: SearchViewPresentable {
+protocol SearchViewReactable {
+    var didSelectAMovieClosure: ((Movie) -> ())? { get set }
+    var didSelectATVClosure: ((TV) -> ())? { get set }
+}
+
+class SearchViewModel: SearchViewPresentable, SearchViewReactable {
     var dataServices: DataServices!
     var moviesHelper: MoviesHelper!
     var tvsHelper: TVsHelper!
     var showSearchResults: (() -> ())?
     var didSelectAMovieClosure: ((Movie) -> ())?
     var didSelectATVClosure: ((TV) -> ())?
-    var cellSpacing: CGFloat = 3.0
     
     private var currentKeywords: String?
     private var resultMoviesArray = [Movie]()

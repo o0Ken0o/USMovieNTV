@@ -80,7 +80,6 @@ extension SearchVC: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.searchVM.didSelectACell(indexPath: indexPath)
         self.delegate?.didSelectACell(indexPath: indexPath)
     }
 }

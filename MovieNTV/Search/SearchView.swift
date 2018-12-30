@@ -11,8 +11,10 @@ import UIKit
 class SearchView: UIView {
     var searchVM: SearchViewPresentable!
     
+    lazy var cellSpacing: CGFloat = 3.0
+    
     private lazy var itemSize: CGSize = {
-        let width = UIScreen.main.bounds.size.width / 3 - searchVM.cellSpacing
+        let width = UIScreen.main.bounds.size.width / 3 - cellSpacing
         let height = width * 1.3
         let size = CGSize(width: width, height: height)
         return size
@@ -27,8 +29,8 @@ class SearchView: UIView {
     lazy var resultView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = itemSize
-        layout.minimumInteritemSpacing = searchVM.cellSpacing
-        layout.minimumLineSpacing = searchVM.cellSpacing
+        layout.minimumInteritemSpacing = cellSpacing
+        layout.minimumLineSpacing = cellSpacing
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
