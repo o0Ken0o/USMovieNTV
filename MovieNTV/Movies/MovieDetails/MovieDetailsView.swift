@@ -26,7 +26,7 @@ class MovieDetailsView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private lazy var scrollView: UIScrollView = { [unowned self] in
+    lazy var scrollView: UIScrollView = { [unowned self] in
         let scrollView = UIScrollView()
         if #available(iOS 11, *) {
             guard let windowSafeInsets = UIApplication.shared.keyWindow?.safeAreaInsets,
@@ -40,20 +40,20 @@ class MovieDetailsView: UIView {
         return scrollView
     }()
     
-    private lazy var closeBtn: UIButton = { [unowned self] in
+    lazy var closeBtn: UIButton = { [unowned self] in
         let btn = UIButton()
         btn.setImage(UIImage(named: "close_icon"), for: .normal)
         btn.addTarget(self, action: #selector(didTapCloseBtn(sender:)), for: .touchUpInside)
         return btn
     }()
     
-    private var posterImageView: UIImageView = {
+    var posterImageView: UIImageView = {
         let imgV = UIImageView()
         imgV.contentMode = .scaleAspectFill
         return imgV
     }()
     
-    private var popularityLabel: UILabel = {
+    var popularityLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
@@ -62,7 +62,7 @@ class MovieDetailsView: UIView {
         return label
     }()
     
-    private var countAverageLabel: UILabel = {
+    var countAverageLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
@@ -71,7 +71,7 @@ class MovieDetailsView: UIView {
         return label
     }()
     
-    private var countLabel: UILabel = {
+    var countLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
@@ -80,7 +80,7 @@ class MovieDetailsView: UIView {
         return label
     }()
     
-    private var titleTextLabel: UILabel = {
+    var titleTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .lightGray
@@ -89,7 +89,7 @@ class MovieDetailsView: UIView {
         return label
     }()
     
-    private var titleLabel: UILabel = {
+    var titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .white
@@ -99,7 +99,7 @@ class MovieDetailsView: UIView {
         return label
     }()
     
-    private var genresTextLabel: UILabel = {
+    var genresTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .lightGray
@@ -108,7 +108,7 @@ class MovieDetailsView: UIView {
         return label
     }()
     
-    private var genresLabel: UILabel = {
+    var genresLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .white
@@ -118,7 +118,7 @@ class MovieDetailsView: UIView {
         return label
     }()
     
-    private var languagesTextLabel: UILabel = {
+    var languagesTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .lightGray
@@ -127,7 +127,7 @@ class MovieDetailsView: UIView {
         return label
     }()
     
-    private var languagesLabel: UILabel = {
+    var languagesLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .white
@@ -137,7 +137,7 @@ class MovieDetailsView: UIView {
         return label
     }()
     
-    private var companiesTextLabel: UILabel = {
+     var companiesTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .lightGray
@@ -146,7 +146,7 @@ class MovieDetailsView: UIView {
         return label
     }()
     
-    private var companiesLabel: UILabel = {
+    var companiesLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .white
@@ -156,7 +156,7 @@ class MovieDetailsView: UIView {
         return label
     }()
     
-    private var countriesTextLabel: UILabel = {
+    var countriesTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .lightGray
@@ -165,7 +165,7 @@ class MovieDetailsView: UIView {
         return label
     }()
     
-    private var countriesLabel: UILabel = {
+    var countriesLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
@@ -174,7 +174,7 @@ class MovieDetailsView: UIView {
         return label
     }()
     
-    private var releaseDateTextLabel: UILabel = {
+    var releaseDateTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .lightGray
@@ -183,7 +183,7 @@ class MovieDetailsView: UIView {
         return label
     }()
     
-    private var releaseDateLabel: UILabel = {
+    var releaseDateLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
@@ -192,7 +192,7 @@ class MovieDetailsView: UIView {
         return label
     }()
     
-    private var runtimeTextLabel: UILabel = {
+    var runtimeTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .normal, size: 15.0)
         label.textColor = .lightGray
@@ -201,7 +201,7 @@ class MovieDetailsView: UIView {
         return label
     }()
     
-    private var runtimeLabel: UILabel = {
+    var runtimeLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.helveticaNeue(weight: .light, size: 15.0)
         label.textColor = .white
@@ -210,7 +210,7 @@ class MovieDetailsView: UIView {
         return label
     }()
     
-    private func addViews() {
+    func addViews() {
         self.addSubview(scrollView)
         self.scrollView.addSubview(posterImageView)
         self.scrollView.addSubview(popularityLabel)
@@ -233,7 +233,7 @@ class MovieDetailsView: UIView {
         self.scrollView.addSubview(closeBtn)
     }
     
-    private func setupConstraints() {
+    func setupConstraints() {
         setupCloseBtnConstraints()
         setupPosterImageViewConstraints()
         setupPopularityLabelConstraints()
@@ -248,7 +248,7 @@ class MovieDetailsView: UIView {
         setupRunTimeLabelConstraints()
     }
     
-    private func setupCloseBtnConstraints() {
+    func setupCloseBtnConstraints() {
         self.closeBtn.snp.makeConstraints { (make) in
             if #available(iOS 11, *) {
                 make.top.equalTo(self.scrollView).offset(20)
@@ -262,7 +262,7 @@ class MovieDetailsView: UIView {
         }
     }
     
-    private func setupPosterImageViewConstraints() {
+    func setupPosterImageViewConstraints() {
         self.posterImageView.snp.makeConstraints { (make) in
             make.top.equalTo(scrollView)
             make.left.right.equalTo(self)
@@ -270,7 +270,7 @@ class MovieDetailsView: UIView {
         }
     }
     
-    private func setupPopularityLabelConstraints() {
+    func setupPopularityLabelConstraints() {
         self.popularityLabel.snp.makeConstraints { (make) in
             make.top.equalTo(self.posterImageView.snp.bottom).offset(10)
             make.left.equalTo(self).offset(20)
@@ -278,7 +278,7 @@ class MovieDetailsView: UIView {
         }
     }
     
-    private func setupCountAverageLabelConstraints() {
+    func setupCountAverageLabelConstraints() {
         self.countAverageLabel.snp.makeConstraints { (make) in
             make.top.equalTo(self.popularityLabel)
             make.left.equalTo(self.popularityLabel.snp.right)
@@ -286,7 +286,7 @@ class MovieDetailsView: UIView {
         }
     }
     
-    private func setupCountLabelConstraints() {
+    func setupCountLabelConstraints() {
         self.countLabel.snp.makeConstraints { (make) in
             make.top.equalTo(self.popularityLabel)
             make.right.equalTo(self).offset(-20)
@@ -295,7 +295,7 @@ class MovieDetailsView: UIView {
         }
     }
     
-    private func setupTitleLabelConstraints() {
+    func setupTitleLabelConstraints() {
         self.titleTextLabel.snp.makeConstraints { (make) in
             make.top.equalTo(self.popularityLabel.snp.bottom).offset(49.5)
             make.left.equalTo(self.popularityLabel)
@@ -309,7 +309,7 @@ class MovieDetailsView: UIView {
         }
     }
     
-    private func setupGenresLabelConstraints() {
+    func setupGenresLabelConstraints() {
         self.genresTextLabel.snp.makeConstraints { (make) in
             make.top.equalTo(self.titleLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
@@ -322,7 +322,7 @@ class MovieDetailsView: UIView {
         }
     }
     
-    private func setupLanguagesLabelConstraints() {
+    func setupLanguagesLabelConstraints() {
         self.languagesTextLabel.snp.makeConstraints { (make) in
             make.top.equalTo(self.genresLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
@@ -335,7 +335,7 @@ class MovieDetailsView: UIView {
         }
     }
     
-    private func setupCompaniesLabelConstraints() {
+    func setupCompaniesLabelConstraints() {
         self.companiesTextLabel.snp.makeConstraints { (make) in
             make.top.equalTo(self.languagesLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
@@ -348,7 +348,7 @@ class MovieDetailsView: UIView {
         }
     }
     
-    private func setupCountriesLabelConstraints() {
+    func setupCountriesLabelConstraints() {
         self.countriesTextLabel.snp.makeConstraints { (make) in
             make.top.equalTo(self.companiesLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
@@ -361,7 +361,7 @@ class MovieDetailsView: UIView {
         }
     }
     
-    private func setupReleaseDateLabelConstraints() {
+    func setupReleaseDateLabelConstraints() {
         self.releaseDateTextLabel.snp.makeConstraints { (make) in
             make.top.equalTo(self.countriesLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
@@ -374,7 +374,7 @@ class MovieDetailsView: UIView {
         }
     }
     
-    private func setupRunTimeLabelConstraints() {
+    func setupRunTimeLabelConstraints() {
         self.runtimeTextLabel.snp.makeConstraints { (make) in
             make.top.equalTo(self.releaseDateLabel.snp.bottom).offset(5)
             make.left.right.equalTo(self.titleTextLabel)
