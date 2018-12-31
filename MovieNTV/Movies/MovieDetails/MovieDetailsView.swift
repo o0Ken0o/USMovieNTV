@@ -8,13 +8,7 @@
 
 import UIKit
 
-protocol MovieDetailsViewDelegate: class {
-    func didTapCloseBtn()
-}
-
 class MovieDetailsView: UIView {
-    weak var delegate: MovieDetailsViewDelegate?
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -43,7 +37,6 @@ class MovieDetailsView: UIView {
     lazy var closeBtn: UIButton = { [unowned self] in
         let btn = UIButton()
         btn.setImage(UIImage(named: "close_icon"), for: .normal)
-        btn.addTarget(self, action: #selector(didTapCloseBtn(sender:)), for: .touchUpInside)
         return btn
     }()
     
@@ -386,9 +379,5 @@ class MovieDetailsView: UIView {
             make.right.equalTo(self.titleLabel)
             make.bottom.equalTo(self.scrollView.snp.bottom)
         }
-    }
-    
-    @objc private func didTapCloseBtn(sender: UIButton) {
-        self.delegate?.didTapCloseBtn()
     }
 }

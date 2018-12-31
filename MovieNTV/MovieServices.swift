@@ -33,7 +33,7 @@ class MovieServices {
                 guard response.statusCode / 100 == 2, let movie = Movie(movieJSON: JSON(json)) else {
                     return Observable.error(ServiceError.cannotParse)
                 }
-                
+
                 return Observable.just(movie)
             })
     }

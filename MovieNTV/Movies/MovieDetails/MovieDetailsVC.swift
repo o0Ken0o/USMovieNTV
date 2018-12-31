@@ -10,20 +10,14 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-protocol MovieDetailsVCDelegate: class {
-    func didTapCloseBtn()
-}
-
 class MovieDetailsVC: UIViewController, HasCustomView {
     
     typealias CustomView = MovieDetailsView
-    weak var delegate: MovieDetailsVCDelegate?
     var movieDetailsVM: MovieDetailsPresentable!
     private let disposeBag = DisposeBag()
     
     override func loadView() {
         let customView = CustomView()
-        customView.delegate = self
         view = customView
     }
     
@@ -34,6 +28,10 @@ class MovieDetailsVC: UIViewController, HasCustomView {
         
         movieDetailsVM.movieDetailsData
             .subscribe(onNext: { [unowned self] in self.displayWith(movieDetails: $0) })
+            .disposed(by: disposeBag)
+        
+        self.customView.closeBtn.rx.tap
+            .bind(to: movieDetailsVM.closed)
             .disposed(by: disposeBag)
     }
     
@@ -48,11 +46,5 @@ class MovieDetailsVC: UIViewController, HasCustomView {
         self.customView.countriesLabel.text = movieDetails.productionCountries
         self.customView.releaseDateLabel.text = movieDetails.releaseDate
         self.customView.runtimeLabel.text = movieDetails.runTimeMins
-    }
-}
-
-extension MovieDetailsVC: MovieDetailsViewDelegate {
-    func didTapCloseBtn() {
-        self.delegate?.didTapCloseBtn()
     }
 }

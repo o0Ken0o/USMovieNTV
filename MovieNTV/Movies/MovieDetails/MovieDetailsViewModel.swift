@@ -12,14 +12,17 @@ import RxCocoa
 
 protocol MovieDetailsPresentable {
     var movieDetailsData: PublishSubject<MovieDetailsData> { get set }
+    var closed: AnyObserver<Void>! { get set }
 }
 
 protocol MovieDetailsReactable {
-    var didTapCloseBtnClosure: (() -> ())? { get set }
+    var closedTap: Observable<Void>! { get set }
 }
 
 class MovieDetailsViewModel: MovieDetailsPresentable, MovieDetailsReactable {
-    var movieDetailsData: PublishSubject<MovieDetailsData> = PublishSubject<MovieDetailsData>()
+    var movieDetailsData = PublishSubject<MovieDetailsData>()
+    var closed: AnyObserver<Void>!
+    var closedTap: Observable<Void>! = PublishSubject<Void>()
     var didTapCloseBtnClosure: (() -> ())?
     
     private var dataServices: DataServices
@@ -32,6 +35,8 @@ class MovieDetailsViewModel: MovieDetailsPresentable, MovieDetailsReactable {
         self.movieId = movieId
         self.disposeBag = disposeBag
         self.moviesHelper = moviesHelper
+        
+        setupBinding()
         fetchMovieDetails()
     }
     
@@ -52,10 +57,10 @@ class MovieDetailsViewModel: MovieDetailsPresentable, MovieDetailsReactable {
             })
             .disposed(by: disposeBag)
     }
-}
-
-extension MovieDetailsViewModel: MovieDetailsVCDelegate {
-    func didTapCloseBtn() {
-        self.didTapCloseBtnClosure?()
+    
+    private func setupBinding() {
+        let _closed = PublishSubject<Void>()
+        self.closed = _closed.asObserver()
+        self.closedTap = _closed.asObservable()
     }
 }
