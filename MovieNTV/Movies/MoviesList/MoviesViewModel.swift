@@ -7,9 +7,12 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
 
 protocol MoviesViewPresentable {
-    var showNowPlayingClosure: (() -> ())? { get set }
+    var disposeBag: DisposeBag { get set }
+    var nowPlayingMovies: BehaviorSubject<[MovieCellViewModel]> { get set }
     var showPopularClosure: (() -> ())? { get set }
     var showTopRatedClosure: (() -> ())? { get set }
     var showUpComingClosure: (() -> ())? { get set }
@@ -24,15 +27,23 @@ protocol MoviesViewPresentable {
     func numberOfRows(collectionView: UICollectionView) -> Int
     func movieCellVM(collectionView: UICollectionView, indexPath: IndexPath) -> MovieCellViewModel
     
-    var viewDidLoadClosure: (() ->())? { get set }
-    var didSelectAMovieClosure: ((Movie) -> ())? { get set }
+    var didSelectAMovie: AnyObserver<MovieCellViewModel> { get set }
 }
 
-class MoviesViewModel: MoviesViewPresentable {
+protocol MoviesViewReactable {
+    var viewDidLoadClosure: (() ->())? { get set }
+    var didSelectAMovieClosure: ((Movie) -> ())? { get set }
+    var goToMovieDetails: Observable<Int> { get set }
+}
+
+class MoviesViewModel: MoviesViewPresentable, MoviesViewReactable {
     private let dataServices: DataServices
     var moviesHelper: MoviesHelper!
     
-    private var nowPlayingMovies = [Movie]()
+    var disposeBag: DisposeBag
+    var nowPlayingMovies: BehaviorSubject<[MovieCellViewModel]>
+    var didSelectAMovie: AnyObserver<MovieCellViewModel>
+    var goToMovieDetails: Observable<Int>
     private var popularMovies = [Movie]()
     private var topRatedMovies = [Movie]()
     private var upComingMovies = [Movie]()
@@ -73,8 +84,13 @@ class MoviesViewModel: MoviesViewPresentable {
         return CGSize(width: headerWidth, height: headerHeight)
     }()
     
-    init(dataServices: DataServices) {
+    init(dataServices: DataServices, disposeBag: DisposeBag = DisposeBag()) {
         self.dataServices = dataServices
+        self.disposeBag = disposeBag
+        self.nowPlayingMovies = BehaviorSubject<[MovieCellViewModel]>(value: [])
+        let _didSelectAMovie = PublishSubject<MovieCellViewModel>()
+        self.didSelectAMovie = _didSelectAMovie.asObserver()
+        self.goToMovieDetails = _didSelectAMovie.asObservable().map{ $0.movieId } 
     }
     
     func fetchMovies() {
@@ -104,7 +120,7 @@ class MoviesViewModel: MoviesViewPresentable {
     }
     
     func movieCellVM(collectionView: UICollectionView, indexPath: IndexPath) -> MovieCellViewModel {
-        guard let type = MovieType(rawValue: collectionView.tag) else { return MovieCellViewModel(releaseDate: "", popularity: "", posterImageUrl: "", placeHolderImageName: "") }
+        guard let type = MovieType(rawValue: collectionView.tag) else { return MovieCellViewModel(movieId: -1, releaseDate: "", popularity: "", posterImageUrl: "", placeHolderImageName: "") }
         
         switch type {
         case .nowPlaying:
@@ -119,15 +135,12 @@ class MoviesViewModel: MoviesViewPresentable {
     }
     
     private func loadNowPlayingMovies() {
-        dataServices.getNowPlaying { [unowned self] (success, movies) in
-            guard success, let movies = movies else {
-                return
-            }
-            
-            self.nowPlayingMovies = movies
-            self.nowPlayingMovieCellViewModels = self.nowPlayingMovies.map{ [unowned self] in self.moviesHelper.transfrom(movie: $0) }
-            self.showNowPlayingClosure?()
-        }
+        dataServices.getNowPlayingObservable()
+            .subscribe(onNext: { [unowned self] (movies) in
+                self.nowPlayingMovieCellViewModels = movies.map{ [unowned self] in self.moviesHelper.transfrom(movie: $0) }
+                self.nowPlayingMovies.onNext(self.nowPlayingMovieCellViewModels)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func loadPopularMovies() {
@@ -173,7 +186,7 @@ extension MoviesViewModel: MoviesVCDelegate {
         var movie: Movie!
         switch type {
         case .nowPlaying:
-            movie = nowPlayingMovies[indexPath.row]
+            break
         case .popular:
             movie = popularMovies[indexPath.row]
         case .topRated:

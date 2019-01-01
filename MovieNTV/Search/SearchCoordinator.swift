@@ -48,7 +48,7 @@ class SearchCoordinator: BaseCoordinator {
 
 extension SearchCoordinator {
     func didSelect(movie: Movie) {
-        self.movieDetailsCoordinator = MovieDetailsCoordinator(presenter: presenter, movie: movie)
+        self.movieDetailsCoordinator = MovieDetailsCoordinator(presenter: presenter, movieId: movie.id)
         self.movieDetailsCoordinator.start()
     }
     

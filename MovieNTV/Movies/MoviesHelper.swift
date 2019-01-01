@@ -22,7 +22,7 @@ struct MoviesHelper {
         let posterPath = "https://image.tmdb.org/t/p/w500/\(movie.posterPath ?? "")"
         let placeHolderImageName = "movieNTV"
         
-        return MovieCellViewModel(releaseDate: releaseDateStr, popularity: popularityStr, posterImageUrl: posterPath, placeHolderImageName: placeHolderImageName)
+        return MovieCellViewModel(movieId: movie.id,releaseDate: releaseDateStr, popularity: popularityStr, posterImageUrl: posterPath, placeHolderImageName: placeHolderImageName)
     }
     
     func transform(movie: Movie) -> MovieDetailsData {

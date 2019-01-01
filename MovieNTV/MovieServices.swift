@@ -74,6 +74,24 @@ class MovieServices {
         })
     }
     
+    func getNowPlayingObservable() -> Observable<[Movie]> {
+        let url = "\(baseURL)/movie/now_playing?api_key=\(apiKey)"
+        
+        return RxAlamofire.request(.get, url)
+            .validate()
+            .responseJSON()
+            .flatMap({ (response) -> Observable<[Movie]> in
+                switch response.result {
+                case .success(let value):
+                    guard let moviesJSON = JSON(value)["results"].array else { return Observable.empty() }
+                    let moviesArray = moviesJSON.map{ Movie(movieJSON: $0) }.compactMap{ $0 }
+                    return Observable.just(moviesArray)
+                case .failure:
+                    return Observable.empty()
+                }
+            })
+    }
+    
     // /movie/popular
     func getPopular(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
         let url = "\(baseURL)/movie/popular?api_key=\(apiKey)"

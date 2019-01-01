@@ -8,6 +8,8 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import RxCocoa
 
 protocol MoviesVCDelegate: class {
     func didSelect(collectionView: UICollectionView, indexPath: IndexPath)
@@ -18,6 +20,7 @@ class MoviesVC: UIViewController, HasCustomView {
     typealias CustomView = MoviesListView
     weak var delegate: MoviesVCDelegate?
     var moviesVM: (MoviesViewPresentable & MoviesVCDelegate)!
+    var disposeBag: DisposeBag!
     
     override func loadView() {
         let customView = CustomView()
@@ -30,8 +33,6 @@ class MoviesVC: UIViewController, HasCustomView {
         
         self.moviesVM.viewIsLoaded()
         
-        self.customView.nowPlayingCollectionView.dataSource = self
-        self.customView.nowPlayingCollectionView.delegate = self
         self.customView.popularCollectionView.dataSource = self
         self.customView.popularCollectionView.delegate = self
         self.customView.topRelatedCollectionView.dataSource = self
@@ -39,10 +40,23 @@ class MoviesVC: UIViewController, HasCustomView {
         self.customView.upComingCollectionView.dataSource = self
         self.customView.upComingCollectionView.delegate = self
         
-        moviesVM.showNowPlayingClosure = { [weak self] in
-            guard let self = self else { return }
-            self.customView.nowPlayingCollectionView.reloadData()
-        }
+        moviesVM.nowPlayingMovies
+            .asObservable()
+            .bind(to: self.customView.nowPlayingCollectionView.rx.items) { (collectionView, row, movieCellVM) in
+                let indexPath = IndexPath(row: row, section: 0)
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCell.identifier, for: indexPath) as? MovieCell else {
+                    return MovieCell()
+                }
+                cell.cleanUp4Reuse()
+                cell.setupWith(vm: movieCellVM)
+                return cell
+            }
+            .disposed(by: disposeBag)
+        
+        self.customView.nowPlayingCollectionView.rx
+            .modelSelected(MovieCellViewModel.self)
+            .bind(to: self.moviesVM.didSelectAMovie)
+            .disposed(by: disposeBag)
         
         moviesVM.showPopularClosure = { [weak self] in
             guard let self = self else { return }

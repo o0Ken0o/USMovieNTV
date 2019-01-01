@@ -28,6 +28,7 @@ enum MovieType: Int {
 protocol MediaCellViewModel {}
 
 struct MovieCellViewModel: MediaCellViewModel {
+    let movieId: Int
     let releaseDate: String
     let popularity: String
     let posterImageUrl: String

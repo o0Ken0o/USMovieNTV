@@ -16,16 +16,16 @@ class MovieDetailsCoordinator: BaseCoordinator {
     private var movieDetailsVC: MovieDetailsVC!
     private var movieDetailsVM: (MovieDetailsPresentable & MovieDetailsReactable)!
     private let dataServices: DataServices = DataServices.shared
-    private let movie: Movie
+    private let movieId: Int
     private let disposeBag = DisposeBag()
     
-    init(presenter: UINavigationController, movie: Movie) {
+    init(presenter: UINavigationController, movieId: Int) {
         self.presenter = presenter
-        self.movie = movie
+        self.movieId = movieId
     }
     
     func start() {
-        self.movieDetailsVM = MovieDetailsViewModel(dataServices: dataServices, movieId: movie.id, moviesHelper: MoviesHelper.shared, disposeBag: disposeBag)
+        self.movieDetailsVM = MovieDetailsViewModel(dataServices: dataServices, movieId: movieId, moviesHelper: MoviesHelper.shared, disposeBag: disposeBag)
         
         self.movieDetailsVC = MovieDetailsVC()
         self.movieDetailsVC.movieDetailsVM = self.movieDetailsVM

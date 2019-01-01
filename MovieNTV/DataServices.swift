@@ -36,6 +36,10 @@ class DataServices {
         movieServices.getNowPlaying(with: completion)
     }
     
+    func getNowPlayingObservable() -> Observable<[Movie]> {
+        return movieServices.getNowPlayingObservable()
+    }
+    
     // /movie/popular
     func getPopular(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
         movieServices.getPopular(with: completion)
