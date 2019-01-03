@@ -81,8 +81,8 @@ class DataServices {
         tvServices.searchTVShows(query: query, with: completion)
     }
     
-    func getTVDetails(tvId: Int, with completion: @escaping (_ success: Bool, _ tv: TV?) -> ()) {
-        tvServices.getTVDetails(tvId: tvId, with: completion)
+    func getTVDetails(tvId: Int) -> Observable<TV> {
+        return tvServices.getTVDetails(tvId: tvId)
     }
     
     func getImage(posterPath: String, with completion: @escaping (_ success: Bool, _ image: UIImage?) -> ()) {

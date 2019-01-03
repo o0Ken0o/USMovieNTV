@@ -9,6 +9,9 @@
 import Foundation
 import Alamofire
 import SwiftyJSON
+import RxCocoa
+import RxSwift
+import RxAlamofire
 
 class TVServices {
     let apiKey = "ba0a292f6231bfc33b918d9c7cb31095"
@@ -38,18 +41,21 @@ class TVServices {
     }
     
     // /tv/tvId
-    func getTVDetails(tvId: Int, with completion: @escaping (_ success: Bool, _ tv: TV?) -> ()) {
+    func getTVDetails(tvId: Int) -> Observable<TV> {
         let url = "\(baseURL)/tv/\(tvId)?api_key=\(apiKey)"
         
-        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
-            switch response.result {
-            case .success(let value):
-                let tv = TV(tvJSON: JSON(value))
-                completion(true, tv)
-            case .failure:
-                completion(false, nil)
+        return RxAlamofire.request(.get, url)
+            .validate()
+            .responseJSON()
+            .flatMap { (response) -> Observable<TV> in
+                switch response.result {
+                case .success(let value):
+                    guard let tv = TV(tvJSON: JSON(value)) else { return Observable.empty() }
+                    return Observable.just(tv)
+                case .failure:
+                    return Observable.empty()
+                }
             }
-        })
     }
     
     // /tv/on_the_air

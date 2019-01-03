@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class TVDetailsCoordinator: BaseCoordinator {
     private let tv: TV
@@ -14,6 +16,8 @@ class TVDetailsCoordinator: BaseCoordinator {
     private var tvDetailsVC: TVDetailsVC!
     private var tvDetailsVM: (TVDetailsPresentable & TVDetailsReactable)!
     private let dataServices: DataServices = DataServices.shared
+    private let tvsHelper = TVsHelper.shared
+    private let disposeBag = DisposeBag()
     
     init(presenter: UINavigationController, tv: TV) {
         self.presenter = presenter
@@ -21,15 +25,16 @@ class TVDetailsCoordinator: BaseCoordinator {
     }
     
     func start() {
-        self.tvDetailsVM = TVDetailsVM()
-        self.tvDetailsVM.tvId = tv.id
-        self.tvDetailsVM.dataServices = dataServices
+        self.tvDetailsVM = TVDetailsVM(dataServices: dataServices, tvId: tv.id, tvsHelper: tvsHelper, disposeBag: disposeBag)
         
-        self.tvDetailsVM.didTapCloseBtnClosure = { [unowned self] in
-            self.didTapCloseBtn()
-        }
+        self.tvDetailsVM.closeScreen
+            .subscribe(onNext: { [unowned self] in
+                self.didTapCloseBtn()
+            })
+            .disposed(by: disposeBag)
         
         self.tvDetailsVC = TVDetailsVC()
+        self.tvDetailsVC.disposeBag = disposeBag
         self.tvDetailsVC.tvDetailsVM = self.tvDetailsVM
         
         self.presenter.present(tvDetailsVC, animated: true)

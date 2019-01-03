@@ -7,16 +7,18 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class TVDetailsVC: UIViewController, HasCustomView {
     typealias CustomView = TVDetailsView
     
     var tvId: Int!
     var tvDetailsVM: (TVDetailsPresentable)!
+    var disposeBag: DisposeBag!
     
     override func loadView() {
         let customView = TVDetailsView()
-        customView.delegate = self
         view = customView
     }
     
@@ -24,11 +26,16 @@ class TVDetailsVC: UIViewController, HasCustomView {
         super.viewDidLoad()
         self.view.backgroundColor = .black
         
-        tvDetailsVM.displayDetails = { [unowned self] tvDetailsData in
-            self.displayWith(tvDetailsData: tvDetailsData)
-        }
+        tvDetailsVM.displayDetails
+            .subscribe(onNext: { [unowned self] in
+                self.displayWith(tvDetailsData: $0)
+            })
+            .disposed(by: disposeBag)
         
-        tvDetailsVM.fetchTVDetails()
+        self.customView.closeBtn.rx.tap
+            .bind(to: tvDetailsVM.closeBtnTapped)
+            .disposed(by: disposeBag)
+        
     }
     
     private func displayWith(tvDetailsData: TVDetailsData) {
@@ -44,11 +51,5 @@ class TVDetailsVC: UIViewController, HasCustomView {
         self.customView.overviewLabel.text = tvDetailsData.overview
         self.customView.createdByLabel.text = tvDetailsData.createdBy
         self.customView.posterImageView.sd_setImage(with: URL(string: tvDetailsData.posterImageUrl), placeholderImage: UIImage(named: tvDetailsData.placeHolderImageName))
-    }
-}
-
-extension TVDetailsVC: TVDetailsViewDelegate {
-    func didTapCloseBtn() {
-        self.tvDetailsVM.didTapCloseBtn()
     }
 }
