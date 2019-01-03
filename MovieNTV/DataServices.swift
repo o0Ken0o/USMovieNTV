@@ -32,27 +32,23 @@ class DataServices {
     }
     
     // /movie/now_playing
-    func getNowPlaying(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
-        movieServices.getNowPlaying(with: completion)
-    }
-    
-    func getNowPlayingObservable() -> Observable<[Movie]> {
-        return movieServices.getNowPlayingObservable()
+    func getNowPlaying() -> Observable<[Movie]> {
+        return movieServices.getNowPlaying()
     }
     
     // /movie/popular
-    func getPopular(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
-        movieServices.getPopular(with: completion)
+    func getPopular() -> Observable<[Movie]> {
+        return movieServices.getPopular()
     }
     
     // /movie/top_rated
-    func getTopRated(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
-        movieServices.getTopRated(with: completion)
+    func getTopRated() -> Observable<[Movie]> {
+        return movieServices.getTopRated()
     }
     
     // /movie/upcoming
-    func getUpcoming(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
-        movieServices.getUpcoming(with: completion)
+    func getUpcoming() -> Observable<[Movie]> {
+        return movieServices.getUpcoming()
     }
     
     // /search/movie

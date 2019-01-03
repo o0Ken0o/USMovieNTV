@@ -16,7 +16,7 @@ class MoviesCoordinator: BaseCoordinator {
     private var moviesVC: MoviesVC!
     private let dataServices: DataServices = DataServices.shared
     private var movieDetailsCoordinator: MovieDetailsCoordinator?
-    private var moviesVM: (MoviesViewPresentable & MoviesViewReactable & MoviesVCDelegate)!
+    private var moviesVM: (MoviesViewPresentable & MoviesViewReactable)!
     private let disposeBag = DisposeBag()
     
     init(presenter: UINavigationController, tabBarTag:Int) {
@@ -33,7 +33,6 @@ class MoviesCoordinator: BaseCoordinator {
         self.moviesVM = MoviesViewModel(dataServices: dataServices, disposeBag: disposeBag)
         self.moviesVM.moviesHelper = MoviesHelper.shared
         self.moviesVC.moviesVM = self.moviesVM
-        self.moviesVC.delegate = self.moviesVM
         self.moviesVC.disposeBag = disposeBag
         
         self.presenter.pushViewController(moviesVC, animated: true)
@@ -42,13 +41,11 @@ class MoviesCoordinator: BaseCoordinator {
         self.presenter.navigationBar.isTranslucent = false
         self.presenter.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         
-        self.moviesVM.viewDidLoadClosure = { [unowned self] in
-            self.viewIsLoaded()
-        }
-        
-        self.moviesVM.didSelectAMovieClosure = { [unowned self] movie in
-            self.didSelect(movieId: movie.id)
-        }
+        self.moviesVM.showMoviesTab
+            .subscribe(onNext: { [unowned self] in
+                self.showMoviesTab()
+            })
+            .disposed(by: disposeBag)
         
         self.moviesVM.goToMovieDetails
             .subscribe(onNext: { (movieId) in
@@ -62,7 +59,7 @@ class MoviesCoordinator: BaseCoordinator {
         self.movieDetailsCoordinator?.start()
     }
     
-    private func viewIsLoaded() {
+    private func showMoviesTab() {
         // just a workaround to make the selected index 0
         self.presenter.tabBarController?.selectedIndex = 1
         self.presenter.tabBarController?.selectedIndex = 0

@@ -13,26 +13,22 @@ import RxSwift
 protocol MoviesViewPresentable {
     var disposeBag: DisposeBag { get set }
     var nowPlayingMovies: BehaviorSubject<[MovieCellViewModel]> { get set }
-    var showPopularClosure: (() -> ())? { get set }
-    var showTopRatedClosure: (() -> ())? { get set }
-    var showUpComingClosure: (() -> ())? { get set }
+    var popularMovies: BehaviorSubject<[MovieCellViewModel]> { get set }
+    var topRatedMovies: BehaviorSubject<[MovieCellViewModel]> { get set }
+    var upComingMovies: BehaviorSubject<[MovieCellViewModel]> { get set }
+
     var itemSize: CGSize { get }
     var headerSize: CGSize { get }
     var itemHeight: CGFloat { get }
     var headerHeight: CGFloat { get }
     
     var moviesHelper: MoviesHelper! { get set }
-    
-    func fetchMovies()
-    func numberOfRows(collectionView: UICollectionView) -> Int
-    func movieCellVM(collectionView: UICollectionView, indexPath: IndexPath) -> MovieCellViewModel
-    
     var didSelectAMovie: AnyObserver<MovieCellViewModel> { get set }
+    var viewIsLoaded: AnyObserver<Void> { get set }
 }
 
 protocol MoviesViewReactable {
-    var viewDidLoadClosure: (() ->())? { get set }
-    var didSelectAMovieClosure: ((Movie) -> ())? { get set }
+    var showMoviesTab: Observable<Void> { get set }
     var goToMovieDetails: Observable<Int> { get set }
 }
 
@@ -42,24 +38,21 @@ class MoviesViewModel: MoviesViewPresentable, MoviesViewReactable {
     
     var disposeBag: DisposeBag
     var nowPlayingMovies: BehaviorSubject<[MovieCellViewModel]>
+    var popularMovies: BehaviorSubject<[MovieCellViewModel]>
+    var topRatedMovies: BehaviorSubject<[MovieCellViewModel]>
+    var upComingMovies: BehaviorSubject<[MovieCellViewModel]>
+    
     var didSelectAMovie: AnyObserver<MovieCellViewModel>
     var goToMovieDetails: Observable<Int>
-    private var popularMovies = [Movie]()
-    private var topRatedMovies = [Movie]()
-    private var upComingMovies = [Movie]()
+    
+    var viewIsLoaded: AnyObserver<Void>
+    var showMoviesTab: Observable<Void>
     
     private var nowPlayingMovieCellViewModels = [MovieCellViewModel]()
     private var popularMovieCellViewModels = [MovieCellViewModel]()
     private var topRatedMovieCellViewModels = [MovieCellViewModel]()
     private var upComingMovieCellViewModels = [MovieCellViewModel]()
-    
-    var showNowPlayingClosure: (() -> ())?
-    var showPopularClosure: (() -> ())?
-    var showTopRatedClosure: (() -> ())?
-    var showUpComingClosure: (() -> ())?
-    var viewDidLoadClosure: (() ->())?
-    var didSelectAMovieClosure: ((Movie) -> ())?
-    
+ 
     private let itemWidth: CGFloat = {
         return  UIScreen.main.bounds.size.width / 3
     }()
@@ -87,10 +80,21 @@ class MoviesViewModel: MoviesViewPresentable, MoviesViewReactable {
     init(dataServices: DataServices, disposeBag: DisposeBag = DisposeBag()) {
         self.dataServices = dataServices
         self.disposeBag = disposeBag
+        
         self.nowPlayingMovies = BehaviorSubject<[MovieCellViewModel]>(value: [])
+        self.popularMovies = BehaviorSubject<[MovieCellViewModel]>(value: [])
+        self.topRatedMovies = BehaviorSubject<[MovieCellViewModel]>(value: [])
+        self.upComingMovies = BehaviorSubject<[MovieCellViewModel]>(value: [])
+        
         let _didSelectAMovie = PublishSubject<MovieCellViewModel>()
         self.didSelectAMovie = _didSelectAMovie.asObserver()
-        self.goToMovieDetails = _didSelectAMovie.asObservable().map{ $0.movieId } 
+        self.goToMovieDetails = _didSelectAMovie.asObservable().map{ $0.movieId }
+        
+        let _viewLoaded = PublishSubject<Void>()
+        self.viewIsLoaded = _viewLoaded.asObserver()
+        self.showMoviesTab = _viewLoaded.asObservable()
+        
+        fetchMovies()
     }
     
     func fetchMovies() {
@@ -99,43 +103,9 @@ class MoviesViewModel: MoviesViewPresentable, MoviesViewReactable {
         loadTopRatedMovies()
         loadUpcomingMovies()
     }
-    
-    func numberOfRows(collectionView: UICollectionView) -> Int {
-        guard let type = MovieType(rawValue: collectionView.tag) else { return 0 }
-        
-        switch type {
-        case .nowPlaying:
-            return nowPlayingMovieCellViewModels.count
-        case .popular:
-            return popularMovieCellViewModels.count
-        case .topRated:
-            return topRatedMovieCellViewModels.count
-        case .upComing:
-            return upComingMovieCellViewModels.count
-        }
-    }
-    
-    func didSelect(movie: Movie) {
-        
-    }
-    
-    func movieCellVM(collectionView: UICollectionView, indexPath: IndexPath) -> MovieCellViewModel {
-        guard let type = MovieType(rawValue: collectionView.tag) else { return MovieCellViewModel(movieId: -1, releaseDate: "", popularity: "", posterImageUrl: "", placeHolderImageName: "") }
-        
-        switch type {
-        case .nowPlaying:
-            return nowPlayingMovieCellViewModels[indexPath.row]
-        case .popular:
-            return popularMovieCellViewModels[indexPath.row]
-        case .topRated:
-            return topRatedMovieCellViewModels[indexPath.row]
-        case .upComing:
-            return upComingMovieCellViewModels[indexPath.row]
-        }
-    }
-    
+
     private func loadNowPlayingMovies() {
-        dataServices.getNowPlayingObservable()
+        dataServices.getNowPlaying()
             .subscribe(onNext: { [unowned self] (movies) in
                 self.nowPlayingMovieCellViewModels = movies.map{ [unowned self] in self.moviesHelper.transfrom(movie: $0) }
                 self.nowPlayingMovies.onNext(self.nowPlayingMovieCellViewModels)
@@ -144,60 +114,29 @@ class MoviesViewModel: MoviesViewPresentable, MoviesViewReactable {
     }
     
     private func loadPopularMovies() {
-        dataServices.getPopular { [unowned self] (success, movies) in
-            guard success, let movies = movies else {
-                return
-            }
-            
-            self.popularMovies = movies
-            self.popularMovieCellViewModels = self.popularMovies.map{ [unowned self] in self.moviesHelper.transfrom(movie: $0) }
-            self.showPopularClosure?()
-        }
+        dataServices.getPopular()
+            .subscribe(onNext: { [unowned self] (movies) in
+                self.popularMovieCellViewModels = movies.map{ [unowned self] in self.moviesHelper.transfrom(movie: $0) }
+                self.popularMovies.onNext(self.popularMovieCellViewModels)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func loadTopRatedMovies() {
-        dataServices.getTopRated { [unowned self] (success, movies) in
-            guard success, let movies = movies else {
-                return
-            }
-            
-            self.topRatedMovies = movies
-            self.topRatedMovieCellViewModels = self.topRatedMovies.map{ [unowned self] in self.moviesHelper.transfrom(movie: $0) }
-            self.showTopRatedClosure?()
-        }
+        dataServices.getTopRated()
+            .subscribe(onNext: { [unowned self] (movies) in
+                self.topRatedMovieCellViewModels = movies.map{ [unowned self] in self.moviesHelper.transfrom(movie: $0) }
+                self.topRatedMovies.onNext(self.topRatedMovieCellViewModels)
+            })
+            .disposed(by: disposeBag)
     }
     
     private func loadUpcomingMovies() {
-        dataServices.getUpcoming { [unowned self] (success, movies) in
-            guard success, let movies = movies else {
-                return
-            }
-            
-            self.upComingMovies = movies
-            self.upComingMovieCellViewModels = self.upComingMovies.map{ [unowned self] in self.moviesHelper.transfrom(movie: $0) }
-            self.showUpComingClosure?()
-        }
-    }
-}
-
-extension MoviesViewModel: MoviesVCDelegate {
-    func didSelect(collectionView: UICollectionView, indexPath: IndexPath) {
-        guard let type = MovieType(rawValue: collectionView.tag) else { return }
-        var movie: Movie!
-        switch type {
-        case .nowPlaying:
-            break
-        case .popular:
-            movie = popularMovies[indexPath.row]
-        case .topRated:
-            movie = topRatedMovies[indexPath.row]
-        case .upComing:
-            movie = upComingMovies[indexPath.row]
-        }
-        self.didSelectAMovieClosure?(movie)
-    }
-    
-    func viewIsLoaded() {
-        self.viewDidLoadClosure?()
+        dataServices.getUpcoming()
+            .subscribe(onNext: { [unowned self] (movies) in
+                self.upComingMovieCellViewModels = movies.map{ [unowned self] in self.moviesHelper.transfrom(movie: $0) }
+                self.upComingMovies.onNext(self.upComingMovieCellViewModels)
+            })
+            .disposed(by: disposeBag)
     }
 }

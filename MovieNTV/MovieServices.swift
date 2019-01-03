@@ -52,31 +52,7 @@ class MovieServices {
         })
     }
     
-    // /movie/now_playing
-    func getNowPlaying(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
-        let url = "\(baseURL)/movie/now_playing?api_key=\(apiKey)"
-        var moviesArray = [Movie]()
-        
-        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
-            switch response.result {
-            case .success(let value):
-                if let moviesJSON = JSON(value)["results"].array {
-                    for movieJSON in moviesJSON {
-                        if let movie = Movie(movieJSON: movieJSON) {
-                            moviesArray.append(movie)
-                        }
-                    }
-                }
-                completion(true, moviesArray)
-            case .failure:
-                completion(false, nil)
-            }
-        })
-    }
-    
-    func getNowPlayingObservable() -> Observable<[Movie]> {
-        let url = "\(baseURL)/movie/now_playing?api_key=\(apiKey)"
-        
+    private func getMovies(url: String) -> Observable<[Movie]> {
         return RxAlamofire.request(.get, url)
             .validate()
             .responseJSON()
@@ -92,70 +68,28 @@ class MovieServices {
             })
     }
     
+    // /movie/now_playing
+    func getNowPlaying() -> Observable<[Movie]> {
+        let url = "\(baseURL)/movie/now_playing?api_key=\(apiKey)"
+        return getMovies(url: url)
+    }
+    
     // /movie/popular
-    func getPopular(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
+    func getPopular() -> Observable<[Movie]>  {
         let url = "\(baseURL)/movie/popular?api_key=\(apiKey)"
-        var moviesArray = [Movie]()
-        
-        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
-            switch response.result {
-            case .success(let value):
-                if let moviesJSON = JSON(value)["results"].array {
-                    for movieJSON in moviesJSON {
-                        if let movie = Movie(movieJSON: movieJSON) {
-                            moviesArray.append(movie)
-                        }
-                    }
-                }
-                completion(true, moviesArray)
-            case .failure:
-                completion(false, nil)
-            }
-        })
+        return getMovies(url: url)
     }
     
     // /movie/top_rated
-    func getTopRated(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
+    func getTopRated() -> Observable<[Movie]> {
         let url = "\(baseURL)/movie/top_rated?api_key=\(apiKey)"
-        var moviesArray = [Movie]()
-        
-        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
-            switch response.result {
-            case .success(let value):
-                if let moviesJSON = JSON(value)["results"].array {
-                    for movieJSON in moviesJSON {
-                        if let movie = Movie(movieJSON: movieJSON) {
-                            moviesArray.append(movie)
-                        }
-                    }
-                }
-                completion(true, moviesArray)
-            case .failure:
-                completion(false, nil)
-            }
-        })
+        return getMovies(url: url)
     }
     
     // /movie/upcoming
-    func getUpcoming(with completion: @escaping (_ success: Bool, _ movie: [Movie]?) -> ()) {
+    func getUpcoming() -> Observable<[Movie]> {
         let url = "\(baseURL)/movie/upcoming?api_key=\(apiKey)"
-        var moviesArray = [Movie]()
-        
-        Alamofire.request(url).validate().responseJSON(completionHandler: { (response) in
-            switch response.result {
-            case .success(let value):
-                if let moviesJSON = JSON(value)["results"].array {
-                    for movieJSON in moviesJSON {
-                        if let movie = Movie(movieJSON: movieJSON) {
-                            moviesArray.append(movie)
-                        }
-                    }
-                }
-                completion(true, moviesArray)
-            case .failure:
-                completion(false, nil)
-            }
-        })
+        return getMovies(url: url)
     }
     
     // /search/movie
